@@ -15,14 +15,16 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
 
   @Override
   public Optional<Category> getById(Long id) {
-    Optional<Category> optionalCategory =
-        findAll().stream().filter(p -> p.getCategoryId().equals(id)).findFirst();
+    Optional<Category> optionalCategory = findAll().stream()
+            .filter(p -> p.getCategoryId().equals(id)).findFirst();
     return optionalCategory;
   }
 
   @Override
   public Category save(Category category) {
+
     this.connection.insertCategory(category);
+    return category;
   }
 
   @Override

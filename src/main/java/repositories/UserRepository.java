@@ -14,14 +14,15 @@ public class UserRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public Optional<User> getById(Long id) {
-    Optional<User> optionalUser =
-        findAll().stream().filter(p -> p.getUserId().equals(id)).findFirst();
+    Optional<User> optionalUser = findAll().stream()
+            .filter(p -> p.getUserId().equals(id)).findFirst();
     return optionalUser;
   }
 
   @Override
   public User save(User user) {
     this.connection.insertUser(user);
+    return user;
   }
 
   @Override

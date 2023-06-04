@@ -14,14 +14,15 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public Optional<Task> getById(Long id) {
-    Optional<Task> optionalTask =
-        findAll().stream().filter(p -> p.getTaskId().equals(id)).findFirst();
+    Optional<Task> optionalTask = findAll().stream()
+            .filter(p -> p.getTaskId().equals(id)).findFirst();
     return optionalTask;
   }
 
   @Override
   public Task save(Task task) {
     this.connection.insertTask(task);
+    return task;
   }
 
   @Override
