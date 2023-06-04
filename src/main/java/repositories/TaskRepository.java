@@ -26,6 +26,6 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public void delete(Task task) {
-    this.connection.deleteTast(task);
+    this.connection.deleteTask(task);
   }
 }

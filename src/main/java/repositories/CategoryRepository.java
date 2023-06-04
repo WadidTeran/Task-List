@@ -1,28 +1,32 @@
 package repositories;
 
-import lombok.Data;
-
 import java.util.ArrayList;
+import java.util.Optional;
+import lombok.Data;
+import models.Category;
 
 @Data
-public class CategoryRepository extends DataBaseRepositoryImpl implements IRepository{
-    @Override
-    public ArrayList findAll() {
-        return null;
-    }
+public class CategoryRepository extends DataBaseRepositoryImpl implements IRepository<Category> {
 
-    @Override
-    public Object getById(Long id) {
-        return null;
-    }
+  @Override
+  public ArrayList<Category> findAll() {
+    return this.connection.getCategories();
+  }
 
-    @Override
-    public Object save(Object o) {
-        return null;
-    }
+  @Override
+  public Optional<Category> getById(Long id) {
+    Optional<Category> optionalCategory =
+        findAll().stream().filter(p -> p.getCategoryId().equals(id)).findFirst();
+    return optionalCategory;
+  }
 
-    @Override
-    public void delete(Object o) {
+  @Override
+  public Category save(Category category) {
+    this.connection.insertCategory(category);
+  }
 
-    }
+  @Override
+  public void delete(Category category) {
+    this.connection.deleteCategory(category);
+  }
 }
