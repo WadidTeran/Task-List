@@ -4,5 +4,6 @@ public enum RepeatType {
     HOUR,
     DAILY,
     WEEKLY,
-    YEARLY
+    YEARLY,
+    MONTHLY
 }
