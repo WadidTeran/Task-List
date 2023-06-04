@@ -1,28 +1,31 @@
 package repositories;
 
-import lombok.Data;
-
 import java.util.ArrayList;
+import java.util.Optional;
+import lombok.Data;
+import models.Task;
 
 @Data
-public class TaskRepository extends DataBaseRepositoryImpl implements IRepository{
-    @Override
-    public ArrayList findAll() {
-        return null;
-    }
+public class TaskRepository extends DataBaseRepositoryImpl implements IRepository<Task> {
+  @Override
+  public ArrayList<Task> findAll() {
+    return this.connection.getTasks();
+  }
 
-    @Override
-    public Object getById(Long id) {
-        return null;
-    }
+  @Override
+  public Optional<Task> getById(Long id) {
+    Optional<Task> optionalTask =
+        findAll().stream().filter(p -> p.getTaskId().equals(id)).findFirst();
+    return optionalTask;
+  }
 
-    @Override
-    public Object save(Object o) {
-        return null;
-    }
+  @Override
+  public Task save(Task task) {
+    this.connection.insertTask(task);
+  }
 
-    @Override
-    public void delete(Object o) {
-
-    }
+  @Override
+  public void delete(Task task) {
+    this.connection.deleteTast(task);
+  }
 }

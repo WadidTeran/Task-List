@@ -1,7 +1,9 @@
 package repositories;
 
+import lombok.Getter;
 import utils.DataBase;
 
+@Getter
 public abstract class DataBaseRepositoryImpl {
   DataBase connection;
 
