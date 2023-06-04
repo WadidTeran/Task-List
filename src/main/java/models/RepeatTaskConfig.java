@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Data
 public class RepeatTaskConfig {
-  @Setter private RepeatType repeatType;
-  @Setter private int repeatInterval;
-  @Setter private LocalDate repeatEndsAt;
-  @Setter private RepeatOnConfig repeatOn;
+  private RepeatType repeatType;
+  private int repeatInterval;
+  private LocalDate repeatEndsAt;
+  private RepeatOnConfig repeatOn
 }
