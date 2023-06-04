@@ -1,4 +1,6 @@
-package utils;
+package repositories;
+
+import utils.DataBase;
 
 public abstract class DataBaseRepositoryImpl {
   DataBase connection;
