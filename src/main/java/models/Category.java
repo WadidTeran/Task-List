@@ -1,7 +1,10 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public class Category {
-  Long categoryId;
-  String name;
-  User user;
+  private Long categoryId;
+  private String name;
+  private User user;
 }
