@@ -1,7 +1,10 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public class User {
-  Long userId;
-  String email;
-  String password;
+  private Long userId;
+  private String email;
+  private String password;
 }
