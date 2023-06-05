@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.MonthDay;
+import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
 
@@ -50,6 +51,22 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   @Override
   public void visit(WeeklyRepeatOnConfig repeatOnConfig) {
     Set<DayOfWeek> daysOfWeek = repeatOnConfig.getDaysOfWeek();
+
+    DayOfWeek oldDayOfWeek = oldDueDate.getDayOfWeek();
+
+    if (oldDayOfWeek.equals(daysOfWeek.stream().max(Comparator.naturalOrder()).orElseThrow())) {
+      nextDueDate =
+          oldDueDate
+              .with(daysOfWeek.stream().min(Comparator.naturalOrder()).orElseThrow())
+              .plusWeeks(repeatInterval);
+    } else {
+      nextDueDate =
+          oldDueDate.with(
+              daysOfWeek.stream()
+                  .filter(dow -> dow.compareTo(oldDayOfWeek) > 0)
+                  .findFirst()
+                  .orElseThrow());
+    }
   }
 
   @Override
