@@ -17,7 +17,12 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public Task save(Task task) {
-    this.connection.insertTask(task);
+    if (task.getTaskId() != null && task.getTaskId() > 0L) {
+      this.connection.updateTask(task);
+    } else {
+      this.connection.insertTask(task);
+    }
+
     return task;
   }
 

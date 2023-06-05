@@ -17,7 +17,12 @@ public class UserRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public User save(User user) {
-    this.connection.insertUser(user);
+    if (user.getUserId() != null && user.getUserId() > 0L) {
+      this.connection.updateUser(user);
+    } else {
+      this.connection.insertUser(user);
+    }
+
     return user;
   }
 

@@ -18,7 +18,12 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
 
   @Override
   public Category save(Category category) {
-    this.connection.insertCategory(category);
+    if (category.getCategoryId() != null && category.getCategoryId() > 0L) {
+      this.connection.updateCategory(category);
+    } else {
+      this.connection.insertCategory(category);
+    }
+
     return category;
   }
 

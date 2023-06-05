@@ -3,8 +3,8 @@ package models;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.time.MonthDay;
+import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
 
