@@ -1,9 +1,7 @@
 package models;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.MonthDay;
+import java.time.*;
+import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
 
@@ -60,5 +58,23 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   @Override
   public void visit(YearlyRepeatOnConfig repeatOnConfig) {
     Set<MonthDay> daysOfYear = repeatOnConfig.getDaysOfYear();
+
+    MonthDay oldMonthDay = MonthDay.of(oldDueDate.getMonth(), oldDueDate.getDayOfMonth());
+
+    if (oldMonthDay == daysOfYear.stream().max(Comparator.naturalOrder()).orElseThrow()) {
+      MonthDay firstMonthDay = daysOfYear.stream().min(Comparator.naturalOrder()).orElseThrow();
+      nextDueDate =
+          oldDueDate
+              .plusYears(repeatInterval)
+              .withMonth(firstMonthDay.getMonthValue())
+              .withDayOfMonth(firstMonthDay.getDayOfMonth());
+    } else {
+      MonthDay nextMonthDay =
+          daysOfYear.stream().filter(x -> x.compareTo(oldMonthDay) > 0).findFirst().orElseThrow();
+      nextDueDate =
+          oldDueDate
+              .withMonth(nextMonthDay.getMonthValue())
+              .withDayOfMonth(nextMonthDay.getDayOfMonth());
+    }
   }
 }
