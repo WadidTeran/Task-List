@@ -2,10 +2,8 @@ package repositories;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import lombok.Data;
 import models.Task;
 
-@Data
 public class TaskRepository extends DataBaseRepositoryImpl implements IRepository<Task> {
   @Override
   public ArrayList<Task> findAll() {
@@ -14,9 +12,7 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public Optional<Task> getById(Long id) {
-    Optional<Task> optionalTask = findAll().stream()
-            .filter(p -> p.getTaskId().equals(id)).findFirst();
-    return optionalTask;
+    return findAll().stream().filter(t -> t.getTaskId().equals(id)).findFirst();
   }
 
   @Override

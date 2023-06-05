@@ -40,8 +40,9 @@ public class DataBase {
 
   public User updateUser(User user) {
     int userId = (int) ((long) user.getUserId());
+
     for (int i = (userId) - 1; i > 0; i--) {
-      if (users.get(i).getUserId().equals(user.getUserId())) {
+      if (i < users.size() && users.get(i) != null && users.get(i).getUserId().equals(user.getUserId())) {
         users.set(i, user);
         break;
       }
@@ -52,7 +53,7 @@ public class DataBase {
   public Task updateTask(Task task) {
     int taskId = (int) ((long) task.getTaskId());
     for (int i = (taskId - 1); i > 0; i--) {
-      if (tasks.get(i).getTaskId().equals(task.getTaskId())) {
+      if (i < tasks.size() && tasks.get(i) != null && tasks.get(i).getTaskId().equals(task.getTaskId())) {
         tasks.set(i, task);
         break;
       }
@@ -63,7 +64,7 @@ public class DataBase {
   public Category updateCategory(Category category) {
     int categoryId = (int) ((long) category.getCategoryId());
     for (int i = (categoryId - 1); i > 0; i--) {
-      if (categories.get(i).getCategoryId().equals(category.getCategoryId())) {
+      if (i < categories.size() && categories.get(i) != null && categories.get(i).getCategoryId().equals(category.getCategoryId())) {
         categories.set(i, category);
         break;
       }

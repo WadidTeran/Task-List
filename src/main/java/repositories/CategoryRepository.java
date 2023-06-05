@@ -2,10 +2,8 @@ package repositories;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import lombok.Data;
 import models.Category;
 
-@Data
 public class CategoryRepository extends DataBaseRepositoryImpl implements IRepository<Category> {
 
   @Override
@@ -15,14 +13,11 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
 
   @Override
   public Optional<Category> getById(Long id) {
-    Optional<Category> optionalCategory = findAll().stream()
-            .filter(p -> p.getCategoryId().equals(id)).findFirst();
-    return optionalCategory;
+    return findAll().stream().filter(c -> c.getCategoryId().equals(id)).findFirst();
   }
 
   @Override
   public Category save(Category category) {
-
     this.connection.insertCategory(category);
     return category;
   }
