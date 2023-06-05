@@ -6,28 +6,31 @@ import java.util.Set;
 import lombok.Getter;
 
 public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
-  private Task task;
+  private final LocalDate oldDueDate;
+  private final LocalTime oldSpecifiedTime;
+  private final Integer repeatInterval;
   @Getter private LocalDate nextDueDate;
   @Getter private LocalTime nextSpecifiedTime;
 
   public NextDueDateCalculator(Task task) {
-    this.task = task;
+    oldDueDate = task.getDueDate();
+    oldSpecifiedTime = task.getSpecifiedTime();
+    repeatInterval = task.getRepeatingConfig().getRepeatInterval();
+
+    nextDueDate = oldDueDate;
+    nextSpecifiedTime = oldSpecifiedTime;
   }
 
   @Override
   public void visit(HourRepeatOnConfig repeatOnConfig) {
     Set<Integer> minutes = repeatOnConfig.getMinutes();
-    LocalDate oldDueDate = task.getDueDate();
-    nextDueDate = oldDueDate;
-    LocalTime oldSpecifiedTime = task.getSpecifiedTime();
-    Integer interval = task.getRepeatingConfig().getRepeatInterval();
 
     int oldMinutes = oldSpecifiedTime.getMinute();
 
     if (oldMinutes == minutes.stream().reduce(Math::max).orElseThrow()) {
       nextSpecifiedTime =
           oldSpecifiedTime
-              .plusHours(interval)
+              .plusHours(repeatInterval)
               .withMinute(minutes.stream().reduce(Math::min).orElseThrow());
       if (nextSpecifiedTime.isBefore(oldSpecifiedTime)) nextDueDate = oldDueDate.plusDays(1);
     } else {
