@@ -1,8 +1,11 @@
 package models;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.time.MonthDay;
+
 import java.util.Set;
 import lombok.Getter;
 
@@ -58,11 +61,17 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   }
 
   @Override
-  public void visit(WeeklyRepeatOnConfig repeatOnConfig) {}
+  public void visit(WeeklyRepeatOnConfig repeatOnConfig) {
+    Set<DayOfWeek> daysOfWeek = repeatOnConfig.getDaysOfWeek();
+  }
 
   @Override
-  public void visit(MonthlyRepeatOnConfig repeatOnConfig) {}
+  public void visit(MonthlyRepeatOnConfig repeatOnConfig) {
+    Set<Integer> daysOfMonth = repeatOnConfig.getDaysOfMonth();
+  }
 
   @Override
-  public void visit(YearlyRepeatOnConfig repeatOnConfig) {}
+  public void visit(YearlyRepeatOnConfig repeatOnConfig) {
+    Set<MonthDay> daysOfYear = repeatOnConfig.getDaysOfYear();
+  }
 }
