@@ -68,6 +68,19 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   @Override
   public void visit(MonthlyRepeatOnConfig repeatOnConfig) {
     Set<Integer> daysOfMonth = repeatOnConfig.getDaysOfMonth();
+
+    int oldDayOfMonth = oldDueDate.getDayOfMonth();
+
+    if (oldDayOfMonth == daysOfMonth.stream().reduce(Math::max).orElseThrow()) {
+      nextDueDate =
+          oldDueDate
+              .plusMonths(repeatInterval)
+              .withDayOfMonth(daysOfMonth.stream().reduce(Math::min).orElseThrow());
+    } else {
+      nextDueDate =
+          oldDueDate.withDayOfMonth(
+              daysOfMonth.stream().filter(x -> x > oldDayOfMonth).findFirst().orElseThrow());
+    }
   }
 
   @Override
