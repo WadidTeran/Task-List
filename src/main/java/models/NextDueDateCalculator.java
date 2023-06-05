@@ -2,6 +2,7 @@ package models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
 
@@ -41,7 +42,20 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   }
 
   @Override
-  public void visit(DailyRepeatOnConfig repeatOnConfig) {}
+  public void visit(DailyRepeatOnConfig repeatOnConfig) {
+    Set<LocalTime> hours = repeatOnConfig.getHours();
+
+    LocalTime oldHour = oldSpecifiedTime;
+
+    if (oldHour.equals(hours.stream().max(Comparator.naturalOrder()).orElseThrow())) {
+      nextDueDate = oldDueDate.plusDays(repeatInterval);
+      nextSpecifiedTime = hours.iterator().next();
+
+    } else {
+      nextSpecifiedTime =
+          hours.stream().filter(d -> d.compareTo(oldHour) > 0).findFirst().orElseThrow();
+    }
+  }
 
   @Override
   public void visit(WeeklyRepeatOnConfig repeatOnConfig) {}
