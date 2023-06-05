@@ -3,6 +3,7 @@ package utils;
 import lombok.Getter;
 import models.User;
 import services.CRUDServiceImpl;
+import views.View;
 
 public class UserLogin {
 
@@ -17,11 +18,11 @@ public class UserLogin {
         user = crudService.getUserByEmail(email);
         return true;
       }
-      // View.display("Invalid password");
+      View.display("Invalid password");
       return false;
     }
 
-    // View.display("This User doesn't exist.");
+    View.display("This User doesn't exist.");
     return false;
   }
 
