@@ -2,17 +2,24 @@ package repositories;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import models.Task;
+import utils.UserLogin;
 
 public class TaskRepository extends DataBaseRepositoryImpl implements IRepository<Task> {
   @Override
   public ArrayList<Task> findAll() {
-    return this.connection.getTasks();
+    return (ArrayList<Task>)
+        this.connection.getTasks().stream()
+            .filter(t -> t.getUser().equals(UserLogin.getUser()))
+            .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Task> getById(Long id) {
-    return findAll().stream().filter(t -> t.getTaskId().equals(id)).findFirst();
+    return findAll().stream()
+        .filter(t -> t.getTaskId().equals(id) && t.getUser().equals(UserLogin.getUser()))
+        .findFirst();
   }
 
   @Override
@@ -28,6 +35,8 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public void delete(Task task) {
-    this.connection.deleteTask(task);
+    if (task.getUser().equals(UserLogin.getUser())) {
+      this.connection.deleteTask(task);
+    }
   }
 }

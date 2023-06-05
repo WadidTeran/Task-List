@@ -2,18 +2,25 @@ package repositories;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import models.Category;
+import utils.UserLogin;
 
 public class CategoryRepository extends DataBaseRepositoryImpl implements IRepository<Category> {
 
   @Override
   public ArrayList<Category> findAll() {
-    return this.connection.getCategories();
+    return (ArrayList<Category>)
+        this.connection.getCategories().stream()
+            .filter(c -> c.getUser().equals(UserLogin.getUser()))
+            .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Category> getById(Long id) {
-    return findAll().stream().filter(c -> c.getCategoryId().equals(id)).findFirst();
+    return findAll().stream()
+        .filter(c -> c.getCategoryId().equals(id) && c.getUser().equals(UserLogin.getUser()))
+        .findFirst();
   }
 
   @Override
@@ -29,6 +36,8 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
 
   @Override
   public void delete(Category category) {
-    this.connection.deleteCategory(category);
+    if (category.getUser().equals(UserLogin.getUser())) {
+      this.connection.deleteCategory(category);
+    }
   }
 }
