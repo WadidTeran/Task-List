@@ -5,7 +5,7 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class DailyRepeatOnConfig extends RepeatOnConfig {
+public class DailyRepeatOnConfig implements RepeatOnConfig {
   private Set<LocalTime> hours;
 
   @Override

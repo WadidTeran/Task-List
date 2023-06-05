@@ -5,7 +5,7 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class WeeklyRepeatOnConfig extends RepeatOnConfig {
+public class WeeklyRepeatOnConfig implements RepeatOnConfig {
   private Set<DayOfWeek> daysOfWeek;
 
   @Override

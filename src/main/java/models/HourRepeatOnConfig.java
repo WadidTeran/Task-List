@@ -4,7 +4,7 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class HourRepeatOnConfig extends RepeatOnConfig {
+public class HourRepeatOnConfig implements RepeatOnConfig {
   private Set<Integer> minutes;
 
   @Override

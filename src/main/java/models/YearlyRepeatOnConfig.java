@@ -5,7 +5,7 @@ import java.util.Set;
 import lombok.Data;
 
 @Data
-public class YearlyRepeatOnConfig extends RepeatOnConfig {
+public class YearlyRepeatOnConfig implements RepeatOnConfig {
   private Set<MonthDay> daysOfYear;
 
   @Override

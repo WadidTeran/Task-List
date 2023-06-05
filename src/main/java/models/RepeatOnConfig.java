@@ -1,6 +1,6 @@
 package models;
 
-public abstract class RepeatOnConfig {
+public interface RepeatOnConfig {
 
-  public abstract void accept(IRepeatOnConfigVisitor visitor);
+  void accept(IRepeatOnConfigVisitor visitor);
 }
