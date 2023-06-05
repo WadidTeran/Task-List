@@ -11,6 +11,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/sonarlint/
+.idea/uiDesigner.xml
 
 ### Eclipse ###
 .apt_generated
