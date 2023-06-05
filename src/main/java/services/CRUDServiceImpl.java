@@ -2,18 +2,24 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
-import lombok.AllArgsConstructor;
 import models.Category;
 import models.Task;
 import models.User;
+import repositories.CategoryRepository;
 import repositories.IRepository;
+import repositories.TaskRepository;
+import repositories.UserRepository;
 
-@AllArgsConstructor
 public class CRUDServiceImpl implements ICRUDService {
-  private IRepository<User> userRepository;
-  private IRepository<Task> taskRepository;
-  private IRepository<Category> categoryRepository;
+  private final IRepository<User> userRepository;
+  private final IRepository<Task> taskRepository;
+  private final IRepository<Category> categoryRepository;
+
+  public CRUDServiceImpl() {
+    userRepository = new UserRepository();
+    taskRepository = new TaskRepository();
+    categoryRepository = new CategoryRepository();
+  }
 
   @Override
   public ArrayList<User> findAllUsers() {
@@ -85,4 +91,18 @@ public class CRUDServiceImpl implements ICRUDService {
     }
   }
 
+  public boolean checkUserEmail(String email) {
+    return getUserByEmail(email) != null;
+  }
+
+  public boolean validateUserPassword(String email, String password) {
+    return getUserByEmail(email).getPassword().equals(password);
+  }
+
+  public User getUserByEmail(String email) {
+    return findAllUsers().stream()
+        .filter(u -> u.getEmail().equals(email))
+        .findFirst()
+        .orElseThrow();
+  }
 }
