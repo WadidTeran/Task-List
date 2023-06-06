@@ -3,6 +3,7 @@ package controllers;
 import java.util.Scanner;
 import models.User;
 import services.CRUDServiceImpl;
+import utils.UserLogin;
 import views.View;
 
 public class UserController {
@@ -28,7 +29,22 @@ public class UserController {
     }
   }
 
-  public void deleteUser() {}
+  public void deleteUser() {
+    View.display("If you want to delete your account, insert your password: ");
+    String password = scanner.nextLine();
 
-  public void signOut() {}
+    CRUDServiceImpl crudService = new CRUDServiceImpl();
+
+    if (UserLogin.getUser().getPassword().equals(password)) {
+      crudService.deleteUser(UserLogin.getUser());
+      View.display("You have deleted your account succesfully...");
+      signOut();
+    } else {
+      View.display("Authentication failed!");
+    }
+  }
+
+  public void signOut() {
+    UserLogin.logOutUser();
+  }
 }
