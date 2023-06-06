@@ -16690,8 +16690,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -736,
-											"top": 976,
+											"left": -880,
+											"top": 960,
 											"height": 13
 										},
 										{
@@ -16701,9 +16701,9 @@
 												"$ref": "AAAAAAGIf7I0SLbUEjg="
 											},
 											"font": "Arial;13;1",
-											"left": 437,
-											"top": 887,
-											"width": 153.537109375,
+											"left": 365,
+											"top": 879,
+											"width": 303.087890625,
 											"height": 13,
 											"text": "TaskBuilder"
 										},
@@ -16715,8 +16715,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -736,
-											"top": 976,
+											"left": -880,
+											"top": 960,
 											"width": 80.9072265625,
 											"height": 13,
 											"text": "(from Model2)"
@@ -16729,16 +16729,16 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -736,
-											"top": 976,
+											"left": -880,
+											"top": 960,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 432,
-									"top": 880,
-									"width": 163.537109375,
+									"left": 360,
+									"top": 872,
+									"width": 313.087890625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGIf7I0SLbVDNo="
@@ -16773,18 +16773,18 @@
 												"$ref": "AAAAAAGIgueOXO/ClWw="
 											},
 											"font": "Arial;13;0",
-											"left": 437,
-											"top": 910,
-											"width": 153.537109375,
+											"left": 365,
+											"top": 902,
+											"width": 303.087890625,
 											"height": 13,
 											"text": "-task: Task",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 432,
-									"top": 905,
-									"width": 163.537109375,
+									"left": 360,
+									"top": 897,
+									"width": 313.087890625,
 									"height": 23
 								},
 								{
@@ -16807,9 +16807,9 @@
 												"$ref": "AAAAAAGIgudOTe+3AlA="
 											},
 											"font": "Arial;13;0",
-											"left": 437,
-											"top": 933,
-											"width": 153.537109375,
+											"left": 365,
+											"top": 925,
+											"width": 303.087890625,
 											"height": 13,
 											"text": "+TaskBuilder(String name)",
 											"horizontalAlignment": 0
@@ -16824,11 +16824,29 @@
 												"$ref": "AAAAAAGIgsU5D+oPMug="
 											},
 											"font": "Arial;13;0",
-											"left": 437,
-											"top": 948,
-											"width": 153.537109375,
+											"left": 365,
+											"top": 940,
+											"width": 303.087890625,
 											"height": 13,
 											"text": "+TaskBuilder(Task task)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGIklzYZKTrnNQ=",
+											"_parent": {
+												"$ref": "AAAAAAGIf7I0SLbaUE0="
+											},
+											"model": {
+												"$ref": "AAAAAAGIklzYWKTogzQ="
+											},
+											"font": "Arial;13;0",
+											"left": 365,
+											"top": 955,
+											"width": 303.087890625,
+											"height": 13,
+											"underline": true,
+											"text": "+taskBuilderWithClonedTask(Task task): TaskBuilder",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16841,9 +16859,9 @@
 												"$ref": "AAAAAAGIgsVtMuoYI0Q="
 											},
 											"font": "Arial;13;0",
-											"left": 437,
-											"top": 963,
-											"width": 153.537109375,
+											"left": 365,
+											"top": 970,
+											"width": 303.087890625,
 											"height": 13,
 											"text": "+build()",
 											"horizontalAlignment": 0
@@ -16858,19 +16876,19 @@
 												"$ref": "AAAAAAGIgsWFtuofh84="
 											},
 											"font": "Arial;13;0",
-											"left": 437,
-											"top": 978,
-											"width": 153.537109375,
+											"left": 365,
+											"top": 985,
+											"width": 303.087890625,
 											"height": 13,
 											"text": "+reset()",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 432,
-									"top": 928,
-									"width": 163.537109375,
-									"height": 68
+									"left": 360,
+									"top": 920,
+									"width": 313.087890625,
+									"height": 83
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -16883,8 +16901,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -368,
-									"top": 488,
+									"left": -440,
+									"top": 480,
 									"width": 10,
 									"height": 10
 								},
@@ -16899,18 +16917,18 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -368,
-									"top": 488,
+									"left": -440,
+									"top": 480,
 									"width": 10,
 									"height": 10
 								}
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 432,
-							"top": 880,
-							"width": 163.537109375,
-							"height": 116,
+							"left": 360,
+							"top": 872,
+							"width": 313.087890625,
+							"height": 131,
 							"nameCompartment": {
 								"$ref": "AAAAAAGIf7I0SLbUEjg="
 							},
@@ -17923,8 +17941,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 528,
-									"top": 743,
+									"left": 529,
+									"top": 739,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -17944,8 +17962,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 543,
-									"top": 743,
+									"left": 544,
+									"top": 739,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -17965,8 +17983,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 498,
-									"top": 744,
+									"left": 500,
+									"top": 740,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -17984,7 +18002,7 @@
 								"$ref": "AAAAAAGIf7B57rak3Mg="
 							},
 							"lineStyle": 1,
-							"points": "514:622;513:879",
+							"points": "515:622;516:871",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIgrXNsNPM/TU="
@@ -19589,8 +19607,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 287,
-									"top": 944,
+									"left": 288,
+									"top": 945,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -19608,7 +19626,7 @@
 								"$ref": "AAAAAAGIf7ijiL70za4="
 							},
 							"lineStyle": 1,
-							"points": "288:857;288:936;431:937",
+							"points": "288:857;288:936;359:936",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIgxmgRlNQZlo="
@@ -19627,7 +19645,7 @@
 								"$ref": "AAAAAAGIfwxxmk4buiY="
 							},
 							"font": "Arial;13;0",
-							"left": 624,
+							"left": 704,
 							"top": 904,
 							"width": 249,
 							"height": 64,
@@ -19647,7 +19665,7 @@
 								"$ref": "AAAAAAGIf7I0SLbTxps="
 							},
 							"lineStyle": 1,
-							"points": "596:936;623:936"
+							"points": "673:936;703:936"
 						},
 						{
 							"_type": "UMLNoteView",
@@ -20008,6 +20026,37 @@
 									"_id": "AAAAAAGIgsVjaeoWINA=",
 									"_parent": {
 										"$ref": "AAAAAAGIgsU5D+oPMug="
+									},
+									"name": "Task task",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGIklzYWKTogzQ=",
+							"_parent": {
+								"$ref": "AAAAAAGIf7I0R7bRggs="
+							},
+							"name": "taskBuilderWithClonedTask",
+							"isStatic": true,
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIkl1196T2big=",
+									"_parent": {
+										"$ref": "AAAAAAGIklzYWKTogzQ="
+									},
+									"type": {
+										"$ref": "AAAAAAGIf7I0R7bRggs="
+									},
+									"direction": "return"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIkl2HUKT5onE=",
+									"_parent": {
+										"$ref": "AAAAAAGIklzYWKTogzQ="
 									},
 									"name": "Task task",
 									"type": ""

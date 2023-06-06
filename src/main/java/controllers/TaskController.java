@@ -40,14 +40,12 @@ public class TaskController {
         if (confirmation.equalsIgnoreCase("Y")) {
           crudService.deleteTask(task);
         }
-
       } else {
         View.display("The task id doesn't exist.");
       }
     } catch (NumberFormatException e) {
       View.display("That is not a number.");
     }
-
   }
 
   public void searchFuturePendingTasks() {
