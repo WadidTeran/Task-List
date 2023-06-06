@@ -20885,7 +20885,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayPendingTasksForToday(ArrayList«Task» tasks)",
+											"text": "+displayPendingTasksForToday(List«Task» tasks)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20903,7 +20903,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayFuturePendingTasks(ArrayList«Task» tasks)",
+											"text": "+displayFuturePendingTasks(List«Task» tasks)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20921,7 +20921,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayPastPendingTasks(ArrayList«Task» tasks)",
+											"text": "+displayPastPendingTasks(List«Task» tasks)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20939,7 +20939,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayAllPendingTasks(ArrayList«Task» tasks)",
+											"text": "+displayAllPendingTasks(List«Task» tasks)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20957,7 +20957,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayCompletedTasks(ArrayList«Task» tasks)",
+											"text": "+displayCompletedTasks(List«Task» tasks)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20975,7 +20975,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayTasksByCategory(ArrayList«Task» tasks, Category category)",
+											"text": "+displayTasksByCategory(List«Task» tasks, Category category)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20993,7 +20993,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayTasksByRelevance(ArrayList«Task» tasks, Relevance relevance)",
+											"text": "+displayTasksByRelevance(List«Task» tasks, Relevance relevance)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -21011,7 +21011,7 @@
 											"width": 421.60498046875,
 											"height": 13,
 											"underline": true,
-											"text": "+displayCategories(ArrayList«Category» categories)",
+											"text": "+displayCategories(List«Category» categories)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -21434,8 +21434,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgyBgXl+bIew="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								}
 							]
 						},
@@ -21454,8 +21453,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgx5ZjF+Dta4="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								}
 							]
 						},
@@ -21474,8 +21472,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjjkYDAADYxQ="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								}
 							]
 						},
@@ -21494,8 +21491,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjjmFyQCLpWo="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								}
 							]
 						},
@@ -21514,8 +21510,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhNDiSAKlq5Q="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								}
 							]
 						},
@@ -21534,8 +21529,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhMg1KgKBtvo="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								},
 								{
 									"_type": "UMLParameter",
@@ -21543,8 +21537,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhMg1KgKBtvo="
 									},
-									"name": "Category category",
-									"type": ""
+									"name": "Category category"
 								}
 							]
 						},
@@ -21563,8 +21556,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgyCzQF+lvV4="
 									},
-									"name": "ArrayList«Task» tasks",
-									"type": ""
+									"name": "List«Task» tasks"
 								},
 								{
 									"_type": "UMLParameter",
@@ -21572,8 +21564,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgyCzQF+lvV4="
 									},
-									"name": "Relevance relevance",
-									"type": ""
+									"name": "Relevance relevance"
 								}
 							]
 						},
@@ -21592,8 +21583,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhNI8zQK5QY4="
 									},
-									"name": "ArrayList«Category» categories",
-									"type": ""
+									"name": "List«Category» categories"
 								}
 							]
 						}
