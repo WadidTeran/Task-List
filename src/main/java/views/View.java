@@ -15,4 +15,6 @@ public class View {
   public static void displayTasksByRelevance(List<Task> relevanceTasks, Relevance relevance) {}
 
   public static void displayCategories(List<Category> categories) {}
+
+  public static void displayCompletedTasks(List<Task> completedTasks) {}
 }

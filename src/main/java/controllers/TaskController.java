@@ -65,7 +65,15 @@ public class TaskController {
     }
   }
 
-  public void searchCompletedTasks() {}
+  public void searchCompletedTasks() {
+    View.displayCompletedTasks(searchService.getCompletedTasks());
+  }
 
-  public void deleteCompletedTasks() {}
+  public void deleteCompletedTasks() {
+    View.display("Are you sure you want to delete all completed tasks? (Y/N): ");
+    String confirmation = scanner.nextLine();
+    if (confirmation.equalsIgnoreCase("Y")){
+      crudService.deleteCompletedTasks();
+    }
+  }
 }
