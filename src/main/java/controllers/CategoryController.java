@@ -15,20 +15,16 @@ public class CategoryController {
 
     View.display("Insert the new category's name: ");
     String newCategory = scanner.nextLine();
-    if (newCategory.length() <= 50) {
-      if (crudService.findAllCategories().size() < 10) {
-        if (crudService.checkCategoryName(newCategory)) {
-          crudService.saveCategory(new Category(newCategory, UserLogin.getUser()));
-          View.display("Category created succesfully");
-        } else {
-          View.display("This category already exists!");
-        }
-      } else {
-        View.display("You cannot create more than 10 categories!");
-      }
 
-    } else {
+    if (newCategory.length() > 50) {
       View.display("Category names cannot be longer than 50 characters!");
+    } else if (crudService.findAllCategories().size() >= 10) {
+      View.display("You cannot create more than 10 categories!");
+    } else if (crudService.checkCategoryName(newCategory)) {
+      View.display("This category already exists!");
+    } else {
+      crudService.saveCategory(new Category(newCategory, UserLogin.getUser()));
+      View.display("Category created succesfully");
     }
   }
 

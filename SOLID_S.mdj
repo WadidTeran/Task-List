@@ -6709,64 +6709,6 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAGIet4iMOof0vY="
 							}
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIeuB+Z/xYLn4=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 1144,
-							"top": 232,
-							"width": 100,
-							"height": 38,
-							"text": "Máximo 50 carácteres"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIeuB+e/yjcC0=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIeuB+Z/xYLn4="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIbx+1tKsCQRQ="
-							},
-							"lineStyle": 1,
-							"points": "1127:263;1143:260"
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIfPM4lhMLOkY=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 1144,
-							"top": 184,
-							"width": 100,
-							"height": 51,
-							"text": "Máximo 10 categorías por usuario"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIfPM4pBNWEwM=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIfPM4lhMLOkY="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIbx+1tKsCQRQ="
-							},
-							"lineStyle": 1,
-							"points": "1127:245;1145:235"
 						}
 					]
 				},
@@ -9715,7 +9657,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjVxEYv+5bXY="
 									},
-									"name": "String email"
+									"name": "String email",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -9742,7 +9685,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjV2Z/f/Godo="
 									},
-									"name": "String email"
+									"name": "String email",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -19682,35 +19626,6 @@
 							},
 							"lineStyle": 1,
 							"points": "415:571;116:798"
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIijf0m/c7jN4=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"left": 920,
-							"top": 664,
-							"width": 305,
-							"height": 65,
-							"text": "TODA OPERACION SOBRE LA BASE DE DATOS SOLO PUEDE RETORNAR RESULTADOS QUE ESTEN ASOCIADOS AL ID DEL USER LOGGEADO"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIijf0p/c+MBI=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIijf0m/c7jN4="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIgqj7htMVxeQ="
-							},
-							"lineStyle": 1,
-							"points": "888:693;919:693"
 						}
 					]
 				},
@@ -20287,7 +20202,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String email"
+									"name": "String email",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20295,7 +20211,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String password"
+									"name": "String password",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20581,7 +20498,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgrumN9X/vqw="
 									},
-									"name": "Long id"
+									"name": "Long id",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20608,7 +20526,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgruiNdX0Lfs="
 									},
-									"name": "Long id"
+									"name": "Long id",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20635,7 +20554,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgruqjdYKaOk="
 									},
-									"name": "Long id"
+									"name": "Long id",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
