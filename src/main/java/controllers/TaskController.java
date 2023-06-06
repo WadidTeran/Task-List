@@ -28,35 +28,34 @@ public class TaskController {
   public void deleteTask() {}
 
   public void searchFuturePendingTasks() {
-    if(searchService.getFuturePendingTasks().size() != 0){
+    if (searchService.getFuturePendingTasks().size() != 0) {
       View.displayFuturePendingTasks(searchService.getFuturePendingTasks());
     } else {
-      View.display("You don't have future pending tasks");
+      View.display("You don't have future pending tasks.");
     }
   }
 
   public void searchPendingTasksForToday() {
-    if(searchService.getPendingTasksForToday().size() != 0){
+    if (searchService.getPendingTasksForToday().size() != 0) {
       View.displayPendingTasksForToday(searchService.getPendingTasksForToday());
     } else {
-      View.display("You don't have task for today");
+      View.display("You don't have tasks for today.");
     }
-
   }
 
   public void searchPastPendingTasks() {
-    if(searchService.getPastPendingTasks().size() != 0){
+    if (searchService.getPastPendingTasks().size() != 0) {
       View.displayPastPendingTasks(searchService.getPastPendingTasks());
     } else {
-      View.display("You don't have past pending tasks ");
+      View.display("You don't have previous pending tasks.");
     }
   }
 
   public void searchAllPendingTasks() {
-    if(searchService.getAllPendingTasks().size() != 0){
+    if (searchService.getAllPendingTasks().size() != 0) {
       View.displayAllPendingTasks(searchService.getPendingTasksForToday());
     } else {
-      View.display("You don't have pending tasks");
+      View.display("You don't have pending tasks.");
     }
   }
 
@@ -75,7 +74,11 @@ public class TaskController {
         return;
       }
     }
-    View.displayTasksByRelevance(searchService.getRelevanceTasks(relevance), relevance);
+    if (searchService.getRelevanceTasks(relevance).size() != 0) {
+      View.displayTasksByRelevance(searchService.getRelevanceTasks(relevance), relevance);
+    } else {
+      View.display("You don't have task with this relevance.");
+    }
   }
 
   public void searchTasksByCategory() {
@@ -84,21 +87,34 @@ public class TaskController {
 
     if (crudService.checkCategoryName(category)) {
       Category categoryObj = crudService.getCategoryByName(category);
-      View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
+
+      if (searchService.getCategoryTasks(categoryObj).size() != 0) {
+        View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
+      } else {
+        View.display("You don't have task in this category.");
+      }
     } else {
       View.display("The category " + category + " doesn't exist.");
     }
   }
 
   public void searchCompletedTasks() {
-    View.displayCompletedTasks(searchService.getCompletedTasks());
+    if (searchService.getCompletedTasks().size() != 0) {
+      View.displayCompletedTasks(searchService.getCompletedTasks());
+    } else {
+      View.display("You don't have completed tasks.");
+    }
   }
 
   public void deleteCompletedTasks() {
-    View.display("Are you sure you want to delete all completed tasks? (Y/N): ");
-    String confirmation = scanner.nextLine();
-    if (confirmation.equalsIgnoreCase("Y")){
-      crudService.deleteCompletedTasks();
+    if (searchService.getCompletedTasks().size() != 0) {
+      View.display("Are you sure you want to delete all completed tasks? (Y/N): ");
+      String confirmation = scanner.nextLine();
+      if (confirmation.equalsIgnoreCase("Y")) {
+        crudService.deleteCompletedTasks();
+      }
+    } else {
+      View.display("You don't have completed tasks.");
     }
   }
 }
