@@ -22,7 +22,7 @@ public class UserLogin {
       return false;
     }
 
-    View.display("This User doesn't exist.");
+    View.display("This user doesn't exist.");
     return false;
   }
 
