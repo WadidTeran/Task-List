@@ -55,20 +55,6 @@ public class CategoryController {
     }
   }
 
-  public void searchCategoryTasks() {
-    FilteredTaskSearchService searchService = new FilteredTaskSearchService();
-
-    View.display("Insert the name of the category to search: ");
-    String category = scanner.nextLine();
-
-    if (crudService.checkCategoryName(category)) {
-      Category categoryObj = crudService.getCategoryByName(category);
-      View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
-    } else {
-      View.display("The category " + category + " doesn't exist.");
-    }
-  }
-
   public void deleteCategory() {
     View.display("Insert the name of the category to delete: ");
     String category = scanner.nextLine();
