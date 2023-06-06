@@ -37,26 +37,6 @@ public class TaskBuilder {
     return this;
   }
 
-  public TaskBuilder setDescription(String description) {
-    this.task.setDescription(description);
-    return this;
-  }
-
-  public TaskBuilder setRelevance(Relevance relevance) {
-    this.task.setRelevance(relevance);
-    return this;
-  }
-
-  public TaskBuilder setCategory(Category category) {
-    this.task.setCategory(category);
-    return this;
-  }
-
-  public TaskBuilder setRepeatingConfig(RepeatTaskConfig repeatTaskConfig) {
-    this.task.setRepeatingConfig(repeatTaskConfig);
-    return this;
-  }
-
   public TaskBuilder setCompleted(Boolean completed) {
     this.task.setCompleted(completed);
     return this;
@@ -73,7 +53,27 @@ public class TaskBuilder {
   }
 
   public TaskBuilder setSpecifiedTime(LocalTime specifiedTime) {
-    this.task.setSpecifiedTime(specifiedTime);
+    if (this.task.getDueDate() != null) this.task.setSpecifiedTime(specifiedTime);
+    return this;
+  }
+
+  public TaskBuilder setDescription(String description) {
+    this.task.setDescription(description);
+    return this;
+  }
+
+  public TaskBuilder setRelevance(Relevance relevance) {
+    this.task.setRelevance(relevance);
+    return this;
+  }
+
+  public TaskBuilder setCategory(Category category) {
+    this.task.setCategory(category);
+    return this;
+  }
+
+  public TaskBuilder setRepeatingConfig(RepeatTaskConfig repeatTaskConfig) {
+    if (this.task.getDueDate() != null) this.task.setRepeatingConfig(repeatTaskConfig);
     return this;
   }
 

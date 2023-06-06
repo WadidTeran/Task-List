@@ -19658,35 +19658,6 @@
 						},
 						{
 							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIieW7MfcVAVY=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"left": 696,
-							"top": 952,
-							"width": 249,
-							"height": 64,
-							"text": "Si no se agrega DueDate entonces no se puede especificar ninguno de los siguientes atributos: Repeticion, specifiedTime"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIieW7RvcYEhM=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIieW7MfcVAVY="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIf7I0SLbTxps="
-							},
-							"lineStyle": 1,
-							"points": "673:992;695:990"
-						},
-						{
-							"_type": "UMLNoteView",
 							"_id": "AAAAAAGIifa0Pfcg5s4=",
 							"_parent": {
 								"$ref": "AAAAAAGIfwxxmk4buiY="
