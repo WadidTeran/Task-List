@@ -23,7 +23,29 @@ public class TaskController {
 
   public void setAsCompletedTask() {}
 
-  public void setAsPendingTask() {}
+  public void setAsPendingTask() {
+    searchCompletedTasks();
+    View.display("Insert the task's id you want to set as pending: ");
+    String taskToSet = scanner.nextLine();
+
+    try {
+      Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
+      if (optionalTask.isPresent()) {
+        Task task = optionalTask.get();
+        View.display("Are you sure you want to set as pending \"" + task.getName() + "\"? (Y/N): ");
+        String confirmation = scanner.nextLine();
+        if (confirmation.equalsIgnoreCase("Y")) {
+          task.setCompleted(false);
+          task.setCompletedDate(null);
+          crudService.saveTask(task);
+        }
+      } else {
+        View.display("The task id doesn't exist.");
+      }
+    } catch (NumberFormatException e) {
+      View.display("That is not a number.");
+    }
+  }
 
   public void modifyTask() {}
 
@@ -31,6 +53,7 @@ public class TaskController {
     searchAllPendingTasks();
     View.display("Insert the task's id you want to delete: ");
     String taskToDelete = scanner.nextLine();
+
     try {
       Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToDelete));
       if (optionalTask.isPresent()) {
