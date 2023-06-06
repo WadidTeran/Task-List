@@ -5,3 +5,17 @@ T
 $src/main/java/models/RepeatType.java,2\8\28287a9f283b25c58ef5da4d41051566725f2c3b
 ^
 .src/main/java/models/WeeklyRepeatOnConfig.java,0\7\07fd03c58a84ac55618dff7f1872559b26b8be84
+`
+0src/main/java/models/IRepeatOnConfigVisitor.java,d\9\d9af7227c7c3f6f0307313151c577afb861f9229
+_
+/src/main/java/models/NextDueDateCalculator.java,4\0\405d01f9fabefc2e0a9bff37451d029231ba600f
+Q
+!src/main/java/utils/DataBase.java,8\6\866341523ea30d2eb841d6a7b4559ceb0ce97dda
+^
+.src/main/java/models/YearlyRepeatOnConfig.java,c\6\c61813768572e0e17c992551f8359eb5514c1847
+f
+6src/main/java/repositories/DataBaseRepositoryImpl.java,f\c\fca3d0b5edda9f31255cd3bd5ae8dfb4e22abf2a
+b
+2src/main/java/repositories/CategoryRepository.java,6\3\63e23392676237203e8af3b9277d1a44c0356c24
+^
+.src/main/java/repositories/TaskRepository.java,b\0\b072cac8ddedfa63ab02dd4b22927bd5ad60c768
