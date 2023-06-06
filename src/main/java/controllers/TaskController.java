@@ -1,8 +1,10 @@
 package controllers;
 
+import java.util.Optional;
 import java.util.Scanner;
 import models.Category;
 import models.Relevance;
+import models.Task;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 import views.View;
@@ -25,7 +27,28 @@ public class TaskController {
 
   public void modifyTask() {}
 
-  public void deleteTask() {}
+  public void deleteTask() {
+    searchAllPendingTasks();
+    View.display("Insert the task id you want to delete: ");
+    String taskToDelete = scanner.nextLine();
+    try {
+      Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToDelete));
+      if (optionalTask.isPresent()) {
+        Task task = optionalTask.get();
+        View.display("Are you sure you want to delete \"" + task.getName() + "\"? (Y/N): ");
+        String confirmation = scanner.nextLine();
+        if (confirmation.equalsIgnoreCase("Y")) {
+          crudService.deleteTask(task);
+        }
+
+      } else {
+        View.display("The task id doesn't exist.");
+      }
+    } catch (NumberFormatException e) {
+      View.display("That is not a number.");
+    }
+
+  }
 
   public void searchFuturePendingTasks() {
     if (searchService.getFuturePendingTasks().size() != 0) {
@@ -53,7 +76,7 @@ public class TaskController {
 
   public void searchAllPendingTasks() {
     if (searchService.getAllPendingTasks().size() != 0) {
-      View.displayAllPendingTasks(searchService.getPendingTasksForToday());
+      View.displayAllPendingTasks(searchService.getAllPendingTasks());
     } else {
       View.display("You don't have pending tasks.");
     }
