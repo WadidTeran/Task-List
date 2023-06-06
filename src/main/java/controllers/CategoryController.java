@@ -2,7 +2,9 @@ package controllers;
 
 import java.util.Scanner;
 import models.Category;
+import repositories.TaskRepository;
 import services.CRUDServiceImpl;
+import services.FilteredTaskSearchService;
 import utils.UserLogin;
 import views.View;
 
@@ -30,7 +32,19 @@ public class CategoryController {
 
   public void renameCategory() {}
 
-  public void searchCategoryTasks() {}
+  public void searchCategoryTasks() {
+    CRUDServiceImpl crudService = new CRUDServiceImpl();
+    FilteredTaskSearchService searchService = new FilteredTaskSearchService(new TaskRepository());
+
+    View.display("Insert category name: ");
+    String category = scanner.nextLine();
+    if (crudService.checkCategoryName(category)) {
+      Category categoryObj = crudService.getCategoryByName(category);
+      View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
+    } else {
+      View.display("The category " + category + " doesn't exist.");
+    }
+  }
 
   public void deleteCategory() {}
 

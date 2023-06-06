@@ -9737,6 +9737,63 @@
 									"direction": "return"
 								}
 							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGIjpkeV3LuKyk=",
+							"_parent": {
+								"$ref": "AAAAAAGIfweDKqLT6h0="
+							},
+							"name": "checkCategoryName",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIjplrS3L16iM=",
+									"_parent": {
+										"$ref": "AAAAAAGIjpkeV3LuKyk="
+									},
+									"name": "String category"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIjpmUTXL4jRw=",
+									"_parent": {
+										"$ref": "AAAAAAGIjpkeV3LuKyk="
+									},
+									"type": "boolean",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGIjpmtc3L6ZwY=",
+							"_parent": {
+								"$ref": "AAAAAAGIfweDKqLT6h0="
+							},
+							"name": "getCategoryByName",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIjpnxNnMCAAM=",
+									"_parent": {
+										"$ref": "AAAAAAGIjpmtc3L6ZwY="
+									},
+									"name": "String categoryName",
+									"type": ""
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIjpnxNnMDaOc=",
+									"_parent": {
+										"$ref": "AAAAAAGIjpmtc3L6ZwY="
+									},
+									"type": {
+										"$ref": "AAAAAAGIbx+1tKsASlc="
+									},
+									"direction": "return"
+								}
+							]
 						}
 					]
 				}
@@ -15807,13 +15864,47 @@
 											"height": 13,
 											"text": "+getUserByEmail(String email): User",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGIjpkeZnLxE8U=",
+											"_parent": {
+												"$ref": "AAAAAAGIfw4nioobYN0="
+											},
+											"model": {
+												"$ref": "AAAAAAGIjpkeV3LuKyk="
+											},
+											"font": "Arial;13;0",
+											"left": 1053,
+											"top": 216,
+											"width": 368.14501953125,
+											"height": 13,
+											"text": "+checkCategoryName(String category): boolean",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGIjpmtf3L9YM0=",
+											"_parent": {
+												"$ref": "AAAAAAGIfw4nioobYN0="
+											},
+											"model": {
+												"$ref": "AAAAAAGIjpmtc3L6ZwY="
+											},
+											"font": "Arial;13;0",
+											"left": 1053,
+											"top": 231,
+											"width": 368.14501953125,
+											"height": 13,
+											"text": "+getCategoryByName(String categoryName): Category",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1048,
 									"top": 166,
 									"width": 378.14501953125,
-									"height": 53
+									"height": 83
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -15853,7 +15944,7 @@
 							"left": 1048,
 							"top": 88,
 							"width": 378.14501953125,
-							"height": 137,
+							"height": 161,
 							"nameCompartment": {
 								"$ref": "AAAAAAGIfw4niooVa6g="
 							},
@@ -18405,7 +18496,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1248,
-									"top": 270,
+									"top": 282,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -18426,7 +18517,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 1263,
-									"top": 270,
+									"top": 282,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -18447,7 +18538,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1219,
-									"top": 269,
+									"top": 281,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -18465,7 +18556,7 @@
 								"$ref": "AAAAAAGIfw4niooUqNM="
 							},
 							"lineStyle": 1,
-							"points": "1235:225;1233.8333333333333:328",
+							"points": "1235:249;1233.8333333333333:328",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIgrxFvtewK2U="

@@ -92,8 +92,7 @@ public class CRUDServiceImpl implements ICRUDService {
   }
 
   public boolean checkUserEmail(String email) {
-    return findAllUsers().stream()
-            .anyMatch(u -> u.getEmail().equals(email));
+    return findAllUsers().stream().anyMatch(u -> u.getEmail().equals(email));
   }
 
   public boolean validateUserPassword(String email, String password) {
@@ -109,7 +108,13 @@ public class CRUDServiceImpl implements ICRUDService {
 
   public boolean checkCategoryName(String category) {
 
+    return findAllCategories().stream().anyMatch(c -> c.getName().equals(category));
+  }
+
+  public Category getCategoryByName(String categoryName) {
     return findAllCategories().stream()
-            .anyMatch(c -> c.getName().equals(category));
+        .filter(c -> c.getName().equals(categoryName))
+        .findFirst()
+        .orElseThrow();
   }
 }
