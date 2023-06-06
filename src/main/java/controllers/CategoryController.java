@@ -28,7 +28,7 @@ public class CategoryController {
       View.display("This category already exists!");
     } else {
       crudService.saveCategory(new Category(newCategory, UserLogin.getUser()));
-      View.display("Category created succesfully");
+      View.display("Category created succesfully.");
     }
   }
 
