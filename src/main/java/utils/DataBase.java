@@ -74,6 +74,9 @@ public class DataBase {
 
   public void deleteUser(User user) {
     this.users.remove(user);
+
+    tasks.removeIf(task -> task.getUser().equals(user));
+    categories.removeIf(category -> category.getUser().equals(user));
   }
 
   public void deleteTask(Task task) {
@@ -82,5 +85,10 @@ public class DataBase {
 
   public void deleteCategory(Category category) {
     this.categories.remove(category);
+    tasks.forEach(task -> {
+      if (task.getCategory().equals(category)) {
+        task.setCategory(null);
+      }
+    });
   }
 }
