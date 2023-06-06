@@ -21,8 +21,6 @@ public class TaskBuilder {
     TaskBuilder taskBuilder = new TaskBuilder(task.getName());
 
     return taskBuilder
-        .setUser(task.getUser())
-        .setName(task.getName())
         .setDescription(task.getDescription())
         .setRelevance(task.getRelevance())
         .setCategory(task.getCategory())

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Scanner;
 import models.Category;
@@ -7,6 +8,7 @@ import models.Relevance;
 import models.Task;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
+import utils.RepetitiveTaskManager;
 import views.View;
 
 public class TaskController {
@@ -21,7 +23,32 @@ public class TaskController {
 
   public void createTask() {}
 
-  public void setAsCompletedTask() {}
+  public void setAsCompletedTask() {
+    searchAllPendingTasks();
+    View.display("Insert the task's id you want to set as completed: ");
+    String taskToSet = scanner.nextLine();
+
+    try {
+      Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
+      if (optionalTask.isPresent()) {
+        Task task = optionalTask.get();
+        View.display("Are you sure you want to set as completed \"" + task.getName() + "\"? (Y/N): ");
+        String confirmation = scanner.nextLine();
+        if (confirmation.equalsIgnoreCase("Y")) {
+          task.setCompleted(true);
+          task.setCompletedDate(LocalDate.now());
+          crudService.saveTask(task);
+          if (task.getRepeatingConfig() != null) {
+            RepetitiveTaskManager.createNewRepeatedTask(task, crudService);
+          }
+        }
+      } else {
+        View.display("The task id doesn't exist.");
+      }
+    } catch (NumberFormatException e) {
+      View.display("That is not a number.");
+    }
+  }
 
   public void setAsPendingTask() {
     searchCompletedTasks();
