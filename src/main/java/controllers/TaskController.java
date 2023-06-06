@@ -26,13 +26,38 @@ public class TaskController {
 
   public void deleteTask() {}
 
-  public void searchFuturePendingTasks() {}
+  public void searchFuturePendingTasks() {
+    if(searchService.getFuturePendingTasks().size() != 0){
+      View.displayFuturePendingTasks(searchService.getFuturePendingTasks());
+    } else {
+      View.display("You don't have future pending tasks");
+    }
+  }
 
-  public void searchPendingTasksForToday() {}
+  public void searchPendingTasksForToday() {
+    if(searchService.getPendingTasksForToday().size() != 0){
+      View.displayPendingTasksForToday(searchService.getPendingTasksForToday());
+    } else {
+      View.display("You don't have task for today");
+    }
 
-  public void searchPastPendingTasks() {}
+  }
 
-  public void searchAllPendingTasks() {}
+  public void searchPastPendingTasks() {
+    if(searchService.getPastPendingTasks().size() != 0){
+      View.displayPastPendingTasks(searchService.getPastPendingTasks());
+    } else {
+      View.display("You don't have past pending tasks ");
+    }
+  }
+
+  public void searchAllPendingTasks() {
+    if(searchService.getAllPendingTasks().size() != 0){
+      View.displayAllPendingTasks(searchService.getPendingTasksForToday());
+    } else {
+      View.display("You don't have pending tasks");
+    }
+  }
 
   public void searchTasksByRelevance() {}
 
