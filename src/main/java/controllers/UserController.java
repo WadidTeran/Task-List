@@ -45,9 +45,9 @@ public class UserController {
     String password = scanner.nextLine();
 
     if (UserLogin.getUser().getPassword().equals(password)) {
+      signOut();
       crudService.deleteUser(UserLogin.getUser());
       View.display("You have deleted your account succesfully...");
-      signOut();
     } else {
       View.display("Authentication failed!");
     }

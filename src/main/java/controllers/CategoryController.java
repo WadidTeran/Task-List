@@ -34,7 +34,7 @@ public class CategoryController {
 
   public void renameCategory() {
 
-    View.display("Insert category name to change: ");
+    View.display("Insert the name of the category to change: ");
     String category = scanner.nextLine();
 
     if (!crudService.checkCategoryName(category)) {
@@ -58,7 +58,7 @@ public class CategoryController {
   public void searchCategoryTasks() {
     FilteredTaskSearchService searchService = new FilteredTaskSearchService();
 
-    View.display("Insert category name to search: ");
+    View.display("Insert the name of the category to search: ");
     String category = scanner.nextLine();
 
     if (crudService.checkCategoryName(category)) {
@@ -69,7 +69,17 @@ public class CategoryController {
     }
   }
 
-  public void deleteCategory() {}
+  public void deleteCategory() {
+    View.display("Insert the name of the category to delete: ");
+    String category = scanner.nextLine();
+
+    if (!crudService.checkCategoryName(category)) {
+      View.display("The category " + category + " doesn't exist.");
+    } else {
+      Category categoryToDelete = crudService.getCategoryByName(category);
+      crudService.deleteCategory(categoryToDelete);
+    }
+  }
 
   public void searchCategories() {
     View.displayCategories(crudService.findAllCategories());
