@@ -8,6 +8,11 @@ import views.View;
 
 public class UserController {
   private final Scanner scanner = new Scanner(System.in);
+  private final CRUDServiceImpl crudService;
+
+  public UserController(CRUDServiceImpl crudService) {
+    this.crudService = crudService;
+  }
 
   public void signIn() {
     View.display("Email: ");
@@ -26,8 +31,6 @@ public class UserController {
     View.display("Password: ");
     String password = scanner.nextLine();
 
-    CRUDServiceImpl crudService = new CRUDServiceImpl();
-
     if (!crudService.checkUserEmail(email)) {
       User user = new User(email, password);
       crudService.saveUser(user);
@@ -40,8 +43,6 @@ public class UserController {
   public void deleteUser() {
     View.display("If you want to delete your account, insert your password: ");
     String password = scanner.nextLine();
-
-    CRUDServiceImpl crudService = new CRUDServiceImpl();
 
     if (UserLogin.getUser().getPassword().equals(password)) {
       crudService.deleteUser(UserLogin.getUser());

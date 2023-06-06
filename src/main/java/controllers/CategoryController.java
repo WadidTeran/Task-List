@@ -11,7 +11,11 @@ import views.View;
 public class CategoryController {
 
   private final Scanner scanner = new Scanner(System.in);
-  private final CRUDServiceImpl crudService = new CRUDServiceImpl();
+  private final CRUDServiceImpl crudService;
+
+  public CategoryController(CRUDServiceImpl crudService) {
+    this.crudService = crudService;
+  }
 
   public void createCategory() {
     View.display("Insert the new category's name: ");
@@ -36,6 +40,7 @@ public class CategoryController {
 
     View.display("Insert category name: ");
     String category = scanner.nextLine();
+
     if (crudService.checkCategoryName(category)) {
       Category categoryObj = crudService.getCategoryByName(category);
       View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
@@ -46,6 +51,5 @@ public class CategoryController {
 
   public void deleteCategory() {}
 
-  public void searchCategories() {
-  }
+  public void searchCategories() {}
 }
