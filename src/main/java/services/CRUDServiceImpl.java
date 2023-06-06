@@ -92,7 +92,8 @@ public class CRUDServiceImpl implements ICRUDService {
   }
 
   public boolean checkUserEmail(String email) {
-    return getUserByEmail(email) != null;
+    return findAllUsers().stream()
+            .anyMatch(u -> u.getEmail().equals(email));
   }
 
   public boolean validateUserPassword(String email, String password) {
@@ -104,5 +105,11 @@ public class CRUDServiceImpl implements ICRUDService {
         .filter(u -> u.getEmail().equals(email))
         .findFirst()
         .orElseThrow();
+  }
+
+  public boolean checkCategoryName(String category) {
+
+    return findAllCategories().stream()
+            .anyMatch(c -> c.getName().equals(category));
   }
 }
