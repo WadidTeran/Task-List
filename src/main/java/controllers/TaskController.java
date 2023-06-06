@@ -9,9 +9,11 @@ import views.View;
 public class TaskController {
   private final Scanner scanner = new Scanner(System.in);
   private final CRUDServiceImpl crudService;
+  private final FilteredTaskSearchService searchService;
 
-  public TaskController(CRUDServiceImpl crudService) {
+  public TaskController(CRUDServiceImpl crudService, FilteredTaskSearchService searchService) {
     this.crudService = crudService;
+    this.searchService = searchService;
   }
 
   public void createTask() {}
@@ -35,8 +37,6 @@ public class TaskController {
   public void searchTasksByRelevance() {}
 
   public void searchTasksByCategory() {
-    FilteredTaskSearchService searchService = new FilteredTaskSearchService();
-
     View.display("Insert the name of the category to search: ");
     String category = scanner.nextLine();
 
