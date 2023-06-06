@@ -1,6 +1,5 @@
 package views;
 
-import java.util.ArrayList;
 import java.util.List;
 import models.Category;
 import models.Relevance;
@@ -19,15 +18,11 @@ public class View {
 
   public static void displayCompletedTasks(List<Task> tasks) {}
 
-    public static void displayAllPendingTasks(List<Task> tasks) {
-    }
+  public static void displayAllPendingTasks(List<Task> tasks) {}
 
-  public static void displayPastPendingTasks(List<Task> tasks) {
-  }
+  public static void displayPastPendingTasks(List<Task> tasks) {}
 
-  public static void displayPendingTasksForToday(List<Task> tasks) {
-  }
+  public static void displayPendingTasksForToday(List<Task> tasks) {}
 
-  public static void displayFuturePendingTasks(List<Task> tasks) {
-  }
+  public static void displayFuturePendingTasks(List<Task> tasks) {}
 }
