@@ -83,7 +83,7 @@ public class CRUDServiceImpl implements ICRUDService {
 
   @Override
   public void deleteCompletedTasks() {
-    ICompletedTasksService completedTasksService = new FilteredTaskSearchService(taskRepository);
+    ICompletedTasksService completedTasksService = new FilteredTaskSearchService();
     ArrayList<Task> completedTasks = completedTasksService.getCompletedTasks();
 
     for (Task completedTask : completedTasks) {

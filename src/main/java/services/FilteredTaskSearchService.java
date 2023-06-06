@@ -3,20 +3,23 @@ package services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import models.Category;
 import models.Relevance;
 import models.Task;
 import repositories.IRepository;
+import repositories.TaskRepository;
 
-@AllArgsConstructor
 public class FilteredTaskSearchService
     implements ICategoryTasksService,
         ICompletedTasksService,
         IPendingTasksService,
         IRelevanceTasksService {
 
-  private IRepository<Task> taskRepository;
+  private final IRepository<Task> taskRepository;
+
+  public FilteredTaskSearchService() {
+    this.taskRepository = new TaskRepository();
+  }
 
   @Override
   public ArrayList<Task> getCategoryTasks(Category category) {

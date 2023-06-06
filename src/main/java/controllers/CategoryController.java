@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.Scanner;
 import models.Category;
-import repositories.TaskRepository;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 import utils.UserLogin;
@@ -38,22 +37,28 @@ public class CategoryController {
     View.display("Insert category name to change: ");
     String category = scanner.nextLine();
 
-    if (crudService.checkCategoryName(category)) {
-      View.display("Insert new category name: ");
+    if (!crudService.checkCategoryName(category)) {
+      View.display("The category " + category + " doesn't exist.");
+    } else {
+      View.display("Insert a new name for the category: ");
       String newCategory = scanner.nextLine();
 
-      Category oldCategory = crudService.getCategoryByName(category);
-      oldCategory.setName(newCategory);
-      crudService.saveCategory(oldCategory);
-    } else {
-      View.display("The category " + category + " doesn't exist.");
+      if (newCategory.length() > 50) {
+        View.display("Category names cannot be longer than 50 characters!");
+      } else if (crudService.checkCategoryName(newCategory)) {
+        View.display("This category name is already in use!");
+      } else {
+        Category oldCategory = crudService.getCategoryByName(category);
+        oldCategory.setName(newCategory);
+        crudService.saveCategory(oldCategory);
+      }
     }
   }
 
   public void searchCategoryTasks() {
-    FilteredTaskSearchService searchService = new FilteredTaskSearchService(new TaskRepository());
+    FilteredTaskSearchService searchService = new FilteredTaskSearchService();
 
-    View.display("Insert category name: ");
+    View.display("Insert category name to search: ");
     String category = scanner.nextLine();
 
     if (crudService.checkCategoryName(category)) {
@@ -66,5 +71,7 @@ public class CategoryController {
 
   public void deleteCategory() {}
 
-  public void searchCategories() {}
+  public void searchCategories() {
+    View.displayCategories(crudService.findAllCategories());
+  }
 }
