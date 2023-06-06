@@ -1,6 +1,7 @@
 package utils;
 
-import models.IRepeatOnConfigVisitor;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import models.NextDueDateCalculator;
 import models.Task;
 import models.TaskBuilder;
@@ -9,18 +10,25 @@ import services.CRUDServiceImpl;
 public class RepetitiveTaskManager {
   private RepetitiveTaskManager() {}
 
-  public static void createNewRepeatedTask(Task task, CRUDServiceImpl crudService) {
+  public static void manageRepetitiveTask(Task task, CRUDServiceImpl crudService) {
     TaskBuilder taskBuilder = TaskBuilder.taskBuilderWithClonedTask(task);
     NextDueDateCalculator nextDueDateCalculator = new NextDueDateCalculator(task);
 
     makeVisitorVisit(task, nextDueDateCalculator);
 
-    taskBuilder.setDueDate(nextDueDateCalculator.getNextDueDate());
-    taskBuilder.setSpecifiedTime(nextDueDateCalculator.getNextSpecifiedTime());
+    LocalDate nextDueDate = nextDueDateCalculator.getNextDueDate();
 
-    Task repeatedTask = taskBuilder.build();
+    if (task.getRepeatingConfig().getRepeatEndsAt() == null
+        || nextDueDate.isBefore(task.getRepeatingConfig().getRepeatEndsAt())) {
+      LocalTime nextSpecifiedTime = nextDueDateCalculator.getNextSpecifiedTime();
 
-    crudService.saveTask(repeatedTask);
+      taskBuilder.setDueDate(nextDueDate);
+      taskBuilder.setSpecifiedTime(nextSpecifiedTime);
+
+      Task repeatedTask = taskBuilder.build();
+
+      crudService.saveTask(repeatedTask);
+    }
   }
 
   private static void makeVisitorVisit(Task task, NextDueDateCalculator visitor) {

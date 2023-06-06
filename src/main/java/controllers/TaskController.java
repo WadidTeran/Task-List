@@ -32,14 +32,15 @@ public class TaskController {
       Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
       if (optionalTask.isPresent()) {
         Task task = optionalTask.get();
-        View.display("Are you sure you want to set as completed \"" + task.getName() + "\"? (Y/N): ");
+        View.display(
+            "Are you sure you want to set as completed \"" + task.getName() + "\"? (Y/N): ");
         String confirmation = scanner.nextLine();
         if (confirmation.equalsIgnoreCase("Y")) {
           task.setCompleted(true);
           task.setCompletedDate(LocalDate.now());
           crudService.saveTask(task);
           if (task.getRepeatingConfig() != null) {
-            RepetitiveTaskManager.createNewRepeatedTask(task, crudService);
+            RepetitiveTaskManager.manageRepetitiveTask(task, crudService);
           }
         }
       } else {
