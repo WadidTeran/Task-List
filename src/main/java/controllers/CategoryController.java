@@ -29,7 +29,22 @@ public class CategoryController {
     }
   }
 
-  public void renameCategory() {}
+  public void renameCategory() {
+
+    View.display("Insert category name to change: ");
+    String category = scanner.nextLine();
+
+    if (crudService.checkCategoryName(category)) {
+      View.display("Insert new category name: ");
+      String newCategory = scanner.nextLine();
+
+      Category oldCategory = crudService.getCategoryByName(category);
+      oldCategory.setName(newCategory);
+      crudService.saveCategory(oldCategory);
+    } else {
+      View.display("The category " + category + " doesn't exist.");
+    }
+  }
 
   public void searchCategoryTasks() {
     FilteredTaskSearchService searchService = new FilteredTaskSearchService(new TaskRepository());
@@ -46,6 +61,5 @@ public class CategoryController {
 
   public void deleteCategory() {}
 
-  public void searchCategories() {
-  }
+  public void searchCategories() {}
 }
