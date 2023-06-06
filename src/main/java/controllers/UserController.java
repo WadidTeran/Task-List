@@ -9,7 +9,15 @@ import views.View;
 public class UserController {
   private final Scanner scanner = new Scanner(System.in);
 
-  public void signIn() {}
+  public void signIn() {
+    View.display("Email: ");
+    String email = scanner.nextLine();
+
+    View.display("Password: ");
+    String password = scanner.nextLine();
+
+    if (UserLogin.logInUser(email, password)) View.display("Welcome!");
+  }
 
   public void signUp() {
     View.display("Email: ");
