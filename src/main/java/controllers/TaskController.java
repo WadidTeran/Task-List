@@ -29,7 +29,7 @@ public class TaskController {
 
   public void deleteTask() {
     searchAllPendingTasks();
-    View.display("Insert the task id you want to delete: ");
+    View.display("Insert the task's id you want to delete: ");
     String taskToDelete = scanner.nextLine();
     try {
       Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToDelete));

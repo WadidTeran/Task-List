@@ -1,9 +1,8 @@
 package models;
 
-import utils.UserLogin;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+import utils.UserLogin;
 
 public class TaskBuilder {
   private Task task;
@@ -18,8 +17,7 @@ public class TaskBuilder {
     this.task = task;
   }
 
-  public static TaskBuilder taskBuilderWithClonedTask(
-      Task task) {
+  public static TaskBuilder taskBuilderWithClonedTask(Task task) {
     TaskBuilder taskBuilder = new TaskBuilder(task.getName());
 
     return taskBuilder
@@ -60,20 +58,23 @@ public class TaskBuilder {
     this.task.setRepeatingConfig(repeatTaskConfig);
     return this;
   }
+
   public TaskBuilder setCompleted(Boolean completed) {
     this.task.setCompleted(completed);
     return this;
   }
+
   public TaskBuilder setCompletedDate(LocalDate completedDate) {
     this.task.setCompletedDate(completedDate);
     return this;
   }
+
   public TaskBuilder setDueDate(LocalDate dueDate) {
     this.task.setDueDate(dueDate);
     return this;
   }
 
-  public TaskBuilder setSpecifiedTime(LocalTime specifiedTime){
+  public TaskBuilder setSpecifiedTime(LocalTime specifiedTime) {
     this.task.setSpecifiedTime(specifiedTime);
     return this;
   }
