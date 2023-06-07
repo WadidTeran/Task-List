@@ -14,8 +14,6 @@ $src/main/java/models/RepeatType.java,2\8\28287a9f283b25c58ef5da4d41051566725f2
 ,src/main/java/models/HourRepeatOnConfig.java,9\7\97771e1706bf92245c9cd080bd69260138782cf8
 _
 /src/main/java/models/MonthlyRepeatOnConfig.java,0\c\0c862f45ca63e32b0f4bc7a1fdcc17ead494f688
-X
-(src/main/java/models/RepeatOnConfig.java,5\8\58b478ae4dfb50026158a9085e48caedab053004
 f
 6src/main/java/repositories/DataBaseRepositoryImpl.java,f\c\fca3d0b5edda9f31255cd3bd5ae8dfb4e22abf2a
 R

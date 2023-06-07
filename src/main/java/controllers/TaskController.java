@@ -1,11 +1,15 @@
 package controllers;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
+import javax.swing.*;
 import models.Category;
 import models.Relevance;
 import models.Task;
+import models.TaskBuilder;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 import utils.RepetitiveTaskManager;
@@ -21,7 +25,74 @@ public class TaskController {
     this.searchService = searchService;
   }
 
-  public void createTask() {}
+  public void createTask() {
+    View.display("Set basic information for the task");
+    Map<String, Integer> operaciones = new HashMap<>();
+    operaciones.put("1. Set name", 1);
+    operaciones.put("2. Set due date", 2);
+    operaciones.put("3. Set a specified time", 3);
+    operaciones.put("4. Set description", 4);
+    operaciones.put("5. Set relevance", 5);
+    operaciones.put("6. Set category", 6);
+    operaciones.put("7. Next", 7);
+    operaciones.put("8. Cancel", 8);
+
+    Object[] opArreglo = operaciones.keySet().toArray();
+
+    int opcionIndice = 0;
+
+    TaskBuilder taskBuilder = new TaskBuilder();
+
+    do {
+      String opcion =
+          (String)
+              JOptionPane.showInputDialog(
+                  null,
+                  "Choose an option",
+                  "Task create mode",
+                  JOptionPane.INFORMATION_MESSAGE,
+                  null,
+                  opArreglo,
+                  opArreglo[0]);
+
+      if (opcion == null) {
+        JOptionPane.showMessageDialog(null, "You have to choose an option!");
+      } else {
+        opcionIndice = operaciones.get(opcion);
+
+        switch (opcionIndice) {
+          case 1 -> {
+            View.display("Name: ");
+            String name = scanner.nextLine();
+
+            if (name.length() > 50) {
+              View.display("Task names can't be longer than 50 characters!");
+            } else if (name.isBlank() || name.isEmpty()){
+              View.display("Not a valid name!");
+            } else {
+              taskBuilder.setName(name);
+            }
+          }
+          case 2 -> {}
+          case 3 -> {}
+          case 4 -> {}
+          case 5 -> {}
+          case 6 -> {}
+          case 7 -> {
+            if (taskBuilder.build().getName() != null) {
+
+            } else {
+              View.display("You have to set a name for this task!");
+            }
+          }
+          case 8 -> opcionIndice =
+              (JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel?") == 0)
+                  ? 9
+                  : 0;
+        }
+      }
+    } while (opcionIndice != 9);
+  }
 
   public void setAsCompletedTask() {
     searchAllPendingTasks();

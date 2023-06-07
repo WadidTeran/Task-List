@@ -7,6 +7,11 @@ import utils.UserLogin;
 public class TaskBuilder {
   private Task task;
 
+  public TaskBuilder() {
+    this.task = new Task();
+    this.task.setUser(UserLogin.getUser());
+  }
+
   public TaskBuilder(String name) {
     this.task = new Task();
     this.task.setName(name);
