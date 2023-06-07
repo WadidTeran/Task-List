@@ -103,7 +103,24 @@ public class TaskController {
             }
           }
           case 4 -> {}
-          case 5 -> {}
+          case 5 -> {
+            View.display("Choose a level of relevance (N = NONE, L = LOW, M = MEDIUM , H = HIGH): ");
+
+            Relevance relevance;
+
+            switch (scanner.nextLine()) {
+              case "N" -> relevance = Relevance.NONE;
+              case "L" -> relevance = Relevance.LOW;
+              case "M" -> relevance = Relevance.MEDIUM;
+              case "H" -> relevance = Relevance.HIGH;
+              default -> {
+                View.display("Not a valid relevance.");
+                continue;
+              }
+            }
+
+            taskBuilder.setRelevance(relevance);
+          }
           case 6 -> {}
           case 7 -> {
             if (taskBuilder.build().getName() != null) {
