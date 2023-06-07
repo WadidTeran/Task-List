@@ -11,19 +11,16 @@ public class UserLogin {
 
   private UserLogin() {}
 
-  public static boolean logInUser(String email, String password) {
+  public static void logInUser(String email, String password) {
     CRUDServiceImpl crudService = new CRUDServiceImpl();
-    if (crudService.checkUserEmail(email)) {
-      if (crudService.validateUserPassword(email, password)) {
-        user = crudService.getUserByEmail(email);
-        return true;
-      }
+    if (!crudService.checkUserEmail(email)) {
+      View.display("This user doesn't exist.");
+    } else if (!crudService.validateUserPassword(email, password)) {
       View.display("Invalid password");
-      return false;
+    } else {
+      user = crudService.getUserByEmail(email);
+      View.display("Welcome!");
     }
-
-    View.display("This user doesn't exist.");
-    return false;
   }
 
   public static void logOutUser() {

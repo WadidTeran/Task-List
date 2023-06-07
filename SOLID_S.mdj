@@ -17837,7 +17837,7 @@
 											"width": 294.44873046875,
 											"height": 13,
 											"underline": true,
-											"text": "+logInUser(String email, String password): boolean",
+											"text": "+logInUser(String email, String password)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -19658,42 +19658,13 @@
 						},
 						{
 							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIifa0Pfcg5s4=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"left": 16,
-							"top": 440,
-							"width": 103.09716796875,
-							"height": 103,
-							"text": "Las restricciones de longitud en nombres y descripciones, se hacen aqui"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIifa0S/cjgxM=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIifa0Pfcg5s4="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIf7B57rak3Mg="
-							},
-							"lineStyle": 1,
-							"points": "415:500;119:492"
-						},
-						{
-							"_type": "UMLNoteView",
 							"_id": "AAAAAAGIifhTO/cpJl0=",
 							"_parent": {
 								"$ref": "AAAAAAGIfwxxmk4buiY="
 							},
 							"font": "Arial;13;0",
-							"left": 16,
-							"top": 552,
+							"left": 56,
+							"top": 472,
 							"width": 113.22802734375,
 							"height": 207,
 							"text": "Los datos que sea que guarden los repeatOnConfig tienen que ser ordenados despues de que el usuario los ingresa y antes de asignarlos al Set correspondiente"
@@ -19712,7 +19683,7 @@
 								"$ref": "AAAAAAGIf7B57rak3Mg="
 							},
 							"lineStyle": 1,
-							"points": "415:537;129:635"
+							"points": "415:520;169:565"
 						}
 					]
 				},
@@ -20364,8 +20335,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String email",
-									"type": ""
+									"name": "String email"
 								},
 								{
 									"_type": "UMLParameter",
@@ -20373,17 +20343,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String password",
-									"type": ""
-								},
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAGIjZEbCf/uJzQ=",
-									"_parent": {
-										"$ref": "AAAAAAGIgvtR1z8KPe8="
-									},
-									"type": "boolean",
-									"direction": "return"
+									"name": "String password"
 								}
 							]
 						},

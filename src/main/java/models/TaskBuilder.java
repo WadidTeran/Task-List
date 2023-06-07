@@ -10,12 +10,14 @@ public class TaskBuilder {
   public TaskBuilder() {
     this.task = new Task();
     this.task.setUser(UserLogin.getUser());
+    this.task.setRelevance(Relevance.NONE);
   }
 
   public TaskBuilder(String name) {
     this.task = new Task();
     this.task.setName(name);
     this.task.setUser(UserLogin.getUser());
+    this.task.setRelevance(Relevance.NONE);
   }
 
   public TaskBuilder(Task task) {
@@ -58,7 +60,7 @@ public class TaskBuilder {
   }
 
   public TaskBuilder setSpecifiedTime(LocalTime specifiedTime) {
-    if (this.task.getDueDate() != null) this.task.setSpecifiedTime(specifiedTime);
+    this.task.setSpecifiedTime(specifiedTime);
     return this;
   }
 
@@ -78,7 +80,7 @@ public class TaskBuilder {
   }
 
   public TaskBuilder setRepeatingConfig(RepeatTaskConfig repeatTaskConfig) {
-    if (this.task.getDueDate() != null) this.task.setRepeatingConfig(repeatTaskConfig);
+    this.task.setRepeatingConfig(repeatTaskConfig);
     return this;
   }
 

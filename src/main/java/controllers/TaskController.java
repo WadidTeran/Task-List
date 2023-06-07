@@ -1,6 +1,8 @@
 package controllers;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -73,8 +75,33 @@ public class TaskController {
               taskBuilder.setName(name);
             }
           }
-          case 2 -> {}
-          case 3 -> {}
+          case 2 -> {
+            View.display("Due date (yyyy-mm-dd): ");
+            String dueDateStr = scanner.nextLine();
+
+            try {
+              LocalDate dueDate = LocalDate.parse(dueDateStr);
+              taskBuilder.setDueDate(dueDate);
+            } catch (DateTimeParseException e) {
+              View.display("Invalid due date format");
+            }
+
+          }
+          case 3 -> {
+            if (taskBuilder.build().getDueDate() != null) {
+              View.display("Specified time in 24h time system (hh:mm): ");
+              String specifiedTimeStr = scanner.nextLine();
+
+              try {
+                LocalTime specifiedTime = LocalTime.parse(specifiedTimeStr);
+                taskBuilder.setSpecifiedTime(specifiedTime);
+              } catch (DateTimeParseException e) {
+                View.display("Invalid time format");
+              }
+            } else {
+              View.display("You have to set a due date first!");
+            }
+          }
           case 4 -> {}
           case 5 -> {}
           case 6 -> {}
@@ -84,6 +111,8 @@ public class TaskController {
             } else {
               View.display("You have to set a name for this task!");
             }
+
+
           }
           case 8 -> opcionIndice =
               (JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel?") == 0)
@@ -93,6 +122,8 @@ public class TaskController {
       }
     } while (opcionIndice != 9);
   }
+
+  public void modifyTask() {}
 
   public void setAsCompletedTask() {
     searchAllPendingTasks();
@@ -145,8 +176,6 @@ public class TaskController {
       View.display("That is not a number.");
     }
   }
-
-  public void modifyTask() {}
 
   public void deleteTask() {
     searchAllPendingTasks();

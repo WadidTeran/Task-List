@@ -25,7 +25,12 @@ public class FilteredTaskSearchService
   public ArrayList<Task> getCategoryTasks(Category category) {
     return (ArrayList<Task>)
         getAllPendingTasks().stream()
-            .filter(t -> t.getCategory().getName().equals(category.getName()))
+            .filter(t -> {
+                if (t.getCategory() != null) {
+                    return t.getCategory().getName().equals(category.getName());
+                }
+                return false;
+            })
             .collect(Collectors.toList());
   }
 
@@ -39,7 +44,13 @@ public class FilteredTaskSearchService
   public ArrayList<Task> getFuturePendingTasks() {
     return (ArrayList<Task>)
         getAllPendingTasks().stream()
-            .filter(t -> t.getDueDate().isAfter(LocalDate.now()))
+            .filter(
+                t -> {
+                  if (t.getDueDate() != null) {
+                    return t.getDueDate().isAfter(LocalDate.now());
+                  }
+                  return false;
+                })
             .collect(Collectors.toList());
   }
 
@@ -47,7 +58,13 @@ public class FilteredTaskSearchService
   public ArrayList<Task> getPastPendingTasks() {
     return (ArrayList<Task>)
         getAllPendingTasks().stream()
-            .filter(t -> t.getDueDate().isBefore(LocalDate.now()))
+            .filter(
+                t -> {
+                  if (t.getDueDate() != null) {
+                    return t.getDueDate().isBefore(LocalDate.now());
+                  }
+                  return false;
+                })
             .collect(Collectors.toList());
   }
 
@@ -55,7 +72,13 @@ public class FilteredTaskSearchService
   public ArrayList<Task> getPendingTasksForToday() {
     return (ArrayList<Task>)
         getAllPendingTasks().stream()
-            .filter(t -> t.getDueDate().isEqual(LocalDate.now()))
+            .filter(
+                t -> {
+                  if (t.getDueDate() != null) {
+                    return t.getDueDate().isEqual(LocalDate.now());
+                  }
+                  return false;
+                })
             .collect(Collectors.toList());
   }
 
