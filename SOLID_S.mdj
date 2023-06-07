@@ -9665,7 +9665,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjpkeV3LuKyk="
 									},
-									"name": "String category"
+									"name": "String category",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -19994,7 +19995,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgxYmd0AYKnQ="
 									},
-									"name": "Task task"
+									"name": "Task task",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20023,7 +20025,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIkoP7QqT/Yuk="
 									},
-									"name": "Task task"
+									"name": "Task task",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20031,7 +20034,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIkoP7QqT/Yuk="
 									},
-									"name": "NextDueDateCalculator visitor"
+									"name": "NextDueDateCalculator visitor",
+									"type": ""
 								}
 							]
 						}
@@ -20244,7 +20248,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String email"
+									"name": "String email",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20252,7 +20257,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String password"
+									"name": "String password",
+									"type": ""
 								}
 							]
 						},
@@ -21390,7 +21396,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgyBgXl+bIew="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								}
 							]
 						},
@@ -21409,7 +21416,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgx5ZjF+Dta4="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								}
 							]
 						},
@@ -21428,7 +21436,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjjkYDAADYxQ="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								}
 							]
 						},
@@ -21447,7 +21456,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIjjmFyQCLpWo="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								}
 							]
 						},
@@ -21466,7 +21476,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhNDiSAKlq5Q="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								}
 							]
 						},
@@ -21485,7 +21496,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhMg1KgKBtvo="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -21493,7 +21505,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhMg1KgKBtvo="
 									},
-									"name": "Category category"
+									"name": "Category category",
+									"type": ""
 								}
 							]
 						},
@@ -21512,7 +21525,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgyCzQF+lvV4="
 									},
-									"name": "List«Task» tasks"
+									"name": "List«Task» tasks",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -21520,7 +21534,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgyCzQF+lvV4="
 									},
-									"name": "Relevance relevance"
+									"name": "Relevance relevance",
+									"type": ""
 								}
 							]
 						},
@@ -21539,7 +21554,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhNI8zQK5QY4="
 									},
-									"name": "List«Category» categories"
+									"name": "List«Category» categories",
+									"type": ""
 								}
 							]
 						}

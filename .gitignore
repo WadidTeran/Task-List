@@ -11,7 +11,7 @@ target/
 *.iws
 *.iml
 *.ipr
-.idea/sonarlint/
+.idea/sonarlint/*
 .idea/uiDesigner.xml
 
 ### Eclipse ###
