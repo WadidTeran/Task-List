@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -79,7 +80,7 @@ public class TaskController {
             }
           }
           case 2 -> {
-            View.display("Due date (yyyy-mm-dd): ");
+            View.display("Due date (yyyy-MM-dd): ");
             String dueDateStr = scanner.nextLine();
 
             try {
@@ -262,7 +263,7 @@ public class TaskController {
                   try {
                     View.display("Add one specific hour (00:00 - 23:59): ");
                     hourStr = scanner.nextLine();
-                    hour = LocalTime.parse(hourStr);
+                    hour = LocalTime.parse(hourStr.trim());
 
                     hours.add(hour);
 
@@ -351,14 +352,32 @@ public class TaskController {
               case YEARLY -> {
                 YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
                 Set<MonthDay> daysOfYear = new TreeSet<>();
+                MonthDay monthDay;
+                String monthDayStr;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
 
-                // TODO: Add process to ask for days of the year (12 max) format: (mm-dd)
+                String oneMore;
+                boolean keep = true;
 
-                if (daysOfYear.isEmpty()) {
-                  View.display("You have to specify at least one day of the year");
-                } else {
-                  repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
-                }
+                do {
+                  try {
+                    View.display("Add one specific date of the year (MM-dd): ");
+                    monthDayStr = scanner.nextLine();
+                    monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
+
+                    daysOfYear.add(monthDay);
+
+                    View.display("Do you want to add another date of the year (Y/N): ");
+                    oneMore = scanner.nextLine();
+
+                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                  } catch (DateTimeParseException e) {
+                    View.display("Invalid date of the year! Try again.");
+                  }
+                } while (keep);
+
+                yearlyRepeatOnConfig.setDaysOfYear(daysOfYear);
+                repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
               }
             }
 
