@@ -8,10 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import javax.swing.*;
-import models.Category;
-import models.Relevance;
-import models.Task;
-import models.TaskBuilder;
+import models.*;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 import utils.RepetitiveTaskManager;
@@ -142,7 +139,55 @@ public class TaskController {
               taskBuilder.setCategory(categoryObj);
             }
           }
-          case 7 -> {}
+          case 7 -> {
+            if (taskBuilder.build().getRepeatingConfig() != null) {
+              View.display("Do you want to set this task as not repetitive (Y/N): ");
+              String confirmation = scanner.nextLine();
+
+              if (confirmation.equalsIgnoreCase("Y")) {
+                taskBuilder.setRepeatingConfig(null);
+                continue;
+              }
+            }
+
+            RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
+
+            View.display(
+                "Choose a type of repetition (H = HOUR, D = DAILY , W = WEEKLY, M = MONTHLY, Y = YEARLY): ");
+
+            RepeatType repeatType;
+
+            switch (scanner.nextLine()) {
+              case "H" -> repeatType = RepeatType.HOUR;
+              case "D" -> repeatType = RepeatType.DAILY;
+              case "W" -> repeatType = RepeatType.WEEKLY;
+              case "M" -> repeatType = RepeatType.MONTHLY;
+              case "Y" -> repeatType = RepeatType.YEARLY;
+              default -> {
+                View.display("Not a valid type of repetition.");
+                continue;
+              }
+            }
+
+            repeatingConfig.setRepeatType(repeatType);
+
+            View.display("Do you want to set a end date for repetitions (Y/N): ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("Y")) {
+              View.display("Repeat ends at (yyyy-mm-dd): ");
+              String repeatEndsAtStr = scanner.nextLine();
+
+              try {
+                LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
+                repeatingConfig.setRepeatEndsAt(repeatEndsAt);
+              } catch (DateTimeParseException e) {
+                View.display("Invalid end date format");
+              }
+            }
+
+            // Preguntar por interval y luego por repeatOnConfig
+          }
           case 8 -> {
             if (taskBuilder.build().getName() != null) {
               View.display(
