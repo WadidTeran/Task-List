@@ -5,8 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.MonthDay;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.swing.JOptionPane;
 import models.*;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
@@ -215,33 +221,65 @@ public class TaskController {
                 HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
                 Set<Integer> minutes = new TreeSet<>();
 
-                repeatingConfig.setRepeatOn(hourRepeatOnConfig);
+                //TODO: Add process to ask for minutes format: (m)
+
+                if (minutes.isEmpty()) {
+                  View.display("You have to specify at least one specific minute!");
+                } else {
+                  repeatingConfig.setRepeatOn(hourRepeatOnConfig);
+                }
               }
               case DAILY -> {
                 DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
                 Set<LocalTime> hours = new TreeSet<>();
 
-                repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
+                //TODO: Add process to ask for hours (24 max) format: 24h time system (hh:mm)
+
+                if (hours.isEmpty()) {
+                  View.display("You have to specify at least one hour!");
+                } else {
+                  repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
+                }
               }
               case WEEKLY -> {
                 WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
                 Set<DayOfWeek> daysOfWeek = new TreeSet<>();
 
-                repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
+                //TODO: Add process to ask for days of the week (M, TU, W, TH, F, SA, SU)
+
+                if (daysOfWeek.isEmpty()) {
+                  View.display("You have to specify at least one day of the week!");
+                } else {
+                  repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
+                }
               }
               case MONTHLY -> {
                 MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
                 Set<Integer> daysOfMonth = new TreeSet<>();
 
-                repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
+                //TODO: Add process to ask for days of the month format: (d)
+
+                if (daysOfMonth.isEmpty()) {
+                  View.display("You have to specify at least one day of the month");
+                } else {
+                  repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
+                }
               }
               case YEARLY -> {
                 YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
                 Set<MonthDay> daysOfYear = new TreeSet<>();
 
-                repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
+                //TODO: Add process to ask for days of the year (12 max) format: (mm-dd)
+
+                if (daysOfYear.isEmpty()) {
+                  View.display("You have to specify at least one day of the year");
+                } else {
+                  repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
+                }
               }
             }
+
+            taskBuilder.setRepeatingConfig(repeatingConfig);
           }
           case 8 -> {
             if (taskBuilder.build().getName() != null) {
@@ -432,6 +470,22 @@ public class TaskController {
       }
     } else {
       View.display("You don't have completed tasks.");
+    }
+  }
+
+  public void searchOneTask() {
+    searchAllPendingTasks();
+    View.display("Insert task's id: ");
+    try {
+      Long taskId = scanner.nextLong();
+      Optional<Task> optTask = crudService.getTaskById(taskId);
+      if (optTask.isPresent()) {
+        View.displayOneTask(optTask.get());
+      } else {
+        View.display("The task's id doesn't exist!");
+      }
+    } catch (InputMismatchException e) {
+      View.display("Not a valid task id.");
     }
   }
 }
