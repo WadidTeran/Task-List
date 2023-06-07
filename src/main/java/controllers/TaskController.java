@@ -102,7 +102,18 @@ public class TaskController {
               View.display("You have to set a due date first!");
             }
           }
-          case 4 -> {}
+          case 4 -> {
+            View.display("Description: ");
+            String description = scanner.nextLine();
+
+            if (description.length() > 300) {
+              View.display("Task description can't be longer than 300 characters!");
+            } else if (description.isBlank() || description.isEmpty()) {
+              View.display("Not a valid description!");
+            } else {
+              taskBuilder.setDescription(description);
+            }
+          }
           case 5 -> {
             View.display("Choose a level of relevance (N = NONE, L = LOW, M = MEDIUM , H = HIGH): ");
 
