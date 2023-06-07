@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -30,23 +31,54 @@ public class TaskController {
   }
 
   public void createTask() {
-    View.display("Set basic information for the task");
-    Map<String, Integer> operaciones = new HashMap<>();
-    operaciones.put("Set name", 1);
-    operaciones.put("Set due date", 2);
-    operaciones.put("Set a specified time", 3);
-    operaciones.put("Set description", 4);
-    operaciones.put("Set relevance", 5);
-    operaciones.put("Set category", 6);
-    operaciones.put("Set repeat config", 7);
-    operaciones.put("Create", 8);
-    operaciones.put("Cancel", 9);
+    Map<String, Integer> menuOptions = new HashMap<>();
+    menuOptions.put("Set name", 1);
+    menuOptions.put("Set due date", 2);
+    menuOptions.put("Set a specified time", 3);
+    menuOptions.put("Set description", 4);
+    menuOptions.put("Set relevance", 5);
+    menuOptions.put("Set category", 6);
+    menuOptions.put("Set repeat config", 7);
+    menuOptions.put("Create", 8);
+    menuOptions.put("Cancel", 9);
 
-    Object[] opArreglo = operaciones.keySet().toArray();
+    taskCreationOrModificationMode(new TaskBuilder(), "Task creation mode", menuOptions);
+  }
 
+  public void modifyTask() {
+    searchAllPendingTasks();
+    View.display("Insert task's id: ");
+    try {
+      Long taskId = scanner.nextLong();
+      Optional<Task> optTask = crudService.getTaskById(taskId);
+      if (optTask.isPresent()) {
+        Task taskToModify = optTask.get();
+        TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
+
+        Map<String, Integer> menuOptions = new HashMap<>();
+        menuOptions.put("Change name", 1);
+        menuOptions.put("Change due date", 2);
+        menuOptions.put("Change specified time", 3);
+        menuOptions.put("Change description", 4);
+        menuOptions.put("Change relevance", 5);
+        menuOptions.put("Change category", 6);
+        menuOptions.put("Change repeat config", 7);
+        menuOptions.put("Confirm changes", 8);
+        menuOptions.put("Cancel", 9);
+
+        taskCreationOrModificationMode(taskBuilder, "Task modification mode", menuOptions);
+      } else {
+        View.display("The task's id doesn't exist!");
+      }
+    } catch (InputMismatchException e) {
+      View.display("Not a valid task id.");
+    }
+  }
+
+  private void taskCreationOrModificationMode(
+      TaskBuilder taskBuilder, String title, Map<String, Integer> menuOptions) {
+    Object[] opArreglo = menuOptions.keySet().toArray();
     int opcionIndice = 0;
-
-    TaskBuilder taskBuilder = new TaskBuilder();
 
     do {
       String opcion =
@@ -54,7 +86,7 @@ public class TaskController {
               JOptionPane.showInputDialog(
                   null,
                   "Choose an option",
-                  "Task create mode",
+                  title,
                   JOptionPane.INFORMATION_MESSAGE,
                   null,
                   opArreglo,
@@ -63,7 +95,7 @@ public class TaskController {
       if (opcion == null) {
         JOptionPane.showMessageDialog(null, "You have to choose an option!");
       } else {
-        opcionIndice = operaciones.get(opcion);
+        opcionIndice = menuOptions.get(opcion);
 
         switch (opcionIndice) {
           case 1 -> {
@@ -79,7 +111,7 @@ public class TaskController {
             }
           }
           case 2 -> {
-            View.display("Due date (yyyy-mm-dd): ");
+            View.display("Due date (yyyy-MM-dd): ");
             String dueDateStr = scanner.nextLine();
 
             try {
@@ -262,7 +294,7 @@ public class TaskController {
                   try {
                     View.display("Add one specific hour (00:00 - 23:59): ");
                     hourStr = scanner.nextLine();
-                    hour = LocalTime.parse(hourStr);
+                    hour = LocalTime.parse(hourStr.trim());
 
                     hours.add(hour);
 
@@ -351,14 +383,32 @@ public class TaskController {
               case YEARLY -> {
                 YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
                 Set<MonthDay> daysOfYear = new TreeSet<>();
+                MonthDay monthDay;
+                String monthDayStr;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
 
-                // TODO: Add process to ask for days of the year (12 max) format: (mm-dd)
+                String oneMore;
+                boolean keep = true;
 
-                if (daysOfYear.isEmpty()) {
-                  View.display("You have to specify at least one day of the year");
-                } else {
-                  repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
-                }
+                do {
+                  try {
+                    View.display("Add one specific date of the year (MM-dd): ");
+                    monthDayStr = scanner.nextLine();
+                    monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
+
+                    daysOfYear.add(monthDay);
+
+                    View.display("Do you want to add another date of the year (Y/N): ");
+                    oneMore = scanner.nextLine();
+
+                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                  } catch (DateTimeParseException e) {
+                    View.display("Invalid date of the year! Try again.");
+                  }
+                } while (keep);
+
+                yearlyRepeatOnConfig.setDaysOfYear(daysOfYear);
+                repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
               }
             }
 
@@ -366,8 +416,11 @@ public class TaskController {
           }
           case 8 -> {
             if (taskBuilder.build().getName() != null) {
+              String varString = (title.contains("modification")) ? "update" : "create";
               View.display(
-                  "Are you sure you want to create \""
+                  "Are you sure you want to "
+                      + varString
+                      + " \""
                       + taskBuilder.build().getName()
                       + "\"? (Y/N): ");
               String confirmation = scanner.nextLine();
@@ -388,8 +441,6 @@ public class TaskController {
       }
     } while (opcionIndice != 10);
   }
-
-  public void modifyTask() {}
 
   public void setAsCompletedTask() {
     searchAllPendingTasks();
