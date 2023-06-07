@@ -319,14 +319,34 @@ public class TaskController {
               case MONTHLY -> {
                 MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
                 Set<Integer> daysOfMonth = new TreeSet<>();
+                int dayOfMonth;
 
-                // TODO: Add process to ask for days of the month format: (d)
+                String oneMore;
+                boolean keep = true;
 
-                if (daysOfMonth.isEmpty()) {
-                  View.display("You have to specify at least one day of the month");
-                } else {
-                  repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
-                }
+                do {
+                  try {
+                    View.display("Add one specified day of the month (1 - 31): ");
+                    dayOfMonth = scanner.nextInt();
+
+                    if (dayOfMonth > 31 || dayOfMonth < 1) {
+                      View.display("Day of month must be between 1 and 31! Try again.");
+                      continue;
+                    }
+
+                    daysOfMonth.add(dayOfMonth);
+
+                    View.display("Do you want to add another day of the month (Y/N): ");
+                    oneMore = scanner.nextLine();
+
+                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                  } catch (InputMismatchException e) {
+                    View.display("Invalid day of the month! Try again.");
+                  }
+                } while (keep);
+
+                monthlyRepeatOnConfig.setDaysOfMonth(daysOfMonth);
+                repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
               }
               case YEARLY -> {
                 YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
