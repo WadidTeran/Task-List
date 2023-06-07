@@ -11,8 +11,7 @@ public class UserLogin {
 
   private UserLogin() {}
 
-  public static void logInUser(String email, String password) {
-    CRUDServiceImpl crudService = new CRUDServiceImpl();
+  public static void logInUser(String email, String password, CRUDServiceImpl crudService) {
     if (!crudService.checkUserEmail(email)) {
       View.display("This user doesn't exist.");
     } else if (!crudService.validateUserPassword(email, password)) {

@@ -5,20 +5,20 @@ import java.util.Optional;
 import models.Category;
 import models.Task;
 import models.User;
-import repositories.CategoryRepository;
 import repositories.IRepository;
-import repositories.TaskRepository;
-import repositories.UserRepository;
 
 public class CRUDServiceImpl implements ICRUDService {
   private final IRepository<User> userRepository;
   private final IRepository<Task> taskRepository;
   private final IRepository<Category> categoryRepository;
 
-  public CRUDServiceImpl() {
-    userRepository = new UserRepository();
-    taskRepository = new TaskRepository();
-    categoryRepository = new CategoryRepository();
+  public CRUDServiceImpl(
+      IRepository<User> userRepository,
+      IRepository<Task> taskRepository,
+      IRepository<Category> categoryRepository) {
+    this.userRepository = userRepository;
+    this.taskRepository = taskRepository;
+    this.categoryRepository = categoryRepository;
   }
 
   @Override
@@ -82,8 +82,7 @@ public class CRUDServiceImpl implements ICRUDService {
   }
 
   @Override
-  public void deleteCompletedTasks() {
-    ICompletedTasksService completedTasksService = new FilteredTaskSearchService();
+  public void deleteCompletedTasks(ICompletedTasksService completedTasksService) {
     ArrayList<Task> completedTasks = completedTasksService.getCompletedTasks();
 
     for (Task completedTask : completedTasks) {

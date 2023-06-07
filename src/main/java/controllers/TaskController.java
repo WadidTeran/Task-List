@@ -21,13 +21,15 @@ import utils.RepetitiveTaskManager;
 import views.View;
 
 public class TaskController {
-  private final Scanner scanner = new Scanner(System.in);
+  private final Scanner scanner;
   private final CRUDServiceImpl crudService;
   private final FilteredTaskSearchService searchService;
 
-  public TaskController(CRUDServiceImpl crudService, FilteredTaskSearchService searchService) {
+  public TaskController(
+      CRUDServiceImpl crudService, FilteredTaskSearchService searchService, Scanner scanner) {
     this.crudService = crudService;
     this.searchService = searchService;
+    this.scanner = scanner;
   }
 
   public void createTask() {
@@ -600,7 +602,7 @@ public class TaskController {
       View.display("Are you sure you want to delete all completed tasks? (Y/N): ");
       String confirmation = scanner.nextLine();
       if (confirmation.equalsIgnoreCase("Y")) {
-        crudService.deleteCompletedTasks();
+        crudService.deleteCompletedTasks(searchService);
       }
     } else {
       View.display("You don't have completed tasks.");

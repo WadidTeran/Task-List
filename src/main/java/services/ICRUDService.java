@@ -32,5 +32,5 @@ public interface ICRUDService {
 
   Optional<Category> getCategoryById(Long id);
 
-  void deleteCompletedTasks();
+  void deleteCompletedTasks(ICompletedTasksService completedTasksService);
 }

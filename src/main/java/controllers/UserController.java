@@ -7,11 +7,12 @@ import utils.UserLogin;
 import views.View;
 
 public class UserController {
-  private final Scanner scanner = new Scanner(System.in);
+  private final Scanner scanner;
   private final CRUDServiceImpl crudService;
 
-  public UserController(CRUDServiceImpl crudService) {
+  public UserController(CRUDServiceImpl crudService, Scanner scanner) {
     this.crudService = crudService;
+    this.scanner = scanner;
   }
 
   public void signIn() {
@@ -21,7 +22,7 @@ public class UserController {
     View.display("Password: ");
     String password = scanner.nextLine();
 
-    UserLogin.logInUser(email, password);
+    UserLogin.logInUser(email, password, crudService);
   }
 
   public void signUp() {

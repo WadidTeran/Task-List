@@ -3,17 +3,17 @@ package controllers;
 import java.util.Scanner;
 import models.Category;
 import services.CRUDServiceImpl;
-import services.FilteredTaskSearchService;
 import utils.UserLogin;
 import views.View;
 
 public class CategoryController {
 
-  private final Scanner scanner = new Scanner(System.in);
+  private final Scanner scanner;
   private final CRUDServiceImpl crudService;
 
-  public CategoryController(CRUDServiceImpl crudService) {
+  public CategoryController(CRUDServiceImpl crudService, Scanner scanner) {
     this.crudService = crudService;
+    this.scanner = scanner;
   }
 
   public void createCategory() {
@@ -22,7 +22,7 @@ public class CategoryController {
 
     if (newCategory.length() > 50) {
       View.display("Category names cannot be longer than 50 characters!");
-    }else if (newCategory.isBlank() || newCategory.isEmpty()){
+    } else if (newCategory.isBlank() || newCategory.isEmpty()) {
       View.display("Not a valid name!");
     } else if (crudService.findAllCategories().size() >= 10) {
       View.display("You cannot create more than 10 categories!");

@@ -7,7 +7,6 @@ import models.Category;
 import models.Relevance;
 import models.Task;
 import repositories.IRepository;
-import repositories.TaskRepository;
 
 public class FilteredTaskSearchService
     implements ICategoryTasksService,
@@ -17,8 +16,8 @@ public class FilteredTaskSearchService
 
   private final IRepository<Task> taskRepository;
 
-  public FilteredTaskSearchService() {
-    this.taskRepository = new TaskRepository();
+  public FilteredTaskSearchService(IRepository<Task> taskRepository) {
+    this.taskRepository = taskRepository;
   }
 
   @Override

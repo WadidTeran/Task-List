@@ -21059,7 +21059,7 @@
 											"top": 71,
 											"width": 230.13427734375,
 											"height": 13,
-											"text": "Application"
+											"text": "TaskList"
 										},
 										{
 											"_type": "LabelView",
@@ -21119,24 +21119,6 @@
 									"subViews": [
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGIgySwFuqJ2JI=",
-											"_parent": {
-												"$ref": "AAAAAAGIgyP95+pA8nM="
-											},
-											"model": {
-												"$ref": "AAAAAAGIgySwEeqG7bM="
-											},
-											"font": "Arial;13;0",
-											"left": 477,
-											"top": 94,
-											"width": 230.13427734375,
-											"height": 13,
-											"underline": true,
-											"text": "+userLogin: UserLogin",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGIgySduOp9paQ=",
 											"_parent": {
 												"$ref": "AAAAAAGIgyP95+pA8nM="
@@ -21146,11 +21128,11 @@
 											},
 											"font": "Arial;13;0",
 											"left": 477,
-											"top": 109,
+											"top": 94,
 											"width": 230.13427734375,
 											"height": 13,
 											"underline": true,
-											"text": "+userController: UserController",
+											"text": "-userController: UserController",
 											"horizontalAlignment": 0
 										},
 										{
@@ -21164,11 +21146,11 @@
 											},
 											"font": "Arial;13;0",
 											"left": 477,
-											"top": 124,
+											"top": 109,
 											"width": 230.13427734375,
 											"height": 13,
 											"underline": true,
-											"text": "+taskController: TaskController",
+											"text": "-taskController: TaskController",
 											"horizontalAlignment": 0
 										},
 										{
@@ -21182,11 +21164,11 @@
 											},
 											"font": "Arial;13;0",
 											"left": 477,
-											"top": 139,
+											"top": 124,
 											"width": 230.13427734375,
 											"height": 13,
 											"underline": true,
-											"text": "+categoryController: CategoryController",
+											"text": "-categoryController: CategoryController",
 											"horizontalAlignment": 0
 										}
 									],
@@ -21194,7 +21176,7 @@
 									"left": 472,
 									"top": 89,
 									"width": 240.13427734375,
-									"height": 68
+									"height": 53
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -21217,29 +21199,11 @@
 											},
 											"font": "Arial;13;0",
 											"left": 477,
-											"top": 162,
+											"top": 147,
 											"width": 230.13427734375,
 											"height": 13,
 											"underline": true,
 											"text": "+main(String[] args)",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGIgyRcHepv3fo=",
-											"_parent": {
-												"$ref": "AAAAAAGIgyP95+pBKvs="
-											},
-											"model": {
-												"$ref": "AAAAAAGIgyRcF+psIxc="
-											},
-											"font": "Arial;13;0",
-											"left": 477,
-											"top": 177,
-											"width": 230.13427734375,
-											"height": 13,
-											"underline": true,
-											"text": "+init()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -21253,19 +21217,19 @@
 											},
 											"font": "Arial;13;0",
 											"left": 477,
-											"top": 192,
+											"top": 162,
 											"width": 230.13427734375,
 											"height": 13,
 											"underline": true,
-											"text": "+createTestData()",
+											"text": "-createTestData()",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 472,
-									"top": 157,
+									"top": 142,
 									"width": 240.13427734375,
-									"height": 53
+									"height": 38
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -21305,7 +21269,7 @@
 							"left": 472,
 							"top": 64,
 							"width": 240.13427734375,
-							"height": 146,
+							"height": 116,
 							"nameCompartment": {
 								"$ref": "AAAAAAGIgyP95uo7cEM="
 							},
@@ -21598,20 +21562,8 @@
 					"_parent": {
 						"$ref": "AAAAAAGIgux1Vv5VM6g="
 					},
-					"name": "Application",
+					"name": "TaskList",
 					"attributes": [
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGIgySwEeqG7bM=",
-							"_parent": {
-								"$ref": "AAAAAAGIgyP95uo4kfI="
-							},
-							"name": "userLogin",
-							"isStatic": true,
-							"type": {
-								"$ref": "AAAAAAGIgqj7hdMT4go="
-							}
-						},
 						{
 							"_type": "UMLAttribute",
 							"_id": "AAAAAAGIgySds+p6+kE=",
@@ -21619,6 +21571,7 @@
 								"$ref": "AAAAAAGIgyP95uo4kfI="
 							},
 							"name": "userController",
+							"visibility": "private",
 							"isStatic": true,
 							"type": {
 								"$ref": "AAAAAAGIf7xzHb9SuJs="
@@ -21631,6 +21584,7 @@
 								"$ref": "AAAAAAGIgyP95uo4kfI="
 							},
 							"name": "taskController",
+							"visibility": "private",
 							"isStatic": true,
 							"type": {
 								"$ref": "AAAAAAGIf7B57baiHHA="
@@ -21643,6 +21597,7 @@
 								"$ref": "AAAAAAGIgyP95uo4kfI="
 							},
 							"name": "categoryController",
+							"visibility": "private",
 							"isStatic": true,
 							"type": {
 								"$ref": "AAAAAAGIf7xJM78oExM="
@@ -21672,20 +21627,12 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGIgyRcF+psIxc=",
-							"_parent": {
-								"$ref": "AAAAAAGIgyP95uo4kfI="
-							},
-							"name": "init",
-							"isStatic": true
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAGIhMTElQJpINg=",
 							"_parent": {
 								"$ref": "AAAAAAGIgyP95uo4kfI="
 							},
 							"name": "createTestData",
+							"visibility": "private",
 							"isStatic": true
 						}
 					]
