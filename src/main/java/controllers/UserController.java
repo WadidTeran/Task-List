@@ -21,7 +21,7 @@ public class UserController {
     View.display("Password: ");
     String password = scanner.nextLine();
 
-    if (UserLogin.logInUser(email, password)) View.display("Welcome!");
+    UserLogin.logInUser(email, password);
   }
 
   public void signUp() {

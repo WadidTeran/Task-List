@@ -22,6 +22,8 @@ public class CategoryController {
 
     if (newCategory.length() > 50) {
       View.display("Category names cannot be longer than 50 characters!");
+    }else if (newCategory.isBlank() || newCategory.isEmpty()){
+      View.display("Not a valid name!");
     } else if (crudService.findAllCategories().size() >= 10) {
       View.display("You cannot create more than 10 categories!");
     } else if (crudService.checkCategoryName(newCategory)) {

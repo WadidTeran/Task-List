@@ -1,11 +1,19 @@
 package controllers;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
-import models.Category;
-import models.Relevance;
-import models.Task;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.swing.JOptionPane;
+import models.*;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 import utils.RepetitiveTaskManager;
@@ -21,7 +29,284 @@ public class TaskController {
     this.searchService = searchService;
   }
 
-  public void createTask() {}
+  public void createTask() {
+    View.display("Set basic information for the task");
+    Map<String, Integer> operaciones = new HashMap<>();
+    operaciones.put("1. Set name", 1);
+    operaciones.put("2. Set due date", 2);
+    operaciones.put("3. Set a specified time", 3);
+    operaciones.put("4. Set description", 4);
+    operaciones.put("5. Set relevance", 5);
+    operaciones.put("6. Set category", 6);
+    operaciones.put("7. Set repeat config", 7);
+    operaciones.put("8. Create", 8);
+    operaciones.put("9. Cancel", 9);
+
+    Object[] opArreglo = operaciones.keySet().toArray();
+
+    int opcionIndice = 0;
+
+    TaskBuilder taskBuilder = new TaskBuilder();
+
+    do {
+      String opcion =
+          (String)
+              JOptionPane.showInputDialog(
+                  null,
+                  "Choose an option",
+                  "Task create mode",
+                  JOptionPane.INFORMATION_MESSAGE,
+                  null,
+                  opArreglo,
+                  opArreglo[0]);
+
+      if (opcion == null) {
+        JOptionPane.showMessageDialog(null, "You have to choose an option!");
+      } else {
+        opcionIndice = operaciones.get(opcion);
+
+        switch (opcionIndice) {
+          case 1 -> {
+            View.display("Name: ");
+            String name = scanner.nextLine();
+
+            if (name.length() > 50) {
+              View.display("Task names can't be longer than 50 characters!");
+            } else if (name.isBlank() || name.isEmpty()) {
+              View.display("Not a valid name!");
+            } else {
+              taskBuilder.setName(name);
+            }
+          }
+          case 2 -> {
+            View.display("Due date (yyyy-mm-dd): ");
+            String dueDateStr = scanner.nextLine();
+
+            try {
+              LocalDate dueDate = LocalDate.parse(dueDateStr);
+              taskBuilder.setDueDate(dueDate);
+            } catch (DateTimeParseException e) {
+              View.display("Invalid due date format");
+            }
+          }
+          case 3 -> {
+            if (taskBuilder.build().getDueDate() != null) {
+              View.display("Specified time in 24h time system (hh:mm): ");
+              String specifiedTimeStr = scanner.nextLine();
+
+              try {
+                LocalTime specifiedTime = LocalTime.parse(specifiedTimeStr);
+                taskBuilder.setSpecifiedTime(specifiedTime);
+              } catch (DateTimeParseException e) {
+                View.display("Invalid time format");
+              }
+            } else {
+              View.display("You have to set a due date first!");
+            }
+          }
+          case 4 -> {
+            View.display("Description: ");
+            String description = scanner.nextLine();
+
+            if (description.length() > 300) {
+              View.display("Task description can't be longer than 300 characters!");
+            } else if (description.isBlank() || description.isEmpty()) {
+              View.display("Not a valid description!");
+            } else {
+              taskBuilder.setDescription(description);
+            }
+          }
+          case 5 -> {
+            View.display("Choose a level of relevance (L = LOW, M = MEDIUM , H = HIGH): ");
+
+            Relevance relevance;
+
+            switch (scanner.nextLine()) {
+              case "L" -> relevance = Relevance.LOW;
+              case "M" -> relevance = Relevance.MEDIUM;
+              case "H" -> relevance = Relevance.HIGH;
+              default -> {
+                View.display("Not a valid relevance.");
+                continue;
+              }
+            }
+
+            taskBuilder.setRelevance(relevance);
+          }
+          case 6 -> {
+            View.display("Category: ");
+            String category = scanner.nextLine();
+
+            if (!crudService.checkCategoryName(category)) {
+              View.display("The category " + category + " doesn't exist.");
+            } else {
+              Category categoryObj = crudService.getCategoryByName(category);
+              taskBuilder.setCategory(categoryObj);
+            }
+          }
+          case 7 -> {
+            if (taskBuilder.build().getRepeatingConfig() != null) {
+              View.display("Do you want to set this task as not repetitive (Y/N): ");
+              String confirmation = scanner.nextLine();
+
+              if (confirmation.equalsIgnoreCase("Y")) {
+                taskBuilder.setRepeatingConfig(null);
+                continue;
+              }
+            }
+
+            RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
+
+            View.display(
+                "Choose a type of repetition (H = HOUR, D = DAILY , W = WEEKLY, M = MONTHLY, Y = YEARLY): ");
+
+            RepeatType repeatType;
+
+            switch (scanner.nextLine()) {
+              case "H" -> repeatType = RepeatType.HOUR;
+              case "D" -> repeatType = RepeatType.DAILY;
+              case "W" -> repeatType = RepeatType.WEEKLY;
+              case "M" -> repeatType = RepeatType.MONTHLY;
+              case "Y" -> repeatType = RepeatType.YEARLY;
+              default -> {
+                View.display("Not a valid type of repetition.");
+                continue;
+              }
+            }
+
+            if (repeatType.equals(RepeatType.HOUR)
+                && taskBuilder.build().getSpecifiedTime() == null) {
+              View.display(
+                  "To set a task as hourly repetitive you must set first a specified time for this task!");
+              continue;
+            }
+
+            repeatingConfig.setRepeatType(repeatType);
+
+            View.display("Do you want to set a end date for repetitions (Y/N): ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("Y")) {
+              View.display("Repeat ends at (yyyy-mm-dd): ");
+              String repeatEndsAtStr = scanner.nextLine();
+
+              try {
+                LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
+                repeatingConfig.setRepeatEndsAt(repeatEndsAt);
+              } catch (DateTimeParseException e) {
+                View.display("Invalid end date format.");
+                continue;
+              }
+            }
+
+            String typeStr;
+
+            if (repeatType.equals(RepeatType.HOUR)) typeStr = "hour";
+            else if (repeatType.equals(RepeatType.DAILY)) typeStr = "days";
+            else if (repeatType.equals(RepeatType.WEEKLY)) typeStr = "weeks";
+            else if (repeatType.equals(RepeatType.MONTHLY)) typeStr = "months";
+            else typeStr = "years";
+
+            View.display("Repeat each ? " + typeStr + ": ");
+            try {
+              Integer interval = scanner.nextInt();
+              repeatingConfig.setRepeatInterval(interval);
+            } catch (InputMismatchException ime) {
+              View.display("Invalid interval: interval must be an integer.");
+              continue;
+            }
+
+            switch (repeatType) {
+              case HOUR -> {
+                HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
+                Set<Integer> minutes = new TreeSet<>();
+
+                //TODO: Add process to ask for minutes format: (m)
+
+                if (minutes.isEmpty()) {
+                  View.display("You have to specify at least one specific minute!");
+                } else {
+                  repeatingConfig.setRepeatOn(hourRepeatOnConfig);
+                }
+              }
+              case DAILY -> {
+                DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
+                Set<LocalTime> hours = new TreeSet<>();
+
+                //TODO: Add process to ask for hours (24 max) format: 24h time system (hh:mm)
+
+                if (hours.isEmpty()) {
+                  View.display("You have to specify at least one hour!");
+                } else {
+                  repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
+                }
+              }
+              case WEEKLY -> {
+                WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
+                Set<DayOfWeek> daysOfWeek = new TreeSet<>();
+
+                //TODO: Add process to ask for days of the week (M, TU, W, TH, F, SA, SU)
+
+                if (daysOfWeek.isEmpty()) {
+                  View.display("You have to specify at least one day of the week!");
+                } else {
+                  repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
+                }
+              }
+              case MONTHLY -> {
+                MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
+                Set<Integer> daysOfMonth = new TreeSet<>();
+
+                //TODO: Add process to ask for days of the month format: (d)
+
+                if (daysOfMonth.isEmpty()) {
+                  View.display("You have to specify at least one day of the month");
+                } else {
+                  repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
+                }
+              }
+              case YEARLY -> {
+                YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
+                Set<MonthDay> daysOfYear = new TreeSet<>();
+
+                //TODO: Add process to ask for days of the year (12 max) format: (mm-dd)
+
+                if (daysOfYear.isEmpty()) {
+                  View.display("You have to specify at least one day of the year");
+                } else {
+                  repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
+                }
+              }
+            }
+
+            taskBuilder.setRepeatingConfig(repeatingConfig);
+          }
+          case 8 -> {
+            if (taskBuilder.build().getName() != null) {
+              View.display(
+                  "Are you sure you want to create \""
+                      + taskBuilder.build().getName()
+                      + "\"? (Y/N): ");
+              String confirmation = scanner.nextLine();
+
+              if (confirmation.equalsIgnoreCase("Y")) {
+                Task newTask = taskBuilder.build();
+                crudService.saveTask(newTask);
+              }
+            } else {
+              View.display("You have to set a name for this task!");
+            }
+          }
+          case 9 -> opcionIndice =
+              (JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel?") == 0)
+                  ? 10
+                  : 0;
+        }
+      }
+    } while (opcionIndice != 10);
+  }
+
+  public void modifyTask() {}
 
   public void setAsCompletedTask() {
     searchAllPendingTasks();
@@ -74,8 +359,6 @@ public class TaskController {
       View.display("That is not a number.");
     }
   }
-
-  public void modifyTask() {}
 
   public void deleteTask() {
     searchAllPendingTasks();
@@ -157,7 +440,9 @@ public class TaskController {
     View.display("Insert the name of the category to search: ");
     String category = scanner.nextLine();
 
-    if (crudService.checkCategoryName(category)) {
+    if (!crudService.checkCategoryName(category)) {
+      View.display("The category " + category + " doesn't exist.");
+    } else {
       Category categoryObj = crudService.getCategoryByName(category);
 
       if (searchService.getCategoryTasks(categoryObj).size() != 0) {
@@ -165,8 +450,6 @@ public class TaskController {
       } else {
         View.display("You don't have task in this category.");
       }
-    } else {
-      View.display("The category " + category + " doesn't exist.");
     }
   }
 
@@ -187,6 +470,22 @@ public class TaskController {
       }
     } else {
       View.display("You don't have completed tasks.");
+    }
+  }
+
+  public void searchOneTask() {
+    searchAllPendingTasks();
+    View.display("Insert task's id: ");
+    try {
+      Long taskId = scanner.nextLong();
+      Optional<Task> optTask = crudService.getTaskById(taskId);
+      if (optTask.isPresent()) {
+        View.displayOneTask(optTask.get());
+      } else {
+        View.display("The task's id doesn't exist!");
+      }
+    } catch (InputMismatchException e) {
+      View.display("Not a valid task id.");
     }
   }
 }
