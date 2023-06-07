@@ -221,7 +221,15 @@ public class TaskController {
                 HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
                 Set<Integer> minutes = new TreeSet<>();
 
-                // TODO: Add process to ask for minutes format: (m)
+                View.display("Add one specified minute: ");
+                String oneMore;
+                int minute;
+                do {
+                  minute = scanner.nextInt();
+                  minutes.add(minute);
+                  View.display("Do you want to add another minute (Y/N): ");
+                  oneMore = scanner.nextLine();
+                }while (oneMore.equalsIgnoreCase("Y"));
 
                 if (minutes.isEmpty()) {
                   View.display("You have to specify at least one specific minute!");
