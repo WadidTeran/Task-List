@@ -143,6 +143,15 @@ public class TaskController {
           }
           case 7 -> {
             if (taskBuilder.build().getName() != null) {
+              View.display("Do you want this task to be repetitive? (Y/N): ");
+              String confirmation = scanner.nextLine();
+
+              if (confirmation.equalsIgnoreCase("Y")) {
+                //TODO: Create a menu to configurate repetitive details.
+              } else {
+                Task newTask = taskBuilder.build();
+                crudService.saveTask(newTask);
+              }
 
             } else {
               View.display("You have to set a name for this task!");
