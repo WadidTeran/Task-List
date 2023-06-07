@@ -69,7 +69,7 @@ public class TaskController {
 
             if (name.length() > 50) {
               View.display("Task names can't be longer than 50 characters!");
-            } else if (name.isBlank() || name.isEmpty()){
+            } else if (name.isBlank() || name.isEmpty()) {
               View.display("Not a valid name!");
             } else {
               taskBuilder.setName(name);
@@ -85,7 +85,6 @@ public class TaskController {
             } catch (DateTimeParseException e) {
               View.display("Invalid due date format");
             }
-
           }
           case 3 -> {
             if (taskBuilder.build().getDueDate() != null) {
@@ -115,12 +114,11 @@ public class TaskController {
             }
           }
           case 5 -> {
-            View.display("Choose a level of relevance (N = NONE, L = LOW, M = MEDIUM , H = HIGH): ");
+            View.display("Choose a level of relevance (L = LOW, M = MEDIUM , H = HIGH): ");
 
             Relevance relevance;
 
             switch (scanner.nextLine()) {
-              case "N" -> relevance = Relevance.NONE;
               case "L" -> relevance = Relevance.LOW;
               case "M" -> relevance = Relevance.MEDIUM;
               case "H" -> relevance = Relevance.HIGH;
@@ -139,8 +137,6 @@ public class TaskController {
             } else {
               View.display("You have to set a name for this task!");
             }
-
-
           }
           case 8 -> opcionIndice =
               (JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel?") == 0)
