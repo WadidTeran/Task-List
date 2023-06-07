@@ -32,15 +32,15 @@ public class TaskController {
   public void createTask() {
     View.display("Set basic information for the task");
     Map<String, Integer> operaciones = new HashMap<>();
-    operaciones.put("1. Set name", 1);
-    operaciones.put("2. Set due date", 2);
-    operaciones.put("3. Set a specified time", 3);
-    operaciones.put("4. Set description", 4);
-    operaciones.put("5. Set relevance", 5);
-    operaciones.put("6. Set category", 6);
-    operaciones.put("7. Set repeat config", 7);
-    operaciones.put("8. Create", 8);
-    operaciones.put("9. Cancel", 9);
+    operaciones.put("Set name", 1);
+    operaciones.put("Set due date", 2);
+    operaciones.put("Set a specified time", 3);
+    operaciones.put("Set description", 4);
+    operaciones.put("Set relevance", 5);
+    operaciones.put("Set category", 6);
+    operaciones.put("Set repeat config", 7);
+    operaciones.put("Create", 8);
+    operaciones.put("Cancel", 9);
 
     Object[] opArreglo = operaciones.keySet().toArray();
 
@@ -281,14 +281,40 @@ public class TaskController {
               case WEEKLY -> {
                 WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
                 Set<DayOfWeek> daysOfWeek = new TreeSet<>();
+                DayOfWeek dayOfWeek;
+                String dayOfWeekStr;
 
-                // TODO: Add process to ask for days of the week (M, TU, W, TH, F, SA, SU)
+                String oneMore;
+                boolean keep = true;
 
-                if (daysOfWeek.isEmpty()) {
-                  View.display("You have to specify at least one day of the week!");
-                } else {
-                  repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
-                }
+                do {
+                  View.display("Add one specific day of the week (M, TU, W, TH, F, SA, SU): ");
+                  dayOfWeekStr = scanner.nextLine();
+
+                  switch (dayOfWeekStr.trim()) {
+                    case "M" -> dayOfWeek = DayOfWeek.MONDAY;
+                    case "TU" -> dayOfWeek = DayOfWeek.TUESDAY;
+                    case "W" -> dayOfWeek = DayOfWeek.WEDNESDAY;
+                    case "TH" -> dayOfWeek = DayOfWeek.THURSDAY;
+                    case "F" -> dayOfWeek = DayOfWeek.FRIDAY;
+                    case "SA" -> dayOfWeek = DayOfWeek.SATURDAY;
+                    case "SU" -> dayOfWeek = DayOfWeek.SUNDAY;
+                    default -> {
+                      View.display("Not a valid day of the week! Try again.");
+                      continue;
+                    }
+                  }
+
+                  daysOfWeek.add(dayOfWeek);
+
+                  View.display("Do you want to add another day of the week (Y/N): ");
+                  oneMore = scanner.nextLine();
+
+                  if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                } while (keep);
+
+                weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
+                repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
               }
               case MONTHLY -> {
                 MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
