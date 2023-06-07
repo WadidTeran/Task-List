@@ -6132,35 +6132,6 @@
 							"points": "833:697;833:703"
 						},
 						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIetgOGXetsgA=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 648,
-							"top": 400,
-							"width": 241,
-							"height": 40,
-							"text": "name: máximo 50 carácteres\ndescription: máximo 300 carácteres"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIetgOJXfsTX4=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIetgOGXetsgA="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIbwO6G6pYf1Y="
-							},
-							"lineStyle": 1,
-							"points": "768:384;768:399"
-						},
-						{
 							"_type": "UMLAssociationView",
 							"_id": "AAAAAAGIet3tu99Y2PY=",
 							"_parent": {

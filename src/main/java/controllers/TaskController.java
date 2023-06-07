@@ -3,10 +3,7 @@ package controllers;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import javax.swing.*;
 import models.*;
 import services.CRUDServiceImpl;
@@ -182,11 +179,28 @@ public class TaskController {
                 LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
                 repeatingConfig.setRepeatEndsAt(repeatEndsAt);
               } catch (DateTimeParseException e) {
-                View.display("Invalid end date format");
+                View.display("Invalid end date format.");
+                continue;
               }
             }
 
-            // Preguntar por interval y luego por repeatOnConfig
+            String typeStr;
+
+            if (repeatType.equals(RepeatType.HOUR)) typeStr = "hour";
+            else if (repeatType.equals(RepeatType.DAILY)) typeStr = "days";
+            else if (repeatType.equals(RepeatType.WEEKLY)) typeStr = "weeks";
+            else if (repeatType.equals(RepeatType.MONTHLY)) typeStr = "months";
+            else typeStr = "years";
+
+            View.display("Repeat each ? " + typeStr + ": ");
+            try {
+              Integer interval = scanner.nextInt();
+            } catch (InputMismatchException ime) {
+              View.display("Invalid interval: interval must be an integer.");
+              continue;
+            }
+
+            // Ask for repeatOnConfig configuration
           }
           case 8 -> {
             if (taskBuilder.build().getName() != null) {
