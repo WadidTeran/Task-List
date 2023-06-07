@@ -130,7 +130,17 @@ public class TaskController {
 
             taskBuilder.setRelevance(relevance);
           }
-          case 6 -> {}
+          case 6 -> {
+            View.display("Category: ");
+            String category = scanner.nextLine();
+
+            if (!crudService.checkCategoryName(category)) {
+              View.display("The category " + category + " doesn't exist.");
+            } else {
+              Category categoryObj = crudService.getCategoryByName(category);
+              taskBuilder.setCategory(categoryObj);
+            }
+          }
           case 7 -> {
             if (taskBuilder.build().getName() != null) {
 
@@ -281,7 +291,9 @@ public class TaskController {
     View.display("Insert the name of the category to search: ");
     String category = scanner.nextLine();
 
-    if (crudService.checkCategoryName(category)) {
+    if (!crudService.checkCategoryName(category)) {
+      View.display("The category " + category + " doesn't exist.");
+    } else {
       Category categoryObj = crudService.getCategoryByName(category);
 
       if (searchService.getCategoryTasks(categoryObj).size() != 0) {
@@ -289,8 +301,6 @@ public class TaskController {
       } else {
         View.display("You don't have task in this category.");
       }
-    } else {
-      View.display("The category " + category + " doesn't exist.");
     }
   }
 
