@@ -19626,35 +19626,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGIgxmgRlNSEfU="
 							}
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAGIifhTO/cpJl0=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"left": 56,
-							"top": 472,
-							"width": 113.22802734375,
-							"height": 207,
-							"text": "Los datos que sea que guarden los repeatOnConfig tienen que ser ordenados despues de que el usuario los ingresa y antes de asignarlos al Set correspondiente"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGIifhTRvcs6iQ=",
-							"_parent": {
-								"$ref": "AAAAAAGIfwxxmk4buiY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGIifhTO/cpJl0="
-							},
-							"tail": {
-								"$ref": "AAAAAAGIf7B57rak3Mg="
-							},
-							"lineStyle": 1,
-							"points": "415:520;169:565"
 						}
 					]
 				},

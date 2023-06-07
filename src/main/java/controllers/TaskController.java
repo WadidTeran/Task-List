@@ -1,7 +1,9 @@
 package controllers;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.MonthDay;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import javax.swing.*;
@@ -166,6 +168,13 @@ public class TaskController {
               }
             }
 
+            if (repeatType.equals(RepeatType.HOUR)
+                && taskBuilder.build().getSpecifiedTime() == null) {
+              View.display(
+                  "To set a task as hourly repetitive you must set first a specified time for this task!");
+              continue;
+            }
+
             repeatingConfig.setRepeatType(repeatType);
 
             View.display("Do you want to set a end date for repetitions (Y/N): ");
@@ -195,12 +204,44 @@ public class TaskController {
             View.display("Repeat each ? " + typeStr + ": ");
             try {
               Integer interval = scanner.nextInt();
+              repeatingConfig.setRepeatInterval(interval);
             } catch (InputMismatchException ime) {
               View.display("Invalid interval: interval must be an integer.");
               continue;
             }
 
-            // Ask for repeatOnConfig configuration
+            switch (repeatType) {
+              case HOUR -> {
+                HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
+                Set<Integer> minutes = new TreeSet<>();
+
+                repeatingConfig.setRepeatOn(hourRepeatOnConfig);
+              }
+              case DAILY -> {
+                DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
+                Set<LocalTime> hours = new TreeSet<>();
+
+                repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
+              }
+              case WEEKLY -> {
+                WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
+                Set<DayOfWeek> daysOfWeek = new TreeSet<>();
+
+                repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
+              }
+              case MONTHLY -> {
+                MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
+                Set<Integer> daysOfMonth = new TreeSet<>();
+
+                repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
+              }
+              case YEARLY -> {
+                YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
+                Set<MonthDay> daysOfYear = new TreeSet<>();
+
+                repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
+              }
+            }
           }
           case 8 -> {
             if (taskBuilder.build().getName() != null) {
