@@ -14,10 +14,8 @@ public class TaskBuilder {
   }
 
   public TaskBuilder(String name) {
-    this.task = new Task();
+    this();
     this.task.setName(name);
-    this.task.setUser(UserLogin.getUser());
-    this.task.setRelevance(Relevance.NONE);
   }
 
   public TaskBuilder(Task task) {
