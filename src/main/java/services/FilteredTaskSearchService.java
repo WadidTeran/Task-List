@@ -25,12 +25,13 @@ public class FilteredTaskSearchService
   public ArrayList<Task> getCategoryTasks(Category category) {
     return (ArrayList<Task>)
         getAllPendingTasks().stream()
-            .filter(t -> {
-                if (t.getCategory() != null) {
+            .filter(
+                t -> {
+                  if (t.getCategory() != null) {
                     return t.getCategory().getName().equals(category.getName());
-                }
-                return false;
-            })
+                  }
+                  return false;
+                })
             .collect(Collectors.toList());
   }
 

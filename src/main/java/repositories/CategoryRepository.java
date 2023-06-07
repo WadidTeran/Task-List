@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import models.Category;
+import utils.DataBaseConnection;
 import utils.UserLogin;
 
 public class CategoryRepository extends DataBaseRepositoryImpl implements IRepository<Category> {
+
+  public CategoryRepository() {
+    setConnection(DataBaseConnection.getConnection());
+  }
 
   @Override
   public ArrayList<Category> findAll() {

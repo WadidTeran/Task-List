@@ -3,8 +3,14 @@ package repositories;
 import java.util.ArrayList;
 import java.util.Optional;
 import models.User;
+import utils.DataBaseConnection;
 
 public class UserRepository extends DataBaseRepositoryImpl implements IRepository<User> {
+
+  public UserRepository() {
+    setConnection(DataBaseConnection.getConnection());
+  }
+
   @Override
   public ArrayList<User> findAll() {
     return this.connection.getUsers();

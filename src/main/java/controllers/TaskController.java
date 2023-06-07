@@ -221,7 +221,7 @@ public class TaskController {
                 HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
                 Set<Integer> minutes = new TreeSet<>();
 
-                //TODO: Add process to ask for minutes format: (m)
+                // TODO: Add process to ask for minutes format: (m)
 
                 if (minutes.isEmpty()) {
                   View.display("You have to specify at least one specific minute!");
@@ -233,7 +233,7 @@ public class TaskController {
                 DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
                 Set<LocalTime> hours = new TreeSet<>();
 
-                //TODO: Add process to ask for hours (24 max) format: 24h time system (hh:mm)
+                // TODO: Add process to ask for hours (24 max) format: 24h time system (hh:mm)
 
                 if (hours.isEmpty()) {
                   View.display("You have to specify at least one hour!");
@@ -245,7 +245,7 @@ public class TaskController {
                 WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
                 Set<DayOfWeek> daysOfWeek = new TreeSet<>();
 
-                //TODO: Add process to ask for days of the week (M, TU, W, TH, F, SA, SU)
+                // TODO: Add process to ask for days of the week (M, TU, W, TH, F, SA, SU)
 
                 if (daysOfWeek.isEmpty()) {
                   View.display("You have to specify at least one day of the week!");
@@ -257,7 +257,7 @@ public class TaskController {
                 MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
                 Set<Integer> daysOfMonth = new TreeSet<>();
 
-                //TODO: Add process to ask for days of the month format: (d)
+                // TODO: Add process to ask for days of the month format: (d)
 
                 if (daysOfMonth.isEmpty()) {
                   View.display("You have to specify at least one day of the month");
@@ -269,7 +269,7 @@ public class TaskController {
                 YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
                 Set<MonthDay> daysOfYear = new TreeSet<>();
 
-                //TODO: Add process to ask for days of the year (12 max) format: (mm-dd)
+                // TODO: Add process to ask for days of the year (12 max) format: (mm-dd)
 
                 if (daysOfYear.isEmpty()) {
                   View.display("You have to specify at least one day of the year");

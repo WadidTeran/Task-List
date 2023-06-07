@@ -34,11 +34,3 @@ R
 "src/main/java/utils/UserLogin.java,f\d\fd06244efbbfea2974d549b61bb26626f8e27f85
 Q
 !src/main/java/utils/DataBase.java,8\6\866341523ea30d2eb841d6a7b4559ceb0ce97dda
-[
-+src/main/java/utils/DataBaseConnection.java,9\4\945fb03eb2beadeec82b8024111df558235f7a20
-e
-5src/main/java/services/FilteredTaskSearchService.java,2\0\20b038917973675909947642ee7d27de00d90236
-f
-6src/main/java/repositories/DataBaseRepositoryImpl.java,f\c\fca3d0b5edda9f31255cd3bd5ae8dfb4e22abf2a
-b
-2src/main/java/repositories/CategoryRepository.java,6\3\63e23392676237203e8af3b9277d1a44c0356c24

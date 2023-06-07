@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import models.Task;
+import utils.DataBaseConnection;
 import utils.UserLogin;
 
 public class TaskRepository extends DataBaseRepositoryImpl implements IRepository<Task> {
+
+  public TaskRepository() {
+    setConnection(DataBaseConnection.getConnection());
+  }
+
   @Override
   public ArrayList<Task> findAll() {
     return (ArrayList<Task>)
