@@ -52,7 +52,7 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
 
     } else {
       nextSpecifiedTime =
-          hours.stream().filter(d -> d.compareTo(oldHour) > 0).findFirst().orElseThrow();
+          hours.stream().filter(d -> d.isAfter(oldHour)).findFirst().orElseThrow();
     }
   }
 
@@ -81,10 +81,6 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   public void visit(MonthlyRepeatOnConfig repeatOnConfig) {
     Set<Integer> daysOfMonth = repeatOnConfig.getDaysOfMonth();
 
-    for(int day : daysOfMonth){
-
-    }
-
     int oldDayOfMonth = oldDueDate.getDayOfMonth();
 
     if (oldDayOfMonth == daysOfMonth.stream().reduce(Math::max).orElseThrow()) {
@@ -101,7 +97,8 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
       }
     } else {
 
-      int nextDayOfMonth = daysOfMonth.stream().filter(x -> x > oldDayOfMonth).findFirst().orElseThrow();
+      int nextDayOfMonth =
+          daysOfMonth.stream().filter(x -> x > oldDayOfMonth).findFirst().orElseThrow();
       boolean legalDate = false;
       while (!legalDate) {
 
@@ -123,18 +120,33 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
 
     if (oldMonthDay == daysOfYear.stream().max(Comparator.naturalOrder()).orElseThrow()) {
       MonthDay firstMonthDay = daysOfYear.stream().min(Comparator.naturalOrder()).orElseThrow();
-      nextDueDate =
-          oldDueDate
-              .plusYears(repeatInterval)
-              .withMonth(firstMonthDay.getMonthValue())
-              .withDayOfMonth(firstMonthDay.getDayOfMonth());
+      nextDueDate = oldDueDate.plusYears(repeatInterval).withMonth(firstMonthDay.getMonthValue());
+
+      boolean legalDate = false;
+      int nextDayOfMonth = firstMonthDay.getDayOfMonth();
+      while (!legalDate) {
+        try {
+          nextDueDate = nextDueDate.withDayOfMonth(nextDayOfMonth);
+          legalDate = true;
+        } catch (DateTimeException e) {
+          nextDayOfMonth--;
+        }
+      }
     } else {
       MonthDay nextMonthDay =
           daysOfYear.stream().filter(x -> x.compareTo(oldMonthDay) > 0).findFirst().orElseThrow();
-      nextDueDate =
-          oldDueDate
-              .withMonth(nextMonthDay.getMonthValue())
-              .withDayOfMonth(nextMonthDay.getDayOfMonth());
+      nextDueDate = oldDueDate.withMonth(nextMonthDay.getMonthValue());
+
+      int nextDayOfMonth = nextMonthDay.getDayOfMonth();
+      boolean legalDate = false;
+      while (!legalDate) {
+        try {
+          nextDueDate = nextDueDate.withDayOfMonth(nextDayOfMonth);
+          legalDate = true;
+        } catch (DateTimeException e) {
+          nextDayOfMonth--;
+        }
+      }
     }
   }
 }
