@@ -1,9 +1,6 @@
 package models;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.MonthDay;
+import java.time.*;
 import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
@@ -84,17 +81,37 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
   public void visit(MonthlyRepeatOnConfig repeatOnConfig) {
     Set<Integer> daysOfMonth = repeatOnConfig.getDaysOfMonth();
 
+    for(int day : daysOfMonth){
+
+    }
+
     int oldDayOfMonth = oldDueDate.getDayOfMonth();
 
     if (oldDayOfMonth == daysOfMonth.stream().reduce(Math::max).orElseThrow()) {
-      nextDueDate =
-          oldDueDate
-              .plusMonths(repeatInterval)
-              .withDayOfMonth(daysOfMonth.stream().reduce(Math::min).orElseThrow());
+      nextDueDate = oldDueDate.plusMonths(repeatInterval);
+      boolean legalDate = false;
+      int nextDayOfMonth = daysOfMonth.stream().reduce(Math::min).orElseThrow();
+      while (!legalDate) {
+        try {
+          nextDueDate = nextDueDate.withDayOfMonth(nextDayOfMonth);
+          legalDate = true;
+        } catch (DateTimeException e) {
+          nextDayOfMonth--;
+        }
+      }
     } else {
-      nextDueDate =
-          oldDueDate.withDayOfMonth(
-              daysOfMonth.stream().filter(x -> x > oldDayOfMonth).findFirst().orElseThrow());
+
+      int nextDayOfMonth = daysOfMonth.stream().filter(x -> x > oldDayOfMonth).findFirst().orElseThrow();
+      boolean legalDate = false;
+      while (!legalDate) {
+
+        try {
+          nextDueDate = oldDueDate.withDayOfMonth(nextDayOfMonth);
+          legalDate = true;
+        } catch (DateTimeException e) {
+          nextDayOfMonth--;
+        }
+      }
     }
   }
 
