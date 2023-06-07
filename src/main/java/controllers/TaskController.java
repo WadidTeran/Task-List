@@ -221,21 +221,33 @@ public class TaskController {
                 HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
                 Set<Integer> minutes = new TreeSet<>();
 
-                View.display("Add one specified minute: ");
                 String oneMore;
                 int minute;
-                do {
-                  minute = scanner.nextInt();
-                  minutes.add(minute);
-                  View.display("Do you want to add another minute (Y/N): ");
-                  oneMore = scanner.nextLine();
-                }while (oneMore.equalsIgnoreCase("Y"));
+                boolean keep = true;
 
-                if (minutes.isEmpty()) {
-                  View.display("You have to specify at least one specific minute!");
-                } else {
-                  repeatingConfig.setRepeatOn(hourRepeatOnConfig);
-                }
+                do {
+                  try {
+                    View.display("Add one specified minute (0 - 59): ");
+                    minute = scanner.nextInt();
+
+                    if (minute > 59 || minute < 0) {
+                      View.display("Minute value must be between 0 and 59! Try again.");
+                      continue;
+                    }
+
+                    minutes.add(minute);
+
+                    View.display("Do you want to add another minute (Y/N): ");
+                    oneMore = scanner.nextLine();
+
+                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                  } catch (InputMismatchException e) {
+                    View.display("Invalid minute! Try again.");
+                  }
+                } while (keep);
+
+                hourRepeatOnConfig.setMinutes(minutes);
+                repeatingConfig.setRepeatOn(hourRepeatOnConfig);
               }
               case DAILY -> {
                 DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
