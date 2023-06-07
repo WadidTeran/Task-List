@@ -36,8 +36,9 @@ public class TaskController {
     operaciones.put("4. Set description", 4);
     operaciones.put("5. Set relevance", 5);
     operaciones.put("6. Set category", 6);
-    operaciones.put("7. Next", 7);
-    operaciones.put("8. Cancel", 8);
+    operaciones.put("7. Set repeat config", 7);
+    operaciones.put("8. Create", 8);
+    operaciones.put("9. Cancel", 9);
 
     Object[] opArreglo = operaciones.keySet().toArray();
 
@@ -141,29 +142,30 @@ public class TaskController {
               taskBuilder.setCategory(categoryObj);
             }
           }
-          case 7 -> {
+          case 7 -> {}
+          case 8 -> {
             if (taskBuilder.build().getName() != null) {
-              View.display("Do you want this task to be repetitive? (Y/N): ");
+              View.display(
+                  "Are you sure you want to create \""
+                      + taskBuilder.build().getName()
+                      + "\"? (Y/N): ");
               String confirmation = scanner.nextLine();
 
               if (confirmation.equalsIgnoreCase("Y")) {
-                //TODO: Create a menu to configurate repetitive details.
-              } else {
                 Task newTask = taskBuilder.build();
                 crudService.saveTask(newTask);
               }
-
             } else {
               View.display("You have to set a name for this task!");
             }
           }
-          case 8 -> opcionIndice =
+          case 9 -> opcionIndice =
               (JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel?") == 0)
-                  ? 9
+                  ? 10
                   : 0;
         }
       }
-    } while (opcionIndice != 9);
+    } while (opcionIndice != 10);
   }
 
   public void modifyTask() {}
