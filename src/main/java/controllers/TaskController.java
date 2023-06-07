@@ -220,9 +220,9 @@ public class TaskController {
               case HOUR -> {
                 HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
                 Set<Integer> minutes = new TreeSet<>();
+                int minute;
 
                 String oneMore;
-                int minute;
                 boolean keep = true;
 
                 do {
@@ -252,14 +252,31 @@ public class TaskController {
               case DAILY -> {
                 DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
                 Set<LocalTime> hours = new TreeSet<>();
+                LocalTime hour;
+                String hourStr;
 
-                // TODO: Add process to ask for hours (24 max) format: 24h time system (hh:mm)
+                String oneMore;
+                boolean keep = true;
 
-                if (hours.isEmpty()) {
-                  View.display("You have to specify at least one hour!");
-                } else {
-                  repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
-                }
+                do {
+                  try {
+                    View.display("Add one specific hour (00:00 - 23:59): ");
+                    hourStr = scanner.nextLine();
+                    hour = LocalTime.parse(hourStr);
+
+                    hours.add(hour);
+
+                    View.display("Do you want to add another hour (Y/N): ");
+                    oneMore = scanner.nextLine();
+
+                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                  } catch (DateTimeParseException e) {
+                    View.display("Invalid hour! Try again.");
+                  }
+                } while (keep);
+
+                dailyRepeatOnConfig.setHours(hours);
+                repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
               }
               case WEEKLY -> {
                 WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
