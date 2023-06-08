@@ -23,6 +23,8 @@ public class TaskController {
       "Task names cannot be longer than " + MAX_TASK_NAME_LENGTH + " characters!";
   public static final String MAX_DESCRIPTION_LENGTH_WARNING =
       "Task description can't be longer than " + MAX_DESCRIPTION_LENGTH + " characters!";
+  private static final String TASK_NOT_FOUND = "The task id doesn't exist.";
+  private static final String NOT_A_NUMBER = "That is not a number.";
   private static final boolean TASK_STATUS_COMPLETED = true;
   private static final boolean TASK_STATUS_PENDING = false;
   private final CRUDServiceImpl crudService;
@@ -80,10 +82,10 @@ public class TaskController {
             }
           }
         } else {
-          JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
+          JOptionPane.showMessageDialog(null, TASK_NOT_FOUND);
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "That is not a number.");
+        JOptionPane.showMessageDialog(null, NOT_A_NUMBER);
       }
     }
   }
@@ -107,10 +109,10 @@ public class TaskController {
             crudService.saveTask(task);
           }
         } else {
-          JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
+          JOptionPane.showMessageDialog(null, TASK_NOT_FOUND);
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "That is not a number.");
+        JOptionPane.showMessageDialog(null, NOT_A_NUMBER);
       }
     }
   }
@@ -131,10 +133,10 @@ public class TaskController {
             crudService.deleteTask(task);
           }
         } else {
-          JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
+          JOptionPane.showMessageDialog(null, TASK_NOT_FOUND);
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "That is not a number.");
+        JOptionPane.showMessageDialog(null, NOT_A_NUMBER);
       }
     }
   }
