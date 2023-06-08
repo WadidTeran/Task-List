@@ -609,17 +609,35 @@ public class TaskController {
   }
 
   public void searchTasksByCategory() {
-    String category = JOptionPane.showInputDialog("Insert the name of the category to search: ");
-
-    if (!crudService.checkCategoryName(category)) {
-      JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
+    ArrayList<Category> categories = crudService.findAllCategories();
+    if (categories.isEmpty()) {
+      JOptionPane.showMessageDialog(null, CategoryController.EMPTY_CATEGORIES_WARNING);
     } else {
-      Category categoryObj = crudService.getCategoryByName(category);
+      Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
 
-      if (searchService.getCategoryTasks(categoryObj).isEmpty()) {
-        JOptionPane.showMessageDialog(null, "You don't have task in this category.");
+      String category =
+          (String)
+              JOptionPane.showInputDialog(
+                  null,
+                  "Choose the category",
+                  "Search tasks by category",
+                  JOptionPane.INFORMATION_MESSAGE,
+                  null,
+                  categoriesArray,
+                  categoriesArray[0]);
+
+      if (category == null) {
+        JOptionPane.showMessageDialog(null, "You have to choose a category!");
+      } else if (!crudService.checkCategoryName(category)) {
+        JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
       } else {
-        View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
+        Category categoryObj = crudService.getCategoryByName(category);
+
+        if (searchService.getCategoryTasks(categoryObj).isEmpty()) {
+          JOptionPane.showMessageDialog(null, "You don't have task in this category.");
+        } else {
+          View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
+        }
       }
     }
   }
@@ -643,17 +661,21 @@ public class TaskController {
   }
 
   public void searchOneTask() {
-    searchAllPendingTasks();
-    try {
-      Long taskId = Long.valueOf(JOptionPane.showInputDialog("Insert task's id: "));
-      Optional<Task> optTask = crudService.getTaskById(taskId);
-      if (optTask.isPresent()) {
-        View.displayOneTask(optTask.get());
-      } else {
-        JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
+    if (searchService.getAllPendingTasks().isEmpty()) {
+      JOptionPane.showMessageDialog(null, "You don't have pending tasks.");
+    } else {
+      searchAllPendingTasks();
+      try {
+        Long taskId = Long.valueOf(JOptionPane.showInputDialog("Insert task's id: "));
+        Optional<Task> optTask = crudService.getTaskById(taskId);
+        if (optTask.isPresent()) {
+          View.displayOneTask(optTask.get());
+        } else {
+          JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
+        }
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Not a valid task id.");
       }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(null, "Not a valid task id.");
     }
   }
 }
