@@ -19,6 +19,8 @@ import views.View;
 public class TaskController {
   private static final int MAX_TASK_NAME_LENGTH = 50;
   private static final int MAX_DESCRIPTION_LENGTH = 300;
+  private static final String NO_PENDING_TASKS_WARNING = "You don't have any pending tasks.";
+  private static final String NO_COMPLETED_TASKS_WARNING = "You don't have any completed tasks.";
   private static final String LONG_TASK_NAME_WARNING =
       "Task names cannot be longer than " + MAX_TASK_NAME_LENGTH + " characters!";
   private static final String MAX_DESCRIPTION_LENGTH_WARNING =
@@ -47,31 +49,36 @@ public class TaskController {
   }
 
   public void modifyTask() {
-    searchAllPendingTasks();
-    try {
-      Long taskId = Long.valueOf(JOptionPane.showInputDialog("Insert task's id: "));
-      Optional<Task> optTask = crudService.getTaskById(taskId);
-      if (optTask.isPresent()) {
-        Task taskToModify = optTask.get();
-        TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
+    ArrayList<Task> tasks = searchService.getAllPendingTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+    } else {
+      searchAllPendingTasks();
+      try {
+        Long taskId = Long.valueOf(JOptionPane.showInputDialog("Insert task's id: "));
+        Optional<Task> optTask = crudService.getTaskById(taskId);
+        if (optTask.isPresent()) {
+          Task taskToModify = optTask.get();
+          TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
 
-        Map<String, Integer> menuOptions = new HashMap<>();
-        menuOptions.put("Change name", 1);
-        menuOptions.put("Change due date", 2);
-        menuOptions.put("Change specified time", 3);
-        menuOptions.put("Change description", 4);
-        menuOptions.put("Change relevance", 5);
-        menuOptions.put("Change category", 6);
-        menuOptions.put("Change repeat config", 7);
-        menuOptions.put("Confirm changes", 8);
-        menuOptions.put("Cancel", 9);
+          Map<String, Integer> menuOptions = new HashMap<>();
+          menuOptions.put("Change name", 1);
+          menuOptions.put("Change due date", 2);
+          menuOptions.put("Change specified time", 3);
+          menuOptions.put("Change description", 4);
+          menuOptions.put("Change relevance", 5);
+          menuOptions.put("Change category", 6);
+          menuOptions.put("Change repeat config", 7);
+          menuOptions.put("Confirm changes", 8);
+          menuOptions.put("Cancel", 9);
 
-        taskCreationOrModificationMode(taskBuilder, "Task modification mode", menuOptions);
-      } else {
-        JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
+          taskCreationOrModificationMode(taskBuilder, "Task modification mode", menuOptions);
+        } else {
+          JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
+        }
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Not a valid task id.");
       }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(null, "Not a valid task id.");
     }
   }
 
@@ -475,109 +482,144 @@ public class TaskController {
   }
 
   public void setAsCompletedTask() {
-    searchAllPendingTasks();
-    String taskToSet =
-        JOptionPane.showInputDialog("Insert the task's id you want to set as completed: ");
-    try {
-      Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
-      if (optionalTask.isPresent()) {
-        Task task = optionalTask.get();
+    ArrayList<Task> tasks = searchService.getAllPendingTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+    } else {
+      searchAllPendingTasks();
+      String taskToSet =
+          JOptionPane.showInputDialog("Insert the task's id you want to set as completed: ");
+      try {
+        Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
+        if (optionalTask.isPresent()) {
+          Task task = optionalTask.get();
 
-        if (JOptionPane.showConfirmDialog(
-                null, "Are you sure you want to set as completed \"" + task.getName() + "\"?")
-            == 0) {
-          task.setCompleted(true);
-          task.setCompletedDate(LocalDate.now());
-          crudService.saveTask(task);
-          if (task.getRepeatingConfig() != null) {
-            RepetitiveTaskManager.manageRepetitiveTask(task, crudService);
+          if (JOptionPane.showConfirmDialog(
+                  null, "Are you sure you want to set as completed \"" + task.getName() + "\"?")
+              == 0) {
+            task.setCompleted(true);
+            task.setCompletedDate(LocalDate.now());
+            crudService.saveTask(task);
+            if (task.getRepeatingConfig() != null) {
+              RepetitiveTaskManager.manageRepetitiveTask(task, crudService);
+            }
           }
+        } else {
+          JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
         }
-      } else {
-        JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "That is not a number.");
       }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(null, "That is not a number.");
     }
   }
 
   public void setAsPendingTask() {
-    searchCompletedTasks();
-    String taskToSet =
-        JOptionPane.showInputDialog("Insert the task's id you want to set as pending: ");
+    ArrayList<Task> tasks = searchService.getCompletedTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
+    } else {
+      searchCompletedTasks();
+      String taskToSet =
+          JOptionPane.showInputDialog("Insert the task's id you want to set as pending: ");
 
-    try {
-      Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
-      if (optionalTask.isPresent()) {
-        Task task = optionalTask.get();
+      try {
+        Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
+        if (optionalTask.isPresent()) {
+          Task task = optionalTask.get();
 
-        if (JOptionPane.showConfirmDialog(
-                null, "Are you sure you want to set as pending \"" + task.getName() + "\"?")
-            == 0) {
-          task.setCompleted(false);
-          task.setCompletedDate(null);
-          crudService.saveTask(task);
+          if (JOptionPane.showConfirmDialog(
+                  null, "Are you sure you want to set as pending \"" + task.getName() + "\"?")
+              == 0) {
+            task.setCompleted(false);
+            task.setCompletedDate(null);
+            crudService.saveTask(task);
+          }
+        } else {
+          JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
         }
-      } else {
-        JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "That is not a number.");
       }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(null, "That is not a number.");
     }
   }
 
   public void deleteTask() {
-    searchAllPendingTasks();
+    ArrayList<Task> tasks = searchService.getAllPendingTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+    } else {
+      searchAllPendingTasks();
 
-    String taskToDelete = JOptionPane.showInputDialog("Insert the task's id you want to delete: ");
+      String taskToDelete =
+          JOptionPane.showInputDialog("Insert the task's id you want to delete: ");
 
-    try {
-      Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToDelete));
-      if (optionalTask.isPresent()) {
-        Task task = optionalTask.get();
+      try {
+        Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToDelete));
+        if (optionalTask.isPresent()) {
+          Task task = optionalTask.get();
 
-        if (JOptionPane.showConfirmDialog(
-                null, "Are you sure you want to delete \"" + task.getName() + "\"?")
-            == 0) {
-          crudService.deleteTask(task);
+          if (JOptionPane.showConfirmDialog(
+                  null, "Are you sure you want to delete \"" + task.getName() + "\"?")
+              == 0) {
+            crudService.deleteTask(task);
+          }
+        } else {
+          JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
         }
-      } else {
-        JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "That is not a number.");
       }
-    } catch (NumberFormatException e) {
-      JOptionPane.showMessageDialog(null, "That is not a number.");
     }
   }
 
   public void searchFuturePendingTasks() {
-    if (searchService.getFuturePendingTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have future pending tasks.");
+    ArrayList<Task> tasks = searchService.getAllPendingTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      View.displayFuturePendingTasks(searchService.getFuturePendingTasks());
+      ArrayList<Task> futurePendingTasks = searchService.getFuturePendingTasks();
+      if (futurePendingTasks.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "You don't have future pending tasks.");
+      } else {
+        View.displayFuturePendingTasks(futurePendingTasks);
+      }
     }
   }
 
   public void searchPendingTasksForToday() {
-    if (searchService.getPendingTasksForToday().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have tasks for today.");
+    ArrayList<Task> tasks = searchService.getAllPendingTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      View.displayPendingTasksForToday(searchService.getPendingTasksForToday());
+      ArrayList<Task> pendingTasksForToday = searchService.getPendingTasksForToday();
+      if (pendingTasksForToday.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "You don't have pending tasks for today.");
+      } else {
+        View.displayPendingTasksForToday(pendingTasksForToday);
+      }
     }
   }
 
   public void searchPastPendingTasks() {
-    if (searchService.getPastPendingTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have previous pending tasks.");
+    ArrayList<Task> tasks = searchService.getAllPendingTasks();
+    if (tasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      View.displayPastPendingTasks(searchService.getPastPendingTasks());
+      ArrayList<Task> pastPendingTasks = searchService.getPastPendingTasks();
+      if (pastPendingTasks.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "You don't have previous pending tasks.");
+      } else {
+        View.displayPastPendingTasks(pastPendingTasks);
+      }
     }
   }
 
   public void searchAllPendingTasks() {
-    if (searchService.getAllPendingTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have pending tasks.");
+    ArrayList<Task> pendingTasks = searchService.getAllPendingTasks();
+    if (pendingTasks.isEmpty()) {
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      View.displayAllPendingTasks(searchService.getAllPendingTasks());
+      View.displayAllPendingTasks(pendingTasks);
     }
   }
 
@@ -649,7 +691,7 @@ public class TaskController {
 
   public void searchCompletedTasks() {
     if (searchService.getCompletedTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have completed tasks.");
+      JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
     } else {
       View.displayCompletedTasks(searchService.getCompletedTasks());
     }
@@ -657,7 +699,7 @@ public class TaskController {
 
   public void deleteCompletedTasks() {
     if (searchService.getCompletedTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have completed tasks.");
+      JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
     } else if (JOptionPane.showConfirmDialog(
             null, "Are you sure you want to delete all completed tasks?")
         == 0) {
@@ -667,7 +709,7 @@ public class TaskController {
 
   public void searchOneTask() {
     if (searchService.getAllPendingTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have pending tasks.");
+      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
       searchAllPendingTasks();
       try {
