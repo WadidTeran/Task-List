@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import models.Category;
 import services.CRUDServiceImpl;
@@ -101,6 +102,11 @@ public class CategoryController {
   }
 
   public void searchCategories() {
-    View.displayCategories(crudService.findAllCategories());
+    ArrayList<Category> categories = crudService.findAllCategories();
+    if (categories.isEmpty()) {
+      JOptionPane.showMessageDialog(null, "You don't have any categories created.");
+    } else {
+      View.displayCategories(categories);
+    }
   }
 }
