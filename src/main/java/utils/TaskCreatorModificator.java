@@ -19,13 +19,47 @@ import models.*;
 import services.CRUDServiceImpl;
 
 public class TaskCreatorModificator {
+  private static Map<String, Integer> menuOptions;
+
   private TaskCreatorModificator() {}
 
+  private static String switchMenuAndTitle(TaskOperationType taskOperationType) {
+    menuOptions = new HashMap<>();
+
+    switch (taskOperationType) {
+      case CREATION -> {
+        menuOptions.put("Set name", 1);
+        menuOptions.put("Set due date", 2);
+        menuOptions.put("Set a specified time", 3);
+        menuOptions.put("Set description", 4);
+        menuOptions.put("Set relevance", 5);
+        menuOptions.put("Set category", 6);
+        menuOptions.put("Set repeat config", 7);
+        menuOptions.put("Create", 8);
+        menuOptions.put("Cancel", 9);
+      }
+      case MODIFICATION -> {
+        menuOptions.put("Change name", 1);
+        menuOptions.put("Change due date", 2);
+        menuOptions.put("Change specified time", 3);
+        menuOptions.put("Change description", 4);
+        menuOptions.put("Change relevance", 5);
+        menuOptions.put("Change category", 6);
+        menuOptions.put("Change repeat config", 7);
+        menuOptions.put("Confirm changes", 8);
+        menuOptions.put("Cancel", 9);
+      }
+    }
+
+    return (taskOperationType == TaskOperationType.CREATION)
+        ? "Task creation mode"
+        : "Task modification mode";
+  }
+
   public static void process(
-      TaskBuilder taskBuilder,
-      String title,
-      Map<String, Integer> menuOptions,
-      CRUDServiceImpl crudService) {
+      TaskBuilder taskBuilder, TaskOperationType taskOperationType, CRUDServiceImpl crudService) {
+
+    String title = switchMenuAndTitle(taskOperationType);
     Object[] opArreglo = menuOptions.keySet().toArray();
     int opcionIndice = 0;
 

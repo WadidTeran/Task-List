@@ -8,6 +8,7 @@ import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 import utils.RepetitiveTaskManager;
 import utils.TaskCreatorModificator;
+import utils.TaskOperationType;
 import views.View;
 
 public class TaskController {
@@ -28,19 +29,7 @@ public class TaskController {
   }
 
   public void createTask() {
-    Map<String, Integer> menuOptions = new HashMap<>();
-    menuOptions.put("Set name", 1);
-    menuOptions.put("Set due date", 2);
-    menuOptions.put("Set a specified time", 3);
-    menuOptions.put("Set description", 4);
-    menuOptions.put("Set relevance", 5);
-    menuOptions.put("Set category", 6);
-    menuOptions.put("Set repeat config", 7);
-    menuOptions.put("Create", 8);
-    menuOptions.put("Cancel", 9);
-
-    TaskCreatorModificator.process(
-        new TaskBuilder(), "Task creation mode", menuOptions, crudService);
+    TaskCreatorModificator.process(new TaskBuilder(), TaskOperationType.CREATION, crudService);
   }
 
   public void modifyTask() {
@@ -56,19 +45,7 @@ public class TaskController {
           Task taskToModify = optTask.get();
           TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
 
-          Map<String, Integer> menuOptions = new HashMap<>();
-          menuOptions.put("Change name", 1);
-          menuOptions.put("Change due date", 2);
-          menuOptions.put("Change specified time", 3);
-          menuOptions.put("Change description", 4);
-          menuOptions.put("Change relevance", 5);
-          menuOptions.put("Change category", 6);
-          menuOptions.put("Change repeat config", 7);
-          menuOptions.put("Confirm changes", 8);
-          menuOptions.put("Cancel", 9);
-
-          TaskCreatorModificator.process(
-              taskBuilder, "Task modification mode", menuOptions, crudService);
+          TaskCreatorModificator.process(taskBuilder, TaskOperationType.MODIFICATION, crudService);
         } else {
           JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
         }
