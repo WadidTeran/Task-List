@@ -23,6 +23,8 @@ public class TaskController {
       "Task names cannot be longer than " + MAX_TASK_NAME_LENGTH + " characters!";
   public static final String MAX_DESCRIPTION_LENGTH_WARNING =
       "Task description can't be longer than " + MAX_DESCRIPTION_LENGTH + " characters!";
+  private static final boolean TASK_STATUS_COMPLETED = true;
+  private static final boolean TASK_STATUS_PENDING = false;
   private final CRUDServiceImpl crudService;
   private final FilteredTaskSearchService searchService;
 
@@ -40,10 +42,8 @@ public class TaskController {
     if (tasks.isEmpty()) {
       JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      searchAllPendingTasks();
       try {
-        Long taskId = Long.valueOf(JOptionPane.showInputDialog("Insert task's id: "));
-        Optional<Task> optTask = crudService.getTaskById(taskId);
+        Optional<Task> optTask = askForATask("Choose a task to modify", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
           Task taskToModify = optTask.get();
           TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
@@ -63,11 +63,9 @@ public class TaskController {
     if (tasks.isEmpty()) {
       JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      searchAllPendingTasks();
-      String taskToSet =
-          JOptionPane.showInputDialog("Insert the task's id you want to set as completed: ");
       try {
-        Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
+        Optional<Task> optionalTask =
+            askForATask("Choose a task to set as completed", TASK_STATUS_PENDING);
         if (optionalTask.isPresent()) {
           Task task = optionalTask.get();
 
@@ -95,12 +93,9 @@ public class TaskController {
     if (tasks.isEmpty()) {
       JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
     } else {
-      searchCompletedTasks();
-      String taskToSet =
-          JOptionPane.showInputDialog("Insert the task's id you want to set as pending: ");
-
       try {
-        Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
+        Optional<Task> optionalTask =
+            askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
         if (optionalTask.isPresent()) {
           Task task = optionalTask.get();
 
@@ -125,13 +120,8 @@ public class TaskController {
     if (tasks.isEmpty()) {
       JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      searchAllPendingTasks();
-
-      String taskToDelete =
-          JOptionPane.showInputDialog("Insert the task's id you want to delete: ");
-
       try {
-        Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToDelete));
+        Optional<Task> optionalTask = askForATask("Choose a task to delete", TASK_STATUS_PENDING);
         if (optionalTask.isPresent()) {
           Task task = optionalTask.get();
 
@@ -288,10 +278,8 @@ public class TaskController {
     if (searchService.getAllPendingTasks().isEmpty()) {
       JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
     } else {
-      searchAllPendingTasks();
       try {
-        Long taskId = Long.valueOf(JOptionPane.showInputDialog("Insert task's id: "));
-        Optional<Task> optTask = crudService.getTaskById(taskId);
+        Optional<Task> optTask = askForATask("Choose a task to search", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
           View.displayOneTask(optTask.get());
         } else {
@@ -300,6 +288,33 @@ public class TaskController {
       } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Not a valid task id.");
       }
+    }
+  }
+
+  private Optional<Task> askForATask(String message, boolean taskStatus) {
+    ArrayList<Task> tasks =
+        (taskStatus == TASK_STATUS_COMPLETED)
+            ? searchService.getCompletedTasks()
+            : searchService.getAllPendingTasks();
+
+    Object[] taskArray = tasks.stream().map(t -> t.getTaskId() + " - " + t.getName()).toArray();
+
+    String task =
+        (String)
+            JOptionPane.showInputDialog(
+                null,
+                message,
+                "Task selector",
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                taskArray,
+                taskArray[0]);
+
+    if (task == null) {
+      JOptionPane.showMessageDialog(null, "You have to choose a task!");
+      return Optional.empty();
+    } else {
+      return crudService.getTaskById(Long.parseLong(task.split("-")[0].trim()));
     }
   }
 }
