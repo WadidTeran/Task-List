@@ -51,8 +51,7 @@ public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
       nextSpecifiedTime = hours.iterator().next();
 
     } else {
-      nextSpecifiedTime =
-          hours.stream().filter(d -> d.isAfter(oldHour)).findFirst().orElseThrow();
+      nextSpecifiedTime = hours.stream().filter(d -> d.isAfter(oldHour)).findFirst().orElseThrow();
     }
   }
 
