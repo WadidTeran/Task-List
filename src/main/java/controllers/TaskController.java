@@ -64,10 +64,10 @@ public class TaskController {
 
         taskCreationOrModificationMode(taskBuilder, "Task modification mode", menuOptions);
       } else {
-        View.display("The task's id doesn't exist!");
+        JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
       }
     } catch (NumberFormatException e) {
-      View.display("Not a valid task id.");
+      JOptionPane.showMessageDialog(null, "Not a valid task id.");
     }
   }
 
@@ -98,9 +98,9 @@ public class TaskController {
             String name = JOptionPane.showInputDialog("Name: ");
 
             if (name.length() > 50) {
-              View.display("Task names can't be longer than 50 characters!");
+              JOptionPane.showMessageDialog(null, "Task names can't be longer than 50 characters!");
             } else if (name.isBlank() || name.isEmpty()) {
-              View.display("Not a valid name!");
+              JOptionPane.showMessageDialog(null, "Not a valid name!");
             } else {
               taskBuilder.setName(name);
             }
@@ -112,7 +112,7 @@ public class TaskController {
               LocalDate dueDate = LocalDate.parse(dueDateStr);
               taskBuilder.setDueDate(dueDate);
             } catch (DateTimeParseException e) {
-              View.display("Invalid due date format");
+              JOptionPane.showMessageDialog(null, "Invalid due date format");
             }
           }
           case 3 -> {
@@ -124,19 +124,20 @@ public class TaskController {
                 LocalTime specifiedTime = LocalTime.parse(specifiedTimeStr);
                 taskBuilder.setSpecifiedTime(specifiedTime);
               } catch (DateTimeParseException e) {
-                View.display("Invalid time format");
+                JOptionPane.showMessageDialog(null, "Invalid time format");
               }
             } else {
-              View.display("You have to set a due date first!");
+              JOptionPane.showMessageDialog(null, "You have to set a due date first!");
             }
           }
           case 4 -> {
             String description = JOptionPane.showInputDialog("Description: ");
 
             if (description.length() > 300) {
-              View.display("Task description can't be longer than 300 characters!");
+              JOptionPane.showMessageDialog(
+                  null, "Task description can't be longer than 300 characters!");
             } else if (description.isBlank() || description.isEmpty()) {
-              View.display("Not a valid description!");
+              JOptionPane.showMessageDialog(null, "Not a valid description!");
             } else {
               taskBuilder.setDescription(description);
             }
@@ -152,7 +153,7 @@ public class TaskController {
               case "M" -> relevance = Relevance.MEDIUM;
               case "H" -> relevance = Relevance.HIGH;
               default -> {
-                View.display("Not a valid relevance.");
+                JOptionPane.showMessageDialog(null, "Not a valid relevance.");
                 continue;
               }
             }
@@ -163,22 +164,19 @@ public class TaskController {
             String category = JOptionPane.showInputDialog("Category: ");
 
             if (!crudService.checkCategoryName(category)) {
-              View.display("The category " + category + " doesn't exist.");
+              JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
             } else {
               Category categoryObj = crudService.getCategoryByName(category);
               taskBuilder.setCategory(categoryObj);
             }
           }
           case 7 -> {
-            if (taskBuilder.build().getRepeatingConfig() != null) {
-              String confirmation =
-                  JOptionPane.showInputDialog(
-                      "Do you want to set this task as not repetitive (Y/N): ");
-
-              if (confirmation.equalsIgnoreCase("Y")) {
-                taskBuilder.setRepeatingConfig(null);
-                continue;
-              }
+            if (taskBuilder.build().getRepeatingConfig() != null
+                && (JOptionPane.showConfirmDialog(
+                        null, "Do you want to set this task as not repetitive?")
+                    == 0)) {
+              taskBuilder.setRepeatingConfig(null);
+              continue;
             }
 
             RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
@@ -196,32 +194,31 @@ public class TaskController {
               case "M" -> repeatType = RepeatType.MONTHLY;
               case "Y" -> repeatType = RepeatType.YEARLY;
               default -> {
-                View.display("Not a valid type of repetition.");
+                JOptionPane.showMessageDialog(null, "Not a valid type of repetition.");
                 continue;
               }
             }
 
             if (repeatType.equals(RepeatType.HOUR)
                 && taskBuilder.build().getSpecifiedTime() == null) {
-              View.display(
+              JOptionPane.showMessageDialog(
+                  null,
                   "To set a task as hourly repetitive you must set first a specified time for this task!");
               continue;
             }
 
             repeatingConfig.setRepeatType(repeatType);
 
-            String confirmation =
-                JOptionPane.showInputDialog(
-                    "Do you want to set a end date for repetitions (Y/N): ");
-
-            if (confirmation.equalsIgnoreCase("Y")) {
+            if (JOptionPane.showConfirmDialog(
+                    null, "Do you want to set a end date for repetitions?")
+                == 0) {
               String repeatEndsAtStr = JOptionPane.showInputDialog("Repeat ends at (yyyy-mm-dd): ");
 
               try {
                 LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
                 repeatingConfig.setRepeatEndsAt(repeatEndsAt);
               } catch (DateTimeParseException e) {
-                View.display("Invalid end date format.");
+                JOptionPane.showMessageDialog(null, "Invalid end date format.");
                 continue;
               }
             }
@@ -239,7 +236,7 @@ public class TaskController {
                   Integer.parseInt(JOptionPane.showInputDialog("Repeat each ? " + typeStr + ": "));
               repeatingConfig.setRepeatInterval(interval);
             } catch (NumberFormatException nfe) {
-              View.display("Invalid interval: interval must be an integer.");
+              JOptionPane.showMessageDialog(null, "Invalid interval: interval must be an integer.");
               continue;
             }
 
@@ -249,7 +246,6 @@ public class TaskController {
                 Set<Integer> minutes = new TreeSet<>();
                 int minute;
 
-                String oneMore;
                 boolean keep = true;
 
                 do {
@@ -259,18 +255,17 @@ public class TaskController {
                             JOptionPane.showInputDialog("Add one specified minute (0 - 59): "));
 
                     if (minute > 59 || minute < 0) {
-                      View.display("Minute value must be between 0 and 59! Try again.");
+                      JOptionPane.showMessageDialog(
+                          null, "Minute value must be between 0 and 59! Try again.");
                       continue;
                     }
 
                     minutes.add(minute);
 
-                    oneMore =
-                        JOptionPane.showInputDialog("Do you want to add another minute (Y/N): ");
-
-                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                    if (JOptionPane.showConfirmDialog(null, "Do you want to add another minute?")
+                        != 0) keep = false;
                   } catch (NumberFormatException nfe) {
-                    View.display("Invalid minute! Try again.");
+                    JOptionPane.showMessageDialog(null, "Invalid minute! Try again.");
                   }
                 } while (keep);
 
@@ -283,7 +278,6 @@ public class TaskController {
                 LocalTime hour;
                 String hourStr;
 
-                String oneMore;
                 boolean keep = true;
 
                 do {
@@ -294,12 +288,10 @@ public class TaskController {
 
                     hours.add(hour);
 
-                    oneMore =
-                        JOptionPane.showInputDialog("Do you want to add another hour (Y/N): ");
-
-                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                    if (JOptionPane.showConfirmDialog(null, "Do you want to add another hour?")
+                        != 0) keep = false;
                   } catch (DateTimeParseException e) {
-                    View.display("Invalid hour! Try again.");
+                    JOptionPane.showMessageDialog(null, "Invalid hour! Try again.");
                   }
                 } while (keep);
 
@@ -312,7 +304,6 @@ public class TaskController {
                 DayOfWeek dayOfWeek;
                 String dayOfWeekStr;
 
-                String oneMore;
                 boolean keep = true;
 
                 do {
@@ -329,18 +320,17 @@ public class TaskController {
                     case "SA" -> dayOfWeek = DayOfWeek.SATURDAY;
                     case "SU" -> dayOfWeek = DayOfWeek.SUNDAY;
                     default -> {
-                      View.display("Not a valid day of the week! Try again.");
+                      JOptionPane.showMessageDialog(
+                          null, "Not a valid day of the week! Try again.");
                       continue;
                     }
                   }
 
                   daysOfWeek.add(dayOfWeek);
 
-                  oneMore =
-                      JOptionPane.showInputDialog(
-                          "Do you want to add another day of the week (Y/N): ");
-
-                  if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                  if (JOptionPane.showConfirmDialog(
+                          null, "Do you want to add another day of the week?")
+                      != 0) keep = false;
                 } while (keep);
 
                 weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
@@ -351,7 +341,6 @@ public class TaskController {
                 Set<Integer> daysOfMonth = new TreeSet<>();
                 int dayOfMonth;
 
-                String oneMore;
                 boolean keep = true;
 
                 do {
@@ -362,19 +351,18 @@ public class TaskController {
                                 "Add one specified day of the month (1 - 31): "));
 
                     if (dayOfMonth > 31 || dayOfMonth < 1) {
-                      View.display("Day of month must be between 1 and 31! Try again.");
+                      JOptionPane.showMessageDialog(
+                          null, "Day of month must be between 1 and 31! Try again.");
                       continue;
                     }
 
                     daysOfMonth.add(dayOfMonth);
 
-                    oneMore =
-                        JOptionPane.showInputDialog(
-                            "Do you want to add another day of the month (Y/N): ");
-
-                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                    if (JOptionPane.showConfirmDialog(
+                            null, "Do you want to add another day of the month?")
+                        != 0) keep = false;
                   } catch (NumberFormatException nfe) {
-                    View.display("Invalid day of the month! Try again.");
+                    JOptionPane.showMessageDialog(null, "Invalid day of the month! Try again.");
                   }
                 } while (keep);
 
@@ -388,7 +376,6 @@ public class TaskController {
                 String monthDayStr;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
 
-                String oneMore;
                 boolean keep = true;
 
                 do {
@@ -399,13 +386,11 @@ public class TaskController {
 
                     daysOfYear.add(monthDay);
 
-                    oneMore =
-                        JOptionPane.showInputDialog(
-                            "Do you want to add another date of the year (Y/N): ");
-
-                    if (!oneMore.equalsIgnoreCase("Y")) keep = false;
+                    if (JOptionPane.showConfirmDialog(
+                            null, "Do you want to add another date of the year?")
+                        != 0) keep = false;
                   } catch (DateTimeParseException e) {
-                    View.display("Invalid date of the year! Try again.");
+                    JOptionPane.showMessageDialog(null, "Invalid date of the year! Try again.");
                   }
                 } while (keep);
 
@@ -420,20 +405,19 @@ public class TaskController {
             if (taskBuilder.build().getName() != null) {
               String varString = (title.contains("modification")) ? "update" : "create";
 
-              String confirmation =
-                  JOptionPane.showInputDialog(
+              if (JOptionPane.showConfirmDialog(
+                      null,
                       "Are you sure you want to "
                           + varString
                           + " \""
                           + taskBuilder.build().getName()
-                          + "\"? (Y/N): ");
-
-              if (confirmation.equalsIgnoreCase("Y")) {
+                          + "\"?")
+                  == 0) {
                 Task newTask = taskBuilder.build();
                 crudService.saveTask(newTask);
               }
             } else {
-              View.display("You have to set a name for this task!");
+              JOptionPane.showMessageDialog(null, "You have to set a name for this task!");
             }
           }
           case 9 -> opcionIndice =
@@ -453,10 +437,10 @@ public class TaskController {
       Optional<Task> optionalTask = crudService.getTaskById(Long.valueOf(taskToSet));
       if (optionalTask.isPresent()) {
         Task task = optionalTask.get();
-        String confirmation =
-            JOptionPane.showInputDialog(
-                "Are you sure you want to set as completed \"" + task.getName() + "\"? (Y/N): ");
-        if (confirmation.equalsIgnoreCase("Y")) {
+
+        if (JOptionPane.showConfirmDialog(
+                null, "Are you sure you want to set as completed \"" + task.getName() + "\"?")
+            == 0) {
           task.setCompleted(true);
           task.setCompletedDate(LocalDate.now());
           crudService.saveTask(task);
@@ -465,10 +449,10 @@ public class TaskController {
           }
         }
       } else {
-        View.display("The task id doesn't exist.");
+        JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
       }
     } catch (NumberFormatException e) {
-      View.display("That is not a number.");
+      JOptionPane.showMessageDialog(null, "That is not a number.");
     }
   }
 
@@ -482,19 +466,18 @@ public class TaskController {
       if (optionalTask.isPresent()) {
         Task task = optionalTask.get();
 
-        String confirmation =
-            JOptionPane.showInputDialog(
-                "Are you sure you want to set as pending \"" + task.getName() + "\"? (Y/N): ");
-        if (confirmation.equalsIgnoreCase("Y")) {
+        if (JOptionPane.showConfirmDialog(
+                null, "Are you sure you want to set as pending \"" + task.getName() + "\"?")
+            == 0) {
           task.setCompleted(false);
           task.setCompletedDate(null);
           crudService.saveTask(task);
         }
       } else {
-        View.display("The task id doesn't exist.");
+        JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
       }
     } catch (NumberFormatException e) {
-      View.display("That is not a number.");
+      JOptionPane.showMessageDialog(null, "That is not a number.");
     }
   }
 
@@ -508,23 +491,22 @@ public class TaskController {
       if (optionalTask.isPresent()) {
         Task task = optionalTask.get();
 
-        String confirmation =
-            JOptionPane.showInputDialog(
-                "Are you sure you want to delete \"" + task.getName() + "\"? (Y/N): ");
-        if (confirmation.equalsIgnoreCase("Y")) {
+        if (JOptionPane.showConfirmDialog(
+                null, "Are you sure you want to delete \"" + task.getName() + "\"?")
+            == 0) {
           crudService.deleteTask(task);
         }
       } else {
-        View.display("The task id doesn't exist.");
+        JOptionPane.showMessageDialog(null, "The task id doesn't exist.");
       }
     } catch (NumberFormatException e) {
-      View.display("That is not a number.");
+      JOptionPane.showMessageDialog(null, "That is not a number.");
     }
   }
 
   public void searchFuturePendingTasks() {
     if (searchService.getFuturePendingTasks().isEmpty()) {
-      View.display("You don't have future pending tasks.");
+      JOptionPane.showMessageDialog(null, "You don't have future pending tasks.");
     } else {
       View.displayFuturePendingTasks(searchService.getFuturePendingTasks());
     }
@@ -532,7 +514,7 @@ public class TaskController {
 
   public void searchPendingTasksForToday() {
     if (searchService.getPendingTasksForToday().isEmpty()) {
-      View.display("You don't have tasks for today.");
+      JOptionPane.showMessageDialog(null, "You don't have tasks for today.");
     } else {
       View.displayPendingTasksForToday(searchService.getPendingTasksForToday());
     }
@@ -540,7 +522,7 @@ public class TaskController {
 
   public void searchPastPendingTasks() {
     if (searchService.getPastPendingTasks().isEmpty()) {
-      View.display("You don't have previous pending tasks.");
+      JOptionPane.showMessageDialog(null, "You don't have previous pending tasks.");
     } else {
       View.displayPastPendingTasks(searchService.getPastPendingTasks());
     }
@@ -548,7 +530,7 @@ public class TaskController {
 
   public void searchAllPendingTasks() {
     if (searchService.getAllPendingTasks().isEmpty()) {
-      View.display("You don't have pending tasks.");
+      JOptionPane.showMessageDialog(null, "You don't have pending tasks.");
     } else {
       View.displayAllPendingTasks(searchService.getAllPendingTasks());
     }
@@ -566,12 +548,12 @@ public class TaskController {
       case "M" -> relevance = Relevance.MEDIUM;
       case "H" -> relevance = Relevance.HIGH;
       default -> {
-        View.display("Not a valid relevance.");
+        JOptionPane.showMessageDialog(null, "Not a valid relevance.");
         return;
       }
     }
     if (searchService.getRelevanceTasks(relevance).isEmpty()) {
-      View.display("You don't have task with this relevance.");
+      JOptionPane.showMessageDialog(null, "You don't have task with this relevance.");
     } else {
       View.displayTasksByRelevance(searchService.getRelevanceTasks(relevance), relevance);
     }
@@ -581,12 +563,12 @@ public class TaskController {
     String category = JOptionPane.showInputDialog("Insert the name of the category to search: ");
 
     if (!crudService.checkCategoryName(category)) {
-      View.display("The category " + category + " doesn't exist.");
+      JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
     } else {
       Category categoryObj = crudService.getCategoryByName(category);
 
       if (searchService.getCategoryTasks(categoryObj).isEmpty()) {
-        View.display("You don't have task in this category.");
+        JOptionPane.showMessageDialog(null, "You don't have task in this category.");
       } else {
         View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
       }
@@ -595,7 +577,7 @@ public class TaskController {
 
   public void searchCompletedTasks() {
     if (searchService.getCompletedTasks().isEmpty()) {
-      View.display("You don't have completed tasks.");
+      JOptionPane.showMessageDialog(null, "You don't have completed tasks.");
     } else {
       View.displayCompletedTasks(searchService.getCompletedTasks());
     }
@@ -603,14 +585,11 @@ public class TaskController {
 
   public void deleteCompletedTasks() {
     if (searchService.getCompletedTasks().isEmpty()) {
-      View.display("You don't have completed tasks.");
-    } else {
-      String confirmation =
-          JOptionPane.showInputDialog(
-              "Are you sure you want to delete all completed tasks? (Y/N): ");
-      if (confirmation.equalsIgnoreCase("Y")) {
-        crudService.deleteCompletedTasks(searchService);
-      }
+      JOptionPane.showMessageDialog(null, "You don't have completed tasks.");
+    } else if (JOptionPane.showConfirmDialog(
+            null, "Are you sure you want to delete all completed tasks?")
+        == 0) {
+      crudService.deleteCompletedTasks(searchService);
     }
   }
 
@@ -622,10 +601,10 @@ public class TaskController {
       if (optTask.isPresent()) {
         View.displayOneTask(optTask.get());
       } else {
-        View.display("The task's id doesn't exist!");
+        JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
       }
     } catch (NumberFormatException e) {
-      View.display("Not a valid task id.");
+      JOptionPane.showMessageDialog(null, "Not a valid task id.");
     }
   }
 }
