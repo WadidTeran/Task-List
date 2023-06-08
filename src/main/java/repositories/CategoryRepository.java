@@ -2,7 +2,6 @@ package repositories;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import models.Category;
 import utils.DataBaseConnection;
 import utils.UserLogin;
@@ -18,7 +17,7 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
     return (ArrayList<Category>)
         this.connection.getCategories().stream()
             .filter(c -> c.getUser().equals(UserLogin.getUser()))
-            .collect(Collectors.toList());
+            .toList();
   }
 
   @Override
