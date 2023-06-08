@@ -15,6 +15,8 @@ public class CategoryController {
       "Category names cannot be longer than 50 characters!";
   private static final String MAXIMUM_CATEGORIES_WARNING =
       "You cannot create more than 10 categories!";
+  private static final int MAX_CATEGORY_NAME_LENGTH = 50;
+  private static final int MAXIMUM_CATEGORIES = 10;
   private final CRUDServiceImpl crudService;
 
   public CategoryController(CRUDServiceImpl crudService) {
@@ -22,12 +24,12 @@ public class CategoryController {
   }
 
   public void createCategory() {
-    if (crudService.findAllCategories().size() >= 10) {
+    if (crudService.findAllCategories().size() >= MAXIMUM_CATEGORIES) {
       JOptionPane.showMessageDialog(null, MAXIMUM_CATEGORIES_WARNING);
     } else {
       String newCategory = JOptionPane.showInputDialog("Insert the new category's name: ");
 
-      if (newCategory.length() > 50) {
+      if (newCategory.length() > MAX_CATEGORY_NAME_LENGTH) {
         JOptionPane.showMessageDialog(null, LONG_CATEGORY_NAME_WARNING);
       } else if (newCategory.isBlank() || newCategory.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Not a valid name!");
@@ -66,7 +68,7 @@ public class CategoryController {
       } else {
         String newCategory = JOptionPane.showInputDialog("Insert a new name for the category: ");
 
-        if (newCategory.length() > 50) {
+        if (newCategory.length() > MAX_CATEGORY_NAME_LENGTH) {
           JOptionPane.showMessageDialog(null, LONG_CATEGORY_NAME_WARNING);
         } else if (crudService.checkCategoryName(newCategory)) {
           JOptionPane.showMessageDialog(null, EXISTING_CATEGORY_WARNING);
