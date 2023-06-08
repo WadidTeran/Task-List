@@ -49,7 +49,7 @@ public class TaskController {
 
   public void modifyTask() {
     searchAllPendingTasks();
-    View.display("Insert task's id: ");
+    JOptionPane.showMessageDialog(null, "Insert task's id: ");
     try {
       Long taskId = scanner.nextLong();
       Optional<Task> optTask = crudService.getTaskById(taskId);

@@ -3,7 +3,6 @@ package controllers;
 import models.User;
 import services.CRUDServiceImpl;
 import utils.UserLogin;
-import views.View;
 
 import javax.swing.JOptionPane;
 
@@ -28,9 +27,9 @@ public class UserController {
     if (!crudService.checkUserEmail(email)) {
       User user = new User(email, password);
       crudService.saveUser(user);
-      View.display("User registered successfully!");
+      JOptionPane.showMessageDialog(null, "User registered successfully!");
     } else {
-      View.display("An user with this email already exists!");
+      JOptionPane.showMessageDialog(null, "An user with this email already exists!");
     }
   }
 
@@ -40,9 +39,9 @@ public class UserController {
     if (UserLogin.getUser().getPassword().equals(password)) {
       signOut();
       crudService.deleteUser(UserLogin.getUser());
-      View.display("You have deleted your account succesfully...");
+      JOptionPane.showMessageDialog(null, "You have deleted your account succesfully...");
     } else {
-      View.display("Authentication failed!");
+      JOptionPane.showMessageDialog(null, "Authentication failed!");
     }
   }
 

@@ -17,16 +17,16 @@ public class CategoryController {
     String newCategory = JOptionPane.showInputDialog("Insert the new category's name: ");
 
     if (newCategory.length() > 50) {
-      View.display("Category names cannot be longer than 50 characters!");
+      JOptionPane.showMessageDialog(null, "Category names cannot be longer than 50 characters!");
     } else if (newCategory.isBlank() || newCategory.isEmpty()) {
-      View.display("Not a valid name!");
+      JOptionPane.showMessageDialog(null, "Not a valid name!");
     } else if (crudService.findAllCategories().size() >= 10) {
-      View.display("You cannot create more than 10 categories!");
+      JOptionPane.showMessageDialog(null, "You cannot create more than 10 categories!");
     } else if (crudService.checkCategoryName(newCategory)) {
-      View.display("This category already exists!");
+      JOptionPane.showMessageDialog(null, "This category already exists!");
     } else {
       crudService.saveCategory(new Category(newCategory, UserLogin.getUser()));
-      View.display("Category created succesfully.");
+      JOptionPane.showMessageDialog(null, "Category created succesfully.");
     }
   }
 
@@ -34,14 +34,14 @@ public class CategoryController {
     String category = JOptionPane.showInputDialog("Insert the name of the category to change: ");
 
     if (!crudService.checkCategoryName(category)) {
-      View.display("The category " + category + " doesn't exist.");
+      JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
     } else {
       String newCategory = JOptionPane.showInputDialog("Insert a new name for the category: ");
 
       if (newCategory.length() > 50) {
-        View.display("Category names cannot be longer than 50 characters!");
+        JOptionPane.showMessageDialog(null, "Category names cannot be longer than 50 characters!");
       } else if (crudService.checkCategoryName(newCategory)) {
-        View.display("This category name is already in use!");
+        JOptionPane.showMessageDialog(null, "This category name is already in use!");
       } else {
         Category oldCategory = crudService.getCategoryByName(category);
         oldCategory.setName(newCategory);
@@ -54,7 +54,7 @@ public class CategoryController {
     String category = JOptionPane.showInputDialog("Insert the name of the category to delete: ");
 
     if (!crudService.checkCategoryName(category)) {
-      View.display("The category " + category + " doesn't exist.");
+      JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
     } else {
       Category categoryToDelete = crudService.getCategoryByName(category);
       crudService.deleteCategory(categoryToDelete);
