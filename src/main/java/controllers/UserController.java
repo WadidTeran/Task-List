@@ -1,36 +1,29 @@
 package controllers;
 
-import java.util.Scanner;
 import models.User;
 import services.CRUDServiceImpl;
 import utils.UserLogin;
 import views.View;
 
+import javax.swing.JOptionPane;
+
 public class UserController {
-  private final Scanner scanner;
   private final CRUDServiceImpl crudService;
 
-  public UserController(CRUDServiceImpl crudService, Scanner scanner) {
+  public UserController(CRUDServiceImpl crudService) {
     this.crudService = crudService;
-    this.scanner = scanner;
   }
 
   public void signIn() {
-    View.display("Email: ");
-    String email = scanner.nextLine();
-
-    View.display("Password: ");
-    String password = scanner.nextLine();
+    String email = JOptionPane.showInputDialog("Email: ");
+    String password = JOptionPane.showInputDialog("Password: ");
 
     UserLogin.logInUser(email, password, crudService);
   }
 
   public void signUp() {
-    View.display("Email: ");
-    String email = scanner.nextLine();
-
-    View.display("Password: ");
-    String password = scanner.nextLine();
+    String email = JOptionPane.showInputDialog("Email: ");
+    String password = JOptionPane.showInputDialog("Password: ");
 
     if (!crudService.checkUserEmail(email)) {
       User user = new User(email, password);
@@ -42,8 +35,7 @@ public class UserController {
   }
 
   public void deleteUser() {
-    View.display("If you want to delete your account, insert your password: ");
-    String password = scanner.nextLine();
+    String password = JOptionPane.showInputDialog("If you want to delete your account, insert your password: ");
 
     if (UserLogin.getUser().getPassword().equals(password)) {
       signOut();

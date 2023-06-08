@@ -10,9 +10,9 @@ public class DataBase {
   private Long lastUserId;
   private Long lastTaskId;
   private Long lastCategoryId;
-  @Getter private ArrayList<User> users;
-  @Getter private ArrayList<Task> tasks;
-  @Getter private ArrayList<Category> categories;
+  @Getter private ArrayList<User> users = new ArrayList<>();
+  @Getter private ArrayList<Task> tasks = new ArrayList<>();
+  @Getter private ArrayList<Category> categories = new ArrayList<>();
 
   public DataBase() {
     lastUserId = 0L;
