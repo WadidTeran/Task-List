@@ -10930,7 +10930,7 @@
 							},
 							"name": "repeat_on_config",
 							"type": "VARCHAR",
-							"length": "250"
+							"length": "200"
 						},
 						{
 							"_type": "ERDColumn",

@@ -6,11 +6,9 @@ import java.time.LocalTime;
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
 import models.*;
 import services.CRUDServiceImpl;
@@ -143,22 +141,31 @@ public class TaskController {
             }
           }
           case 5 -> {
+            Map<String, Relevance> relevanceMap = new HashMap<>();
+            relevanceMap.put("None", Relevance.NONE);
+            relevanceMap.put("Low", Relevance.LOW);
+            relevanceMap.put("Medium", Relevance.MEDIUM);
+            relevanceMap.put("High", Relevance.HIGH);
+
+            Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
+
             String relevanceStr =
-                JOptionPane.showInputDialog(
-                    "Choose a level of relevance (L = LOW, M = MEDIUM , H = HIGH): ");
-            Relevance relevance;
+                (String)
+                    JOptionPane.showInputDialog(
+                        null,
+                        "Choose a level of relevance",
+                        title,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        relevanceOptionsArray,
+                        relevanceOptionsArray[0]);
 
-            switch (relevanceStr) {
-              case "L" -> relevance = Relevance.LOW;
-              case "M" -> relevance = Relevance.MEDIUM;
-              case "H" -> relevance = Relevance.HIGH;
-              default -> {
-                JOptionPane.showMessageDialog(null, "Not a valid relevance.");
-                continue;
-              }
+            if (relevanceStr == null) {
+              JOptionPane.showMessageDialog(null, "You have to choose a level of relevance!");
+            } else {
+              Relevance relevance = relevanceMap.get(relevanceStr);
+              taskBuilder.setRelevance(relevance);
             }
-
-            taskBuilder.setRelevance(relevance);
           }
           case 6 -> {
             String category = JOptionPane.showInputDialog("Category: ");
@@ -181,33 +188,44 @@ public class TaskController {
 
             RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
 
+            Map<String, RepeatType> repeatTypeMap = new HashMap<>();
+            repeatTypeMap.put("Hour", RepeatType.HOUR);
+            repeatTypeMap.put("Daily", RepeatType.DAILY);
+            repeatTypeMap.put("Weekly", RepeatType.WEEKLY);
+            repeatTypeMap.put("Monthly", RepeatType.MONTHLY);
+            repeatTypeMap.put("Yearly", RepeatType.YEARLY);
+
+            Object[] repeatTypeOptionsArray = repeatTypeMap.keySet().toArray();
+
             String repeatTypeStr =
-                JOptionPane.showInputDialog(
-                    "Choose a type of repetition (H = HOUR, D = DAILY , W = WEEKLY, M = MONTHLY, Y = YEARLY): ");
+                (String)
+                    JOptionPane.showInputDialog(
+                        null,
+                        "Choose a type of repetition",
+                        title,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        repeatTypeOptionsArray,
+                        repeatTypeOptionsArray[0]);
 
             RepeatType repeatType;
 
-            switch (repeatTypeStr) {
-              case "H" -> repeatType = RepeatType.HOUR;
-              case "D" -> repeatType = RepeatType.DAILY;
-              case "W" -> repeatType = RepeatType.WEEKLY;
-              case "M" -> repeatType = RepeatType.MONTHLY;
-              case "Y" -> repeatType = RepeatType.YEARLY;
-              default -> {
-                JOptionPane.showMessageDialog(null, "Not a valid type of repetition.");
+            if (repeatTypeStr == null) {
+              JOptionPane.showMessageDialog(null, "You have to choose a type of repetition!");
+              continue;
+            } else {
+              repeatType = repeatTypeMap.get(repeatTypeStr);
+
+              if (repeatType.equals(RepeatType.HOUR)
+                  && taskBuilder.build().getSpecifiedTime() == null) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    "To set a task as hourly repetitive you must set first a specified time for this task!");
                 continue;
               }
-            }
 
-            if (repeatType.equals(RepeatType.HOUR)
-                && taskBuilder.build().getSpecifiedTime() == null) {
-              JOptionPane.showMessageDialog(
-                  null,
-                  "To set a task as hourly repetitive you must set first a specified time for this task!");
-              continue;
+              repeatingConfig.setRepeatType(repeatType);
             }
-
-            repeatingConfig.setRepeatType(repeatType);
 
             if (JOptionPane.showConfirmDialog(
                     null, "Do you want to set a end date for repetitions?")
@@ -224,7 +242,6 @@ public class TaskController {
             }
 
             String typeStr;
-
             if (repeatType.equals(RepeatType.HOUR)) typeStr = "hour";
             else if (repeatType.equals(RepeatType.DAILY)) typeStr = "days";
             else if (repeatType.equals(RepeatType.WEEKLY)) typeStr = "weeks";
@@ -244,21 +261,27 @@ public class TaskController {
               case HOUR -> {
                 HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
                 Set<Integer> minutes = new TreeSet<>();
-                int minute;
+                Integer minute;
 
+                AtomicInteger ai = new AtomicInteger(0);
+                int[] minutesOptionsArray =
+                    IntStream.generate(ai::getAndIncrement).limit(60).toArray();
+                Object[] minuteOptionsArrayObj =
+                    Arrays.stream(minutesOptionsArray).boxed().toArray();
                 boolean keep = true;
 
                 do {
                   try {
                     minute =
-                        Integer.parseInt(
-                            JOptionPane.showInputDialog("Add one specified minute (0 - 59): "));
-
-                    if (minute > 59 || minute < 0) {
-                      JOptionPane.showMessageDialog(
-                          null, "Minute value must be between 0 and 59! Try again.");
-                      continue;
-                    }
+                        (Integer)
+                            JOptionPane.showInputDialog(
+                                null,
+                                "Choose a specific minute",
+                                title,
+                                JOptionPane.INFORMATION_MESSAGE,
+                                null,
+                                minuteOptionsArrayObj,
+                                minuteOptionsArrayObj[0]);
 
                     minutes.add(minute);
 
@@ -282,14 +305,15 @@ public class TaskController {
 
                 do {
                   try {
-                    hourStr =
-                        JOptionPane.showInputDialog("Add one specific hour (00:00 - 23:59): ");
+                    hourStr = JOptionPane.showInputDialog("Add one specific hour (00:00 - 23:59)");
                     hour = LocalTime.parse(hourStr.trim());
 
                     hours.add(hour);
 
-                    if (JOptionPane.showConfirmDialog(null, "Do you want to add another hour?")
-                        != 0) keep = false;
+                    if (hours.size() == 24
+                        || JOptionPane.showConfirmDialog(
+                                null, "Do you want to add another hour? (24 max)")
+                            != 0) keep = false;
                   } catch (DateTimeParseException e) {
                     JOptionPane.showMessageDialog(null, "Invalid hour! Try again.");
                   }
@@ -304,33 +328,43 @@ public class TaskController {
                 DayOfWeek dayOfWeek;
                 String dayOfWeekStr;
 
+                Map<String, DayOfWeek> daysOfWeekMap = new HashMap<>();
+                daysOfWeekMap.put("Monday", DayOfWeek.MONDAY);
+                daysOfWeekMap.put("Tuesday", DayOfWeek.TUESDAY);
+                daysOfWeekMap.put("Wednesday", DayOfWeek.WEDNESDAY);
+                daysOfWeekMap.put("Thursday", DayOfWeek.THURSDAY);
+                daysOfWeekMap.put("Friday", DayOfWeek.FRIDAY);
+                daysOfWeekMap.put("Saturday", DayOfWeek.SATURDAY);
+                daysOfWeekMap.put("Sunday", DayOfWeek.SUNDAY);
+
+                Object[] daysOfWeekArray = daysOfWeekMap.keySet().toArray();
+
                 boolean keep = true;
 
                 do {
                   dayOfWeekStr =
-                      JOptionPane.showInputDialog(
-                          "Add one specific day of the week (M, TU, W, TH, F, SA, SU): ");
+                      (String)
+                          JOptionPane.showInputDialog(
+                              null,
+                              "Choose a specific day of the week",
+                              title,
+                              JOptionPane.INFORMATION_MESSAGE,
+                              null,
+                              daysOfWeekArray,
+                              daysOfWeekArray[0]);
 
-                  switch (dayOfWeekStr.trim()) {
-                    case "M" -> dayOfWeek = DayOfWeek.MONDAY;
-                    case "TU" -> dayOfWeek = DayOfWeek.TUESDAY;
-                    case "W" -> dayOfWeek = DayOfWeek.WEDNESDAY;
-                    case "TH" -> dayOfWeek = DayOfWeek.THURSDAY;
-                    case "F" -> dayOfWeek = DayOfWeek.FRIDAY;
-                    case "SA" -> dayOfWeek = DayOfWeek.SATURDAY;
-                    case "SU" -> dayOfWeek = DayOfWeek.SUNDAY;
-                    default -> {
-                      JOptionPane.showMessageDialog(
-                          null, "Not a valid day of the week! Try again.");
-                      continue;
-                    }
+                  if (dayOfWeekStr == null) {
+                    JOptionPane.showMessageDialog(
+                        null, "You have to choose a specific day of the week!");
+                  } else {
+                    dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
+                    daysOfWeek.add(dayOfWeek);
+
+                    if (JOptionPane.showConfirmDialog(
+                            null, "Do you want to add another day of the week?")
+                        != 0) keep = false;
                   }
 
-                  daysOfWeek.add(dayOfWeek);
-
-                  if (JOptionPane.showConfirmDialog(
-                          null, "Do you want to add another day of the week?")
-                      != 0) keep = false;
                 } while (keep);
 
                 weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
@@ -339,22 +373,27 @@ public class TaskController {
               case MONTHLY -> {
                 MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
                 Set<Integer> daysOfMonth = new TreeSet<>();
-                int dayOfMonth;
+                Integer dayOfMonth;
 
+                AtomicInteger ai = new AtomicInteger(1);
+                int[] daysOfMonthOptionsArray =
+                    IntStream.generate(ai::getAndIncrement).limit(31).toArray();
+                Object[] daysOfMonthOptionsArrayStr =
+                    Arrays.stream(daysOfMonthOptionsArray).boxed().toArray();
                 boolean keep = true;
 
                 do {
                   try {
                     dayOfMonth =
-                        Integer.parseInt(
+                        (Integer)
                             JOptionPane.showInputDialog(
-                                "Add one specified day of the month (1 - 31): "));
-
-                    if (dayOfMonth > 31 || dayOfMonth < 1) {
-                      JOptionPane.showMessageDialog(
-                          null, "Day of month must be between 1 and 31! Try again.");
-                      continue;
-                    }
+                                null,
+                                "Choose a day of the month",
+                                title,
+                                JOptionPane.INFORMATION_MESSAGE,
+                                null,
+                                daysOfMonthOptionsArrayStr,
+                                daysOfMonthOptionsArrayStr[0]);
 
                     daysOfMonth.add(dayOfMonth);
 
@@ -381,14 +420,15 @@ public class TaskController {
                 do {
                   try {
                     monthDayStr =
-                        JOptionPane.showInputDialog("Add one specific date of the year (MM-dd): ");
+                        JOptionPane.showInputDialog("Add one specific date of the year (MM-dd)");
                     monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
 
                     daysOfYear.add(monthDay);
 
-                    if (JOptionPane.showConfirmDialog(
-                            null, "Do you want to add another date of the year?")
-                        != 0) keep = false;
+                    if (daysOfYear.size() == 12
+                        || JOptionPane.showConfirmDialog(
+                                null, "Do you want to add another date of the year? (12 max)")
+                            != 0) keep = false;
                   } catch (DateTimeParseException e) {
                     JOptionPane.showMessageDialog(null, "Invalid date of the year! Try again.");
                   }
@@ -537,25 +577,34 @@ public class TaskController {
   }
 
   public void searchTasksByRelevance() {
-    String relevanceStr =
-        JOptionPane.showInputDialog(
-            "Choose a level of relevance (N = NONE, L = LOW, M = MEDIUM , H = HIGH): ");
-    Relevance relevance;
+    Map<String, Relevance> relevanceMap = new HashMap<>();
+    relevanceMap.put("None", Relevance.NONE);
+    relevanceMap.put("Low", Relevance.LOW);
+    relevanceMap.put("Medium", Relevance.MEDIUM);
+    relevanceMap.put("High", Relevance.HIGH);
 
-    switch (relevanceStr) {
-      case "N" -> relevance = Relevance.NONE;
-      case "L" -> relevance = Relevance.LOW;
-      case "M" -> relevance = Relevance.MEDIUM;
-      case "H" -> relevance = Relevance.HIGH;
-      default -> {
-        JOptionPane.showMessageDialog(null, "Not a valid relevance.");
-        return;
-      }
-    }
-    if (searchService.getRelevanceTasks(relevance).isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have task with this relevance.");
+    Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
+
+    String relevanceStr =
+        (String)
+            JOptionPane.showInputDialog(
+                null,
+                "Choose a level of relevance",
+                "Tasks by relevance",
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                relevanceOptionsArray,
+                relevanceOptionsArray[0]);
+
+    if (relevanceStr == null) {
+      JOptionPane.showMessageDialog(null, "You have to choose a level of relevance!");
     } else {
-      View.displayTasksByRelevance(searchService.getRelevanceTasks(relevance), relevance);
+      Relevance relevance = relevanceMap.get(relevanceStr);
+      if (searchService.getRelevanceTasks(relevance).isEmpty()) {
+        JOptionPane.showMessageDialog(null, "You don't have task with this relevance.");
+      } else {
+        View.displayTasksByRelevance(searchService.getRelevanceTasks(relevance), relevance);
+      }
     }
   }
 
