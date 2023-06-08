@@ -1,10 +1,9 @@
 package controllers;
 
+import javax.swing.JOptionPane;
 import models.User;
 import services.CRUDServiceImpl;
 import utils.UserLogin;
-
-import javax.swing.JOptionPane;
 
 public class UserController {
   private final CRUDServiceImpl crudService;
@@ -34,9 +33,12 @@ public class UserController {
   }
 
   public void deleteUser() {
-    String password = JOptionPane.showInputDialog("If you want to delete your account, insert your password: ");
+    String password =
+        JOptionPane.showInputDialog("If you want to delete your account, insert your password: ");
 
-    if (UserLogin.getUser().getPassword().equals(password)) {
+    if (UserLogin.getUser().getPassword().equals(password)
+        && JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your account?")
+            == 0) {
       signOut();
       crudService.deleteUser(UserLogin.getUser());
       JOptionPane.showMessageDialog(null, "You have deleted your account succesfully...");
