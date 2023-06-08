@@ -17,6 +17,12 @@ import utils.RepetitiveTaskManager;
 import views.View;
 
 public class TaskController {
+  private static final int MAX_TASK_NAME_LENGTH = 50;
+  private static final int MAX_DESCRIPTION_LENGTH = 300;
+  private static final String LONG_TASK_NAME_WARNING =
+      "Task names cannot be longer than " + MAX_TASK_NAME_LENGTH + " characters!";
+  private static final String MAX_DESCRIPTION_LENGTH_WARNING =
+      "Task description can't be longer than " + MAX_DESCRIPTION_LENGTH + " characters!";
   private final CRUDServiceImpl crudService;
   private final FilteredTaskSearchService searchService;
 
@@ -95,8 +101,8 @@ public class TaskController {
           case 1 -> {
             String name = JOptionPane.showInputDialog("Name: ");
 
-            if (name.length() > 50) {
-              JOptionPane.showMessageDialog(null, "Task names can't be longer than 50 characters!");
+            if (name.length() > MAX_TASK_NAME_LENGTH) {
+              JOptionPane.showMessageDialog(null, LONG_TASK_NAME_WARNING);
             } else if (name.isBlank() || name.isEmpty()) {
               JOptionPane.showMessageDialog(null, "Not a valid name!");
             } else {
@@ -132,8 +138,7 @@ public class TaskController {
             String description = JOptionPane.showInputDialog("Description: ");
 
             if (description.length() > 300) {
-              JOptionPane.showMessageDialog(
-                  null, "Task description can't be longer than 300 characters!");
+              JOptionPane.showMessageDialog(null, MAX_DESCRIPTION_LENGTH_WARNING);
             } else if (description.isBlank() || description.isEmpty()) {
               JOptionPane.showMessageDialog(null, "Not a valid description!");
             } else {

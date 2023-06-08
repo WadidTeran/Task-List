@@ -10,13 +10,13 @@ import views.View;
 public class CategoryController {
   public static final String EMPTY_CATEGORIES_WARNING =
       "You don't have any categories created yet.";
-  private static final String EXISTING_CATEGORY_WARNING = "This category already exists!";
-  private static final String LONG_CATEGORY_NAME_WARNING =
-      "Category names cannot be longer than 50 characters!";
-  private static final String MAXIMUM_CATEGORIES_WARNING =
-      "You cannot create more than 10 categories!";
   private static final int MAX_CATEGORY_NAME_LENGTH = 50;
   private static final int MAXIMUM_CATEGORIES = 10;
+  private static final String EXISTING_CATEGORY_WARNING = "This category already exists!";
+  private static final String LONG_CATEGORY_NAME_WARNING =
+      "Category names cannot be longer than " + MAX_CATEGORY_NAME_LENGTH + " characters!";
+  private static final String MAXIMUM_CATEGORIES_WARNING =
+      "You cannot create more than " + MAXIMUM_CATEGORIES + " categories!";
   private final CRUDServiceImpl crudService;
 
   public CategoryController(CRUDServiceImpl crudService) {
