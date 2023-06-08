@@ -1,10 +1,9 @@
 package utils;
 
+import javax.swing.JOptionPane;
 import lombok.Getter;
 import models.User;
 import services.CRUDServiceImpl;
-
-import javax.swing.*;
 
 public class UserLogin {
 

@@ -3,7 +3,8 @@ package application;
 import controllers.CategoryController;
 import controllers.TaskController;
 import controllers.UserController;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import models.*;
 import repositories.CategoryRepository;
@@ -14,7 +15,6 @@ import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
 
 public class TaskList {
-  private static final Scanner scanner = new Scanner(System.in);
   private static final IRepository<User> userRepository = new UserRepository();
   private static final IRepository<Task> taskRepository = new TaskRepository();
   private static final IRepository<Category> categoryRepository = new CategoryRepository();
@@ -24,8 +24,7 @@ public class TaskList {
   private static CategoryController categoryController = new CategoryController(crudService);
   private static final FilteredTaskSearchService searchService =
       new FilteredTaskSearchService(taskRepository);
-  private static TaskController taskController =
-      new TaskController(crudService, searchService, scanner);
+  private static TaskController taskController = new TaskController(crudService, searchService);
 
   public static void main(String[] args) {
     Map<String, Integer> menuOptions = new HashMap<>();
@@ -60,6 +59,5 @@ public class TaskList {
         }
       }
     } while (opcionIndice != 4);
-    scanner.close();
   }
 }
