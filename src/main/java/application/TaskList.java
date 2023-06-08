@@ -23,7 +23,7 @@ public class TaskList {
   private static UserController userController = new UserController(crudService);
   private static CategoryController categoryController = new CategoryController(crudService);
   private static final FilteredTaskSearchService searchService =
-      new FilteredTaskSearchService(taskRepository);
+          new FilteredTaskSearchService(taskRepository);
   private static TaskController taskController = new TaskController(crudService, searchService);
 
   public static void main(String[] args) {

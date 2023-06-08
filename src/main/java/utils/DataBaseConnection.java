@@ -6,6 +6,9 @@ public class DataBaseConnection {
   private DataBaseConnection() {}
 
   public static DataBase getConnection() {
-    return (database == null) ? new DataBase() : database;
+    if (database == null) {
+      database = new DataBase();
+    }
+    return database;
   }
 }

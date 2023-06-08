@@ -7,12 +7,12 @@ import models.Task;
 import models.User;
 
 public class DataBase {
+  @Getter private final ArrayList<User> users = new ArrayList<>();
+  @Getter private final ArrayList<Task> tasks = new ArrayList<>();
+  @Getter private final ArrayList<Category> categories = new ArrayList<>();
   private Long lastUserId;
   private Long lastTaskId;
   private Long lastCategoryId;
-  @Getter private ArrayList<User> users = new ArrayList<>();
-  @Getter private ArrayList<Task> tasks = new ArrayList<>();
-  @Getter private ArrayList<Category> categories = new ArrayList<>();
 
   public DataBase() {
     lastUserId = 0L;

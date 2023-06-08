@@ -6,6 +6,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import models.Category;
 import models.Relevance;
 import models.RepeatTaskConfig;
@@ -21,6 +22,30 @@ public class View {
   private static final String RELEVANCE = "RELEVANCE";
 
   private View() {}
+
+  public static void message(String message) {
+    JOptionPane.showMessageDialog(null, message);
+  }
+
+  public static String input(String message) {
+    return JOptionPane.showInputDialog(message);
+  }
+
+  public static String inputOptions(String title, String message, Object[] optionsArray) {
+    return (String)
+        JOptionPane.showInputDialog(
+            null,
+            message,
+            title,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            optionsArray,
+            optionsArray[0]);
+  }
+
+  public static boolean confirm(String message) {
+    return JOptionPane.showConfirmDialog(null, message) == 0;
+  }
 
   public static void displayOneTask(Task task) {
     String formatSpaces = "%25s %20s %20s %20s %30s %20s %30s %42s %n";
@@ -151,6 +176,31 @@ public class View {
     shortLines();
   }
 
+  public static String displayRepeatingConfig(
+      RepeatTaskConfig repeatTaskConfig, String firstSpace) {
+    String result = "N/A";
+    if (repeatTaskConfig != null) {
+      try {
+        try (Formatter ftmHead = new Formatter()) {
+          try (Formatter ftmBody = new Formatter()) {
+            ftmHead.format(
+                "%15s %15s %15s %22s %n", "| TYPE", "INTERVAL", "LOCALDATE", "REPEAT CONFIG |");
+            ftmBody.format(
+                firstSpace + " %12s %17s %20s",
+                repeatTaskConfig.getRepeatType(),
+                repeatTaskConfig.getRepeatInterval(),
+                repeatTaskConfig.getRepeatEndsAt(),
+                getClassName(repeatTaskConfig.getRepeatOn()));
+            result = ftmHead + "\n" + ftmBody;
+          }
+        }
+      } catch (Exception ex) {
+        Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
+    return result;
+  }
+
   private static void displayTasks(List<Task> tasks) {
     String headFormat = "%25s %20s %18s %30s %12s %30s %n";
     System.out.printf(headFormat, NAME, DUEDATE, SPECTIME, DESCRIP, RELEVANCE, CATEGORY);
@@ -168,30 +218,5 @@ public class View {
     }
 
     lines();
-  }
-
-  public static String displayRepeatingConfig(
-      RepeatTaskConfig repeatTaskConfig, String firstSpace) {
-    String result = "N/A";
-    if (repeatTaskConfig != null) {
-      try {
-        try (Formatter ftmHead = new Formatter()) {
-          try (Formatter ftmBody = new Formatter()) {
-            ftmHead.format(
-                "%15s %15s %15s %22s %n", "| TYPE", "INTERVAL", "LOCALDATE", "REPEAT CONFIG |");
-            ftmBody.format(
-                firstSpace + " %12s %17s %20s",
-                repeatTaskConfig.getRepeatType(),
-                repeatTaskConfig.getRepeatInterval(),
-                repeatTaskConfig.getRepeatEndsAt(),
-                getNameClass(repeatTaskConfig.getRepeatOn()));
-            result = ftmHead + "\n" + ftmBody;
-          }
-        }
-      } catch (Exception ex) {
-        Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    }
-    return result;
   }
 }

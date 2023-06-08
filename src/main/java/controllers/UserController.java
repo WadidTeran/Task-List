@@ -1,9 +1,9 @@
 package controllers;
 
-import javax.swing.JOptionPane;
 import models.User;
 import services.CRUDServiceImpl;
 import utils.UserLogin;
+import views.View;
 
 public class UserController {
   private final CRUDServiceImpl crudService;
@@ -13,37 +13,35 @@ public class UserController {
   }
 
   public void signIn() {
-    String email = JOptionPane.showInputDialog("Email: ");
-    String password = JOptionPane.showInputDialog("Password: ");
+    String email = View.input("Email: ");
+    String password = View.input("Password: ");
 
     UserLogin.logInUser(email, password, crudService);
   }
 
   public void signUp() {
-    String email = JOptionPane.showInputDialog("Email: ");
-    String password = JOptionPane.showInputDialog("Password: ");
+    String email = View.input("Email: ");
+    String password = View.input("Password: ");
 
     if (!crudService.checkUserEmail(email)) {
       User user = new User(email, password);
       crudService.saveUser(user);
-      JOptionPane.showMessageDialog(null, "User registered successfully!");
+      View.message("User registered successfully!");
     } else {
-      JOptionPane.showMessageDialog(null, "An user with this email already exists!");
+      View.message("An user with this email already exists!");
     }
   }
 
   public void deleteUser() {
-    String password =
-        JOptionPane.showInputDialog("If you want to delete your account, insert your password: ");
+    String password = View.input("If you want to delete your account, insert your password: ");
 
     if (UserLogin.getUser().getPassword().equals(password)
-        && JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your account?")
-            == 0) {
+        && View.confirm("Are you sure you want to delete your account?")) {
       signOut();
       crudService.deleteUser(UserLogin.getUser());
-      JOptionPane.showMessageDialog(null, "You have deleted your account succesfully...");
+      View.message("You have deleted your account succesfully...");
     } else {
-      JOptionPane.showMessageDialog(null, "Authentication failed!");
+      View.message("Authentication failed!");
     }
   }
 

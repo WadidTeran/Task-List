@@ -5,6 +5,7 @@ import models.Task;
 
 public interface IPendingTasksService {
   ArrayList<Task> getFuturePendingTasks();
+
   ArrayList<Task> getPastPendingTasks();
 
   ArrayList<Task> getPendingTasksForToday();

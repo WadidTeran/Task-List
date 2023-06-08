@@ -2,7 +2,6 @@ package services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 import models.Category;
 import models.Relevance;
 import models.Task;
@@ -31,13 +30,12 @@ public class FilteredTaskSearchService
                   }
                   return false;
                 })
-            .collect(Collectors.toList());
+            .toList();
   }
 
   @Override
   public ArrayList<Task> getCompletedTasks() {
-    return (ArrayList<Task>)
-        taskRepository.findAll().stream().filter(Task::isCompleted).collect(Collectors.toList());
+    return (ArrayList<Task>) taskRepository.findAll().stream().filter(Task::isCompleted).toList();
   }
 
   @Override
@@ -51,7 +49,7 @@ public class FilteredTaskSearchService
                   }
                   return false;
                 })
-            .collect(Collectors.toList());
+            .toList();
   }
 
   @Override
@@ -65,7 +63,7 @@ public class FilteredTaskSearchService
                   }
                   return false;
                 })
-            .collect(Collectors.toList());
+            .toList();
   }
 
   @Override
@@ -79,22 +77,18 @@ public class FilteredTaskSearchService
                   }
                   return false;
                 })
-            .collect(Collectors.toList());
+            .toList();
   }
 
   @Override
   public ArrayList<Task> getAllPendingTasks() {
     return (ArrayList<Task>)
-        taskRepository.findAll().stream()
-            .filter(t -> !t.isCompleted())
-            .collect(Collectors.toList());
+        taskRepository.findAll().stream().filter(t -> !t.isCompleted()).toList();
   }
 
   @Override
   public ArrayList<Task> getRelevanceTasks(Relevance relevance) {
     return (ArrayList<Task>)
-        getAllPendingTasks().stream()
-            .filter(t -> t.getRelevance() == relevance)
-            .collect(Collectors.toList());
+        getAllPendingTasks().stream().filter(t -> t.getRelevance() == relevance).toList();
   }
 }

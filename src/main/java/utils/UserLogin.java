@@ -1,9 +1,9 @@
 package utils;
 
-import javax.swing.JOptionPane;
 import lombok.Getter;
 import models.User;
 import services.CRUDServiceImpl;
+import views.View;
 
 public class UserLogin {
 
@@ -13,12 +13,12 @@ public class UserLogin {
 
   public static void logInUser(String email, String password, CRUDServiceImpl crudService) {
     if (!crudService.checkUserEmail(email)) {
-      JOptionPane.showMessageDialog(null, "This user doesn't exist.");
+      View.message("This user doesn't exist.");
     } else if (!crudService.validateUserPassword(email, password)) {
-      JOptionPane.showMessageDialog(null, "Invalid password");
+      View.message("Invalid password");
     } else {
       user = crudService.getUserByEmail(email);
-      JOptionPane.showMessageDialog(null, "Welcome!");
+      View.message("Welcome!");
     }
   }
 

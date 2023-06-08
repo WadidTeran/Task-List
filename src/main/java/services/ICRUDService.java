@@ -2,7 +2,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
 import models.Category;
 import models.Task;
 import models.User;

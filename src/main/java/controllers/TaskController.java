@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import javax.swing.JOptionPane;
 import models.*;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
@@ -40,10 +39,7 @@ public class TaskController {
   }
 
   public void modifyTask() {
-    ArrayList<Task> tasks = searchService.getAllPendingTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
-    } else {
+    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optTask = askForATask("Choose a task to modify", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
@@ -52,28 +48,26 @@ public class TaskController {
 
           TaskCreatorModificator.process(taskBuilder, TaskOperationType.MODIFICATION, crudService);
         } else {
-          JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
+          View.message("The task's id doesn't exist!");
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Not a valid task id.");
+        View.message("Not a valid task id.");
       }
+    } else {
+      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
   public void setAsCompletedTask() {
-    ArrayList<Task> tasks = searchService.getAllPendingTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
-    } else {
+    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as completed", TASK_STATUS_PENDING);
         if (optionalTask.isPresent()) {
           Task task = optionalTask.get();
 
-          if (JOptionPane.showConfirmDialog(
-                  null, "Are you sure you want to set as completed \"" + task.getName() + "\"?")
-              == 0) {
+          if (View.confirm(
+              "Are you sure you want to set as completed \"" + task.getName() + "\"?")) {
             task.setCompleted(true);
             task.setCompletedDate(LocalDate.now());
             crudService.saveTask(task);
@@ -82,214 +76,188 @@ public class TaskController {
             }
           }
         } else {
-          JOptionPane.showMessageDialog(null, TASK_NOT_FOUND);
+          View.message(TASK_NOT_FOUND);
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, NOT_A_NUMBER);
+        View.message(NOT_A_NUMBER);
       }
+    } else {
+      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
   public void setAsPendingTask() {
-    ArrayList<Task> tasks = searchService.getCompletedTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
-    } else {
+    if (checkExistanceOfTasks(TASK_STATUS_COMPLETED)) {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
         if (optionalTask.isPresent()) {
           Task task = optionalTask.get();
 
-          if (JOptionPane.showConfirmDialog(
-                  null, "Are you sure you want to set as pending \"" + task.getName() + "\"?")
-              == 0) {
+          if (View.confirm("Are you sure you want to set as pending \"" + task.getName() + "\"?")) {
             task.setCompleted(false);
             task.setCompletedDate(null);
             crudService.saveTask(task);
           }
         } else {
-          JOptionPane.showMessageDialog(null, TASK_NOT_FOUND);
+          View.message(TASK_NOT_FOUND);
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, NOT_A_NUMBER);
+        View.message(NOT_A_NUMBER);
       }
+    } else {
+      View.message(NO_COMPLETED_TASKS_WARNING);
     }
   }
 
   public void deleteTask() {
-    ArrayList<Task> tasks = searchService.getAllPendingTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
-    } else {
+    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optionalTask = askForATask("Choose a task to delete", TASK_STATUS_PENDING);
         if (optionalTask.isPresent()) {
           Task task = optionalTask.get();
 
-          if (JOptionPane.showConfirmDialog(
-                  null, "Are you sure you want to delete \"" + task.getName() + "\"?")
-              == 0) {
+          if (View.confirm("Are you sure you want to delete \"" + task.getName() + "\"?")) {
             crudService.deleteTask(task);
           }
         } else {
-          JOptionPane.showMessageDialog(null, TASK_NOT_FOUND);
+          View.message(TASK_NOT_FOUND);
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, NOT_A_NUMBER);
+        View.message(NOT_A_NUMBER);
       }
+    } else {
+      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
   public void searchFuturePendingTasks() {
-    ArrayList<Task> tasks = searchService.getAllPendingTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+    ArrayList<Task> futurePendingTasks = searchService.getFuturePendingTasks();
+    if (futurePendingTasks.isEmpty()) {
+      View.message("You don't have future pending tasks.");
     } else {
-      ArrayList<Task> futurePendingTasks = searchService.getFuturePendingTasks();
-      if (futurePendingTasks.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "You don't have future pending tasks.");
-      } else {
-        View.displayFuturePendingTasks(futurePendingTasks);
-      }
+      View.displayFuturePendingTasks(futurePendingTasks);
     }
   }
 
   public void searchPendingTasksForToday() {
-    ArrayList<Task> tasks = searchService.getAllPendingTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+    ArrayList<Task> pendingTasksForToday = searchService.getPendingTasksForToday();
+    if (pendingTasksForToday.isEmpty()) {
+      View.message("You don't have pending tasks for today.");
     } else {
-      ArrayList<Task> pendingTasksForToday = searchService.getPendingTasksForToday();
-      if (pendingTasksForToday.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "You don't have pending tasks for today.");
-      } else {
-        View.displayPendingTasksForToday(pendingTasksForToday);
-      }
+      View.displayPendingTasksForToday(pendingTasksForToday);
     }
   }
 
   public void searchPastPendingTasks() {
-    ArrayList<Task> tasks = searchService.getAllPendingTasks();
-    if (tasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+    ArrayList<Task> pastPendingTasks = searchService.getPastPendingTasks();
+    if (pastPendingTasks.isEmpty()) {
+      View.message("You don't have previous pending tasks.");
     } else {
-      ArrayList<Task> pastPendingTasks = searchService.getPastPendingTasks();
-      if (pastPendingTasks.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "You don't have previous pending tasks.");
-      } else {
-        View.displayPastPendingTasks(pastPendingTasks);
-      }
+      View.displayPastPendingTasks(pastPendingTasks);
     }
   }
 
   public void searchAllPendingTasks() {
     ArrayList<Task> pendingTasks = searchService.getAllPendingTasks();
     if (pendingTasks.isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
+      View.message(NO_PENDING_TASKS_WARNING);
     } else {
       View.displayAllPendingTasks(pendingTasks);
     }
   }
 
   public void searchTasksByRelevance() {
-    Map<String, Relevance> relevanceMap = new HashMap<>();
-    relevanceMap.put("None", Relevance.NONE);
-    relevanceMap.put("Low", Relevance.LOW);
-    relevanceMap.put("Medium", Relevance.MEDIUM);
-    relevanceMap.put("High", Relevance.HIGH);
+    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+      Map<String, Relevance> relevanceMap = new HashMap<>();
+      relevanceMap.put("None", Relevance.NONE);
+      relevanceMap.put("Low", Relevance.LOW);
+      relevanceMap.put("Medium", Relevance.MEDIUM);
+      relevanceMap.put("High", Relevance.HIGH);
 
-    Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
+      Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
 
-    String relevanceStr =
-        (String)
-            JOptionPane.showInputDialog(
-                null,
-                "Choose a level of relevance",
-                "Tasks by relevance",
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                relevanceOptionsArray,
-                relevanceOptionsArray[0]);
+      String relevanceStr =
+          View.inputOptions(
+              "Relevance selector", "Choose a level of relevance", relevanceOptionsArray);
 
-    if (relevanceStr == null) {
-      JOptionPane.showMessageDialog(null, "You have to choose a level of relevance!");
-    } else {
-      Relevance relevance = relevanceMap.get(relevanceStr);
-      if (searchService.getRelevanceTasks(relevance).isEmpty()) {
-        JOptionPane.showMessageDialog(null, "You don't have task with this relevance.");
+      if (relevanceStr == null) {
+        View.message("You have to choose a level of relevance!");
       } else {
-        View.displayTasksByRelevance(searchService.getRelevanceTasks(relevance), relevance);
+        Relevance relevance = relevanceMap.get(relevanceStr);
+        ArrayList<Task> relevanceTasks = searchService.getRelevanceTasks(relevance);
+        if (relevanceTasks.isEmpty()) {
+          View.message("You don't have task with this relevance.");
+        } else {
+          View.displayTasksByRelevance(relevanceTasks, relevance);
+        }
       }
+    } else {
+      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
   public void searchTasksByCategory() {
-    ArrayList<Category> categories = crudService.findAllCategories();
-    if (categories.isEmpty()) {
-      JOptionPane.showMessageDialog(null, CategoryController.EMPTY_CATEGORIES_WARNING);
-    } else {
-      Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
-
-      String category =
-          (String)
-              JOptionPane.showInputDialog(
-                  null,
-                  "Choose the category",
-                  "Search tasks by category",
-                  JOptionPane.INFORMATION_MESSAGE,
-                  null,
-                  categoriesArray,
-                  categoriesArray[0]);
-
-      if (category == null) {
-        JOptionPane.showMessageDialog(null, "You have to choose a category!");
-      } else if (!crudService.checkCategoryName(category)) {
-        JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
+    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+      ArrayList<Category> categories = crudService.findAllCategories();
+      if (categories.isEmpty()) {
+        View.message(CategoryController.NO_CATEGORIES_WARNING);
       } else {
-        Category categoryObj = crudService.getCategoryByName(category);
+        Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
 
-        if (searchService.getCategoryTasks(categoryObj).isEmpty()) {
-          JOptionPane.showMessageDialog(null, "You don't have task in this category.");
+        String category =
+            View.inputOptions("Category selector", "Choose the category", categoriesArray);
+
+        if (category == null) {
+          View.message("You have to choose a category!");
+        } else if (!crudService.checkCategoryName(category)) {
+          View.message("The category " + category + " doesn't exist.");
         } else {
-          View.displayTasksByCategory(searchService.getCategoryTasks(categoryObj), categoryObj);
+          Category categoryObj = crudService.getCategoryByName(category);
+          ArrayList<Task> categoryTasks = searchService.getCategoryTasks(categoryObj);
+          if (categoryTasks.isEmpty()) {
+            View.message("You don't have task in this category.");
+          } else {
+            View.displayTasksByCategory(categoryTasks, categoryObj);
+          }
         }
       }
+    } else {
+      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
   public void searchCompletedTasks() {
-    if (searchService.getCompletedTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
+    ArrayList<Task> completedTasks = searchService.getCompletedTasks();
+    if (completedTasks.isEmpty()) {
+      View.message(NO_COMPLETED_TASKS_WARNING);
     } else {
-      View.displayCompletedTasks(searchService.getCompletedTasks());
+      View.displayCompletedTasks(completedTasks);
     }
   }
 
   public void deleteCompletedTasks() {
     if (searchService.getCompletedTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_COMPLETED_TASKS_WARNING);
-    } else if (JOptionPane.showConfirmDialog(
-            null, "Are you sure you want to delete all completed tasks?")
-        == 0) {
+      View.message(NO_COMPLETED_TASKS_WARNING);
+    } else if (View.confirm("Are you sure you want to delete all completed tasks?")) {
       crudService.deleteCompletedTasks(searchService);
     }
   }
 
   public void searchOneTask() {
-    if (searchService.getAllPendingTasks().isEmpty()) {
-      JOptionPane.showMessageDialog(null, NO_PENDING_TASKS_WARNING);
-    } else {
+    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optTask = askForATask("Choose a task to search", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
           View.displayOneTask(optTask.get());
         } else {
-          JOptionPane.showMessageDialog(null, "The task's id doesn't exist!");
+          View.message("The task's id doesn't exist!");
         }
       } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Not a valid task id.");
+        View.message("Not a valid task id.");
       }
+    } else {
+      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
@@ -301,22 +269,23 @@ public class TaskController {
 
     Object[] taskArray = tasks.stream().map(t -> t.getTaskId() + " - " + t.getName()).toArray();
 
-    String task =
-        (String)
-            JOptionPane.showInputDialog(
-                null,
-                message,
-                "Task selector",
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                taskArray,
-                taskArray[0]);
+    String task = View.inputOptions("Task selector", message, taskArray);
 
     if (task == null) {
-      JOptionPane.showMessageDialog(null, "You have to choose a task!");
+      View.message("You have to choose a task!");
       return Optional.empty();
     } else {
-      return crudService.getTaskById(Long.parseLong(task.split("-")[0].trim()));
+      String idSection = task.split("-")[0].trim();
+      Long id = Long.parseLong(idSection);
+      return crudService.getTaskById(id);
     }
+  }
+
+  private boolean checkExistanceOfTasks(boolean taskStatus) {
+    ArrayList<Task> tasks =
+        (taskStatus == TASK_STATUS_COMPLETED)
+            ? searchService.getCompletedTasks()
+            : searchService.getAllPendingTasks();
+    return !tasks.isEmpty();
   }
 }

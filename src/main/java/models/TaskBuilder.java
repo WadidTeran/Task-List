@@ -32,11 +32,6 @@ public class TaskBuilder {
         .setRepeatingConfig(task.getRepeatingConfig());
   }
 
-  private TaskBuilder setUser(User user) {
-    this.task.setUser(user);
-    return this;
-  }
-
   public TaskBuilder setName(String name) {
     this.task.setName(name);
     return this;

@@ -106,7 +106,6 @@ public class CRUDServiceImpl implements ICRUDService {
   }
 
   public boolean checkCategoryName(String category) {
-
     return findAllCategories().stream().anyMatch(c -> c.getName().equals(category));
   }
 
