@@ -8,6 +8,13 @@ import utils.UserLogin;
 import views.View;
 
 public class CategoryController {
+  public static final String EMPTY_CATEGORIES_WARNING =
+      "You don't have any categories created yet.";
+  private static final String EXISTING_CATEGORY_WARNING = "This category already exists!";
+  private static final String LONG_CATEGORY_NAME_WARNING =
+      "Category names cannot be longer than 50 characters!";
+  private static final String MAXIMUM_CATEGORIES_WARNING =
+      "You cannot create more than 10 categories!";
   private final CRUDServiceImpl crudService;
 
   public CategoryController(CRUDServiceImpl crudService) {
@@ -16,19 +23,20 @@ public class CategoryController {
 
   public void createCategory() {
     if (crudService.findAllCategories().size() >= 10) {
-      JOptionPane.showMessageDialog(null, "You cannot create more than 10 categories!");
+      JOptionPane.showMessageDialog(null, MAXIMUM_CATEGORIES_WARNING);
     } else {
       String newCategory = JOptionPane.showInputDialog("Insert the new category's name: ");
 
       if (newCategory.length() > 50) {
-        JOptionPane.showMessageDialog(null, "Category names cannot be longer than 50 characters!");
+        JOptionPane.showMessageDialog(null, LONG_CATEGORY_NAME_WARNING);
       } else if (newCategory.isBlank() || newCategory.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Not a valid name!");
       } else if (crudService.checkCategoryName(newCategory)) {
-        JOptionPane.showMessageDialog(null, "This category already exists!");
+        JOptionPane.showMessageDialog(null, EXISTING_CATEGORY_WARNING);
       } else {
         crudService.saveCategory(new Category(newCategory, UserLogin.getUser()));
-        JOptionPane.showMessageDialog(null, "Category created succesfully.");
+        JOptionPane.showMessageDialog(
+            null, "Category \"" + newCategory + "\" created succesfully.");
       }
     }
   }
@@ -36,7 +44,7 @@ public class CategoryController {
   public void renameCategory() {
     ArrayList<Category> categories = crudService.findAllCategories();
     if (categories.isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have any categories created.");
+      JOptionPane.showMessageDialog(null, EMPTY_CATEGORIES_WARNING);
     } else {
       Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
 
@@ -59,10 +67,9 @@ public class CategoryController {
         String newCategory = JOptionPane.showInputDialog("Insert a new name for the category: ");
 
         if (newCategory.length() > 50) {
-          JOptionPane.showMessageDialog(
-              null, "Category names cannot be longer than 50 characters!");
+          JOptionPane.showMessageDialog(null, LONG_CATEGORY_NAME_WARNING);
         } else if (crudService.checkCategoryName(newCategory)) {
-          JOptionPane.showMessageDialog(null, "This category name is already in use!");
+          JOptionPane.showMessageDialog(null, EXISTING_CATEGORY_WARNING);
         } else if (JOptionPane.showConfirmDialog(
                 null,
                 "Are you sure you want to rename \""
@@ -82,7 +89,7 @@ public class CategoryController {
   public void deleteCategory() {
     ArrayList<Category> categories = crudService.findAllCategories();
     if (categories.isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have any categories created.");
+      JOptionPane.showMessageDialog(null, EMPTY_CATEGORIES_WARNING);
     } else {
       Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
 
@@ -106,6 +113,8 @@ public class CategoryController {
           == 0) {
         Category categoryToDelete = crudService.getCategoryByName(category);
         crudService.deleteCategory(categoryToDelete);
+        JOptionPane.showMessageDialog(
+            null, "Category \"" + categoryToDelete + "\" deleted succesfully.");
       }
     }
   }
@@ -113,7 +122,7 @@ public class CategoryController {
   public void searchCategories() {
     ArrayList<Category> categories = crudService.findAllCategories();
     if (categories.isEmpty()) {
-      JOptionPane.showMessageDialog(null, "You don't have any categories created.");
+      JOptionPane.showMessageDialog(null, EMPTY_CATEGORIES_WARNING);
     } else {
       View.displayCategories(categories);
     }
