@@ -22,10 +22,6 @@ public class View {
 
   private View() {}
 
-  public static void display(String string) {
-    System.out.println(string);
-  }
-
   public static void displayOneTask(Task task) {
     String formatSpaces = "%25s %20s %20s %20s %30s %20s %30s %42s %n";
 

@@ -42,7 +42,14 @@ public class CategoryController {
         JOptionPane.showMessageDialog(null, "Category names cannot be longer than 50 characters!");
       } else if (crudService.checkCategoryName(newCategory)) {
         JOptionPane.showMessageDialog(null, "This category name is already in use!");
-      } else {
+      } else if (JOptionPane.showConfirmDialog(
+              null,
+              "Are you sure you want to rename \""
+                  + category
+                  + "\" category to \""
+                  + newCategory
+                  + "\"?")
+          == 0) {
         Category oldCategory = crudService.getCategoryByName(category);
         oldCategory.setName(newCategory);
         crudService.saveCategory(oldCategory);
@@ -55,7 +62,9 @@ public class CategoryController {
 
     if (!crudService.checkCategoryName(category)) {
       JOptionPane.showMessageDialog(null, "The category " + category + " doesn't exist.");
-    } else {
+    } else if (JOptionPane.showConfirmDialog(
+            null, "Are you sure you want to delete \"" + category + "\" category?")
+        == 0) {
       Category categoryToDelete = crudService.getCategoryByName(category);
       crudService.deleteCategory(categoryToDelete);
     }
