@@ -21,8 +21,7 @@ public class TaskList {
   private static final CRUDServiceImpl crudService =
       new CRUDServiceImpl(userRepository, taskRepository, categoryRepository);
   private static UserController userController = new UserController(crudService);
-  private static CategoryController categoryController =
-      new CategoryController(crudService, scanner);
+  private static CategoryController categoryController = new CategoryController(crudService);
   private static final FilteredTaskSearchService searchService =
       new FilteredTaskSearchService(taskRepository);
   private static TaskController taskController =

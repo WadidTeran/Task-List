@@ -1,16 +1,15 @@
 package views;
 
+import static views.ViewExternalMethods.*;
+
 import java.util.Formatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import models.Category;
 import models.Relevance;
 import models.RepeatTaskConfig;
 import models.Task;
-
-import static views.ViewExternalMethods.*;
 
 public class View {
   private static final String FORMAT = "%25s %18s %20s %28s %30s %n";
@@ -30,18 +29,28 @@ public class View {
   public static void displayOneTask(Task task) {
     String formatSpaces = "%25s %20s %20s %20s %30s %20s %30s %42s %n";
 
-    putTitle("TASK: "+ task.getName().toUpperCase());
-    System.out.printf(formatSpaces, NAME, "COMPLETED DATE", DUEDATE, SPECTIME, DESCRIP, RELEVANCE, CATEGORY, "REPETITIVE CONFIG");
+    putTitle("TASK: " + task.getName().toUpperCase());
+    System.out.printf(
+        formatSpaces,
+        NAME,
+        "COMPLETED DATE",
+        DUEDATE,
+        SPECTIME,
+        DESCRIP,
+        RELEVANCE,
+        CATEGORY,
+        "REPETITIVE CONFIG");
     lines();
-    System.out.printf(formatSpaces,
-            cutString(task.getName()),
-            task.getCompletedDate(),
-            task.getDueDate(),
-            task.getSpecifiedTime(),
-            cutString(task.getDescription()),
-            task.getRelevance(),
-            cutString(task.getCategory().getName()),
-            displayRepeatingConfig(task.getRepeatingConfig(),"%188s"));
+    System.out.printf(
+        formatSpaces,
+        cutString(task.getName()),
+        task.getCompletedDate(),
+        task.getDueDate(),
+        task.getSpecifiedTime(),
+        cutString(task.getDescription()),
+        task.getRelevance(),
+        cutString(task.getCategory().getName()),
+        displayRepeatingConfig(task.getRepeatingConfig(), "%188s"));
     lines();
   }
 
@@ -68,14 +77,14 @@ public class View {
     // iterates over the list
     for (Task task : tasks) {
       System.out.format(
-              HEAD,
-              task.getTaskId(),
-              cutString(task.getName()),
-              task.getDueDate(),
-              task.getSpecifiedTime(),
-              cutString(task.getDescription()),
-              task.getRelevance(),
-              cutString(task.getCategory().getName()));
+          HEAD,
+          task.getTaskId(),
+          cutString(task.getName()),
+          task.getDueDate(),
+          task.getSpecifiedTime(),
+          cutString(task.getDescription()),
+          task.getRelevance(),
+          cutString(task.getCategory().getName()));
     }
 
     lines();
@@ -84,36 +93,35 @@ public class View {
   public static void displayCompletedTasks(List<Task> tasks) {
     String formatSpaces = "%25s %20s %20s %30s %15s %30s%n";
     putTitle("COMPLETED TASKS");
-    System.out.printf(
-            formatSpaces, NAME, "COMPLETED DATE", SPECTIME, DESCRIP, RELEVANCE, CATEGORY);
+    System.out.printf(formatSpaces, NAME, "COMPLETED DATE", SPECTIME, DESCRIP, RELEVANCE, CATEGORY);
     lines();
     // iterates over the list
     for (Task task : tasks) {
       System.out.format(
-              formatSpaces,
-              cutString(task.getName()),
-              task.getCompletedDate(),
-              task.getSpecifiedTime(),
-              cutString(task.getDescription()),
-              task.getRelevance(),
-              cutString(task.getCategory().getName()));
+          formatSpaces,
+          cutString(task.getName()),
+          task.getCompletedDate(),
+          task.getSpecifiedTime(),
+          cutString(task.getDescription()),
+          task.getRelevance(),
+          cutString(task.getCategory().getName()));
     }
 
     lines();
   }
 
   public static void displayTasksByCategory(List<Task> tasks, Category category) {
-    putTitle("TASKS BY CATEGORY "+ category.getName().toUpperCase());
+    putTitle("TASKS BY CATEGORY " + category.getName().toUpperCase());
     System.out.printf(FORMAT, NAME, DUEDATE, SPECTIME, DESCRIP, RELEVANCE);
     lines();
     for (Task task : tasks) {
       System.out.printf(
-              FORMAT,
-              cutString(task.getName()),
-              task.getDueDate(),
-              task.getSpecifiedTime(),
-              cutString(task.getDescription()),
-              task.getRelevance());
+          FORMAT,
+          cutString(task.getName()),
+          task.getDueDate(),
+          task.getSpecifiedTime(),
+          cutString(task.getDescription()),
+          task.getRelevance());
     }
     lines();
   }
@@ -125,12 +133,12 @@ public class View {
 
     for (Task task : tasks) {
       System.out.printf(
-              FORMAT,
-              cutString(task.getName()),
-              task.getDueDate(),
-              task.getSpecifiedTime(),
-              cutString(task.getDescription()),
-              cutString(task.getCategory().getName()));
+          FORMAT,
+          cutString(task.getName()),
+          task.getDueDate(),
+          task.getSpecifiedTime(),
+          cutString(task.getDescription()),
+          cutString(task.getCategory().getName()));
     }
     lines();
   }
@@ -154,30 +162,33 @@ public class View {
     // iterates over the list
     for (Task task : tasks) {
       System.out.format(
-              headFormat,
-              cutString(task.getName()),
-              task.getDueDate(),
-              task.getSpecifiedTime(),
-              cutString(task.getDescription()),
-              task.getRelevance(),
-              cutString(task.getCategory().getName()));
+          headFormat,
+          cutString(task.getName()),
+          task.getDueDate(),
+          task.getSpecifiedTime(),
+          cutString(task.getDescription()),
+          task.getRelevance(),
+          cutString(task.getCategory().getName()));
     }
 
     lines();
   }
 
-  public static String displayRepeatingConfig(RepeatTaskConfig repeatTaskConfig, String firstSpace) {
-    String result="N/A";
+  public static String displayRepeatingConfig(
+      RepeatTaskConfig repeatTaskConfig, String firstSpace) {
+    String result = "N/A";
     if (repeatTaskConfig != null) {
       try {
         try (Formatter ftmHead = new Formatter()) {
           try (Formatter ftmBody = new Formatter()) {
-            ftmHead.format("%15s %15s %15s %22s %n", "| TYPE", "INTERVAL", "LOCALDATE", "REPEAT CONFIG |");
-            ftmBody.format(firstSpace + " %12s %17s %20s",
-                    repeatTaskConfig.getRepeatType(),
-                    repeatTaskConfig.getRepeatInterval(),
-                    repeatTaskConfig.getRepeatEndsAt(),
-                    getNameClass(repeatTaskConfig.getRepeatOn()));
+            ftmHead.format(
+                "%15s %15s %15s %22s %n", "| TYPE", "INTERVAL", "LOCALDATE", "REPEAT CONFIG |");
+            ftmBody.format(
+                firstSpace + " %12s %17s %20s",
+                repeatTaskConfig.getRepeatType(),
+                repeatTaskConfig.getRepeatInterval(),
+                repeatTaskConfig.getRepeatEndsAt(),
+                getNameClass(repeatTaskConfig.getRepeatOn()));
             result = ftmHead + "\n" + ftmBody;
           }
         }

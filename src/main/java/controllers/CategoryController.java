@@ -1,24 +1,20 @@
 package controllers;
 
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 import models.Category;
 import services.CRUDServiceImpl;
 import utils.UserLogin;
 import views.View;
 
 public class CategoryController {
-
-  private final Scanner scanner;
   private final CRUDServiceImpl crudService;
 
-  public CategoryController(CRUDServiceImpl crudService, Scanner scanner) {
+  public CategoryController(CRUDServiceImpl crudService) {
     this.crudService = crudService;
-    this.scanner = scanner;
   }
 
   public void createCategory() {
-    View.display("Insert the new category's name: ");
-    String newCategory = scanner.nextLine();
+    String newCategory = JOptionPane.showInputDialog("Insert the new category's name: ");
 
     if (newCategory.length() > 50) {
       View.display("Category names cannot be longer than 50 characters!");
@@ -35,15 +31,12 @@ public class CategoryController {
   }
 
   public void renameCategory() {
-
-    View.display("Insert the name of the category to change: ");
-    String category = scanner.nextLine();
+    String category = JOptionPane.showInputDialog("Insert the name of the category to change: ");
 
     if (!crudService.checkCategoryName(category)) {
       View.display("The category " + category + " doesn't exist.");
     } else {
-      View.display("Insert a new name for the category: ");
-      String newCategory = scanner.nextLine();
+      String newCategory = JOptionPane.showInputDialog("Insert a new name for the category: ");
 
       if (newCategory.length() > 50) {
         View.display("Category names cannot be longer than 50 characters!");
@@ -58,8 +51,7 @@ public class CategoryController {
   }
 
   public void deleteCategory() {
-    View.display("Insert the name of the category to delete: ");
-    String category = scanner.nextLine();
+    String category = JOptionPane.showInputDialog("Insert the name of the category to delete: ");
 
     if (!crudService.checkCategoryName(category)) {
       View.display("The category " + category + " doesn't exist.");
