@@ -7800,7 +7800,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "NextDueDateCalculator",
+					"name": "NextDueDateCalculatorService",
 					"ownedElements": [
 						{
 							"_type": "UMLInterfaceRealization",
@@ -14192,7 +14192,7 @@
 											"top": 1615,
 											"width": 214.9970703125,
 											"height": 13,
-											"text": "NextDueDateCalculator"
+											"text": "NextDueDateCalculatorService"
 										},
 										{
 											"_type": "LabelView",
@@ -16204,7 +16204,7 @@
 											"top": 839,
 											"width": 392.8310546875,
 											"height": 13,
-											"text": "TaskController"
+											"text": "TaskService"
 										},
 										{
 											"_type": "LabelView",
@@ -17110,7 +17110,7 @@
 											"top": 1231,
 											"width": 386.88330078125,
 											"height": 13,
-											"text": "RepetitiveTaskManager"
+											"text": "RepetitiveTaskService"
 										},
 										{
 											"_type": "LabelView",
@@ -17324,7 +17324,7 @@
 											"top": 671,
 											"width": 188.91259765625,
 											"height": 13,
-											"text": "CategoryController"
+											"text": "CategoryService"
 										},
 										{
 											"_type": "LabelView",
@@ -17607,7 +17607,7 @@
 											"top": 511,
 											"width": 185.64990234375,
 											"height": 13,
-											"text": "UserController"
+											"text": "UserService"
 										},
 										{
 											"_type": "LabelView",
@@ -19842,7 +19842,7 @@
 											"top": 1191,
 											"width": 613.056640625,
 											"height": 13,
-											"text": "TaskCreatorModificator"
+											"text": "TaskCreatorModificatorService"
 										},
 										{
 											"_type": "LabelView",
@@ -20237,7 +20237,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGIfwxxmk4aBQc="
 					},
-					"name": "TaskController",
+					"name": "TaskService",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
@@ -20544,7 +20544,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInQbR/d9VTag="
 									},
-									"name": "boolean taskStatus"
+									"name": "boolean taskStatus",
+									"type": ""
 								}
 							]
 						}
@@ -20647,7 +20648,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInT7F2eFlVFY="
 									},
-									"name": "Boolean completed"
+									"name": "Boolean completed",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20676,7 +20678,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInUANquF0vHQ="
 									},
-									"name": "LocalDate completedDate"
+									"name": "LocalDate completedDate",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20735,7 +20738,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInUE6teGPc9o="
 									},
-									"name": "LocalTime specifiedTime"
+									"name": "LocalTime specifiedTime",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20764,7 +20768,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInUFU4OGYDrY="
 									},
-									"name": "String description"
+									"name": "String description",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20793,7 +20798,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInUFv2+Gh2Ew="
 									},
-									"name": "Relevance relevance"
+									"name": "Relevance relevance",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20822,7 +20828,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInUG0XOGqDdY="
 									},
-									"name": "Category category"
+									"name": "Category category",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20851,7 +20858,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInUG/uOGz/wY="
 									},
-									"name": "RepeatTaskConfig repeatTaskConfig"
+									"name": "RepeatTaskConfig repeatTaskConfig",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20903,7 +20911,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGIfwxxmk4aBQc="
 					},
-					"name": "RepetitiveTaskManager",
+					"name": "RepetitiveTaskService",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
@@ -21013,7 +21021,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGIfwxxmk4aBQc="
 					},
-					"name": "CategoryController",
+					"name": "CategoryService",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
@@ -21118,7 +21126,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGIfwxxmk4aBQc="
 					},
-					"name": "UserController",
+					"name": "UserService",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
@@ -21242,7 +21250,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String email"
+									"name": "String email",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -21250,7 +21259,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "String password"
+									"name": "String password",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -21630,7 +21640,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGIfwxxmk4aBQc="
 					},
-					"name": "TaskCreatorModificator",
+					"name": "TaskCreatorModificatorService",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
@@ -21698,7 +21708,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInRJg/uDaVfI="
 									},
-									"name": "TaskOperationType taskOperationType"
+									"name": "TaskOperationType taskOperationType",
+									"type": ""
 								}
 							]
 						},
@@ -21717,7 +21728,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInRNfZODqAtQ="
 									},
-									"name": "TaskBuilder taskBuilder"
+									"name": "TaskBuilder taskBuilder",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -21725,7 +21737,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInRNfZODqAtQ="
 									},
-									"name": "TaskOperationType taskOperationType"
+									"name": "TaskOperationType taskOperationType",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -22969,7 +22982,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIhMcTaAJ0Ddc="
 									},
-									"name": "String message"
+									"name": "String message",
+									"type": ""
 								}
 							]
 						},
@@ -23017,7 +23031,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInVdJi+H4Foc="
 									},
-									"name": "String title"
+									"name": "String title",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -23025,7 +23040,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInVdJi+H4Foc="
 									},
-									"name": "String message"
+									"name": "String message",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -23033,7 +23049,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInVdJi+H4Foc="
 									},
-									"name": "Object[] optionsArray"
+									"name": "Object[] optionsArray",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -23528,7 +23545,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInV3PfOJxm1U="
 									},
-									"name": "String text"
+									"name": "String text",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
