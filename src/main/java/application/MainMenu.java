@@ -12,7 +12,7 @@ public class MainMenu extends AbstractMenu {
       TaskService taskService,
       CategoryService categoryService) {
     super(crudService, searchService, userService, taskService, categoryService);
-    title = "Task-List App";
+    title = "Task-List Menu";
   }
 
   @Override

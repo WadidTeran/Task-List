@@ -8,8 +8,9 @@ public class SingletonMenuFactory {
   private static AbstractMenu taskMenu;
   private static AbstractMenu categoryMenu;
   private static AbstractMenu accountSettingsMenu;
-  private static AbstractMenu completedTaskMenu;
+  private static AbstractMenu completedTasksMenu;
   private static AbstractMenu searchTasksMenu;
+  private static AbstractMenu pendingTasksMenu;
 
   private SingletonMenuFactory() {}
 
@@ -99,11 +100,25 @@ public class SingletonMenuFactory {
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    if (completedTaskMenu == null) {
-      completedTaskMenu =
+    if (completedTasksMenu == null) {
+      completedTasksMenu =
           new CompletedTasksMenu(
               crudService, searchService, userService, taskService, categoryService);
     }
-    return completedTaskMenu;
+    return completedTasksMenu;
+  }
+
+  public static AbstractMenu getPendingTasksMenu(
+      CRUDServiceImpl crudService,
+      FilteredTaskSearchService searchService,
+      UserService userService,
+      TaskService taskService,
+      CategoryService categoryService) {
+    if (pendingTasksMenu == null) {
+      pendingTasksMenu =
+          new PendingTasksMenu(
+              crudService, searchService, userService, taskService, categoryService);
+    }
+    return pendingTasksMenu;
   }
 }
