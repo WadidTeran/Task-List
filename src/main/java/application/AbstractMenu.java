@@ -28,7 +28,7 @@ public abstract class AbstractMenu {
     configureMenuOptions();
   }
 
-  public AbstractMenu showMenu(){
+  public AbstractMenu showMenu() {
     Object[] optionsArray = menuOptions.keySet().toArray();
     int optionIndex;
 
@@ -41,8 +41,8 @@ public abstract class AbstractMenu {
     }
     return null;
   }
+
   public abstract void configureMenuOptions();
 
   public abstract AbstractMenu options(int optionIndex);
-
 }
