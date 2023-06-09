@@ -39,7 +39,7 @@ public class TaskController {
   }
 
   public void modifyTask() {
-    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optTask = askForATask("Choose a task to modify", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
@@ -59,7 +59,7 @@ public class TaskController {
   }
 
   public void setAsCompletedTask() {
-    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as completed", TASK_STATUS_PENDING);
@@ -87,7 +87,7 @@ public class TaskController {
   }
 
   public void setAsPendingTask() {
-    if (checkExistanceOfTasks(TASK_STATUS_COMPLETED)) {
+    if (checkExistenceOfTasks(TASK_STATUS_COMPLETED)) {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
@@ -111,7 +111,7 @@ public class TaskController {
   }
 
   public void deleteTask() {
-    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optionalTask = askForATask("Choose a task to delete", TASK_STATUS_PENDING);
         if (optionalTask.isPresent()) {
@@ -168,7 +168,7 @@ public class TaskController {
   }
 
   public void searchTasksByRelevance() {
-    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       Map<String, Relevance> relevanceMap = new HashMap<>();
       relevanceMap.put("None", Relevance.NONE);
       relevanceMap.put("Low", Relevance.LOW);
@@ -198,7 +198,7 @@ public class TaskController {
   }
 
   public void searchTasksByCategory() {
-    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       ArrayList<Category> categories = crudService.findAllCategories();
       if (categories.isEmpty()) {
         View.message(CategoryController.NO_CATEGORIES_WARNING);
@@ -245,7 +245,7 @@ public class TaskController {
   }
 
   public void searchOneTask() {
-    if (checkExistanceOfTasks(TASK_STATUS_PENDING)) {
+    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optTask = askForATask("Choose a task to search", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
@@ -281,7 +281,7 @@ public class TaskController {
     }
   }
 
-  private boolean checkExistanceOfTasks(boolean taskStatus) {
+  private boolean checkExistenceOfTasks(boolean taskStatus) {
     ArrayList<Task> tasks =
         (taskStatus == TASK_STATUS_COMPLETED)
             ? searchService.getCompletedTasks()
