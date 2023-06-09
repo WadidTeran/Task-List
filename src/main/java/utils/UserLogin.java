@@ -15,7 +15,7 @@ public class UserLogin {
     if (!crudService.checkUserEmail(email)) {
       View.message("This user doesn't exist.");
     } else if (!crudService.validateUserPassword(email, password)) {
-      View.message("Invalid password");
+      View.message("Invalid password.");
     } else {
       user = crudService.getUserByEmail(email);
       View.message("Welcome!");

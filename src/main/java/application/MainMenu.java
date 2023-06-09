@@ -28,17 +28,21 @@ public class MainMenu extends AbstractMenu {
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
       case 1 -> {
-        return SingletonMenuFactory.getTaskMenu(crudService, searchService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getTaskMenu(
+            crudService, searchService, userService, taskService, categoryService);
       }
       case 2 -> {
-        return SingletonMenuFactory.getCategoryMenu(crudService, searchService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getCategoryMenu(
+            crudService, searchService, userService, taskService, categoryService);
       }
       case 3 -> {
-        return SingletonMenuFactory.getAccontSettingsMenu(crudService, searchService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getAccountSettingsMenu(
+            crudService, searchService, userService, taskService, categoryService);
       }
       case 4 -> {
         userService.signOut();
-        return SingletonMenuFactory.getLoginMenu(crudService, searchService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getLoginMenu(
+            crudService, searchService, userService, taskService, categoryService);
       }
       default -> {
         return null;
