@@ -3,6 +3,7 @@ package models;
 import java.time.LocalTime;
 import java.util.Set;
 import lombok.Data;
+import services.IRepeatOnConfigVisitor;
 
 @Data
 public class DailyRepeatOnConfig implements RepeatOnConfig {

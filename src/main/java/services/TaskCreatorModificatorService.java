@@ -1,6 +1,5 @@
-package utils;
+package services;
 
-import controllers.TaskController;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,13 +14,12 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import models.*;
-import services.CRUDServiceImpl;
 import views.View;
 
-public class TaskCreatorModificator {
+public class TaskCreatorModificatorService {
   private static Map<String, Integer> menuOptions;
 
-  private TaskCreatorModificator() {}
+  private TaskCreatorModificatorService() {}
 
   private static String switchMenuAndTitle(TaskOperationType taskOperationType) {
     menuOptions = new HashMap<>();
@@ -69,8 +67,8 @@ public class TaskCreatorModificator {
         if (opcionIndice == 1) {
           String name = View.input("Name");
 
-          if (name.length() > TaskController.MAX_TASK_NAME_LENGTH) {
-            View.message(TaskController.LONG_TASK_NAME_WARNING);
+          if (name.length() > TaskService.MAX_TASK_NAME_LENGTH) {
+            View.message(TaskService.LONG_TASK_NAME_WARNING);
           } else if (name.isBlank() || name.isEmpty()) {
             View.message("Not a valid name!");
           } else {
@@ -102,7 +100,7 @@ public class TaskCreatorModificator {
           String description = View.input("Description");
 
           if (description.length() > 300) {
-            View.message(TaskController.MAX_DESCRIPTION_LENGTH_WARNING);
+            View.message(TaskService.MAX_DESCRIPTION_LENGTH_WARNING);
           } else if (description.isBlank() || description.isEmpty()) {
             View.message("Not a valid description!");
           } else {

@@ -1,14 +1,13 @@
-package controllers;
+package services;
 
 import models.User;
-import services.CRUDServiceImpl;
 import utils.UserLogin;
 import views.View;
 
-public class UserController {
+public class UserService {
   private final CRUDServiceImpl crudService;
 
-  public UserController(CRUDServiceImpl crudService) {
+  public UserService(CRUDServiceImpl crudService) {
     this.crudService = crudService;
   }
 

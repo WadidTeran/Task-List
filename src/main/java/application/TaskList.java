@@ -1,11 +1,10 @@
 package application;
 
-import controllers.CategoryController;
-import controllers.TaskController;
-import controllers.UserController;
+import services.CategoryService;
+import services.TaskService;
+import services.UserService;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import models.*;
 import repositories.CategoryRepository;
 import repositories.IRepository;
@@ -13,6 +12,7 @@ import repositories.TaskRepository;
 import repositories.UserRepository;
 import services.CRUDServiceImpl;
 import services.FilteredTaskSearchService;
+import views.View;
 
 public class TaskList {
   private static final IRepository<User> userRepository = new UserRepository();
@@ -20,44 +20,33 @@ public class TaskList {
   private static final IRepository<Category> categoryRepository = new CategoryRepository();
   private static final CRUDServiceImpl crudService =
       new CRUDServiceImpl(userRepository, taskRepository, categoryRepository);
-  private static UserController userController = new UserController(crudService);
-  private static CategoryController categoryController = new CategoryController(crudService);
+  private static UserService userService = new UserService(crudService);
+  private static CategoryService categoryService = new CategoryService(crudService);
   private static final FilteredTaskSearchService searchService =
-          new FilteredTaskSearchService(taskRepository);
-  private static TaskController taskController = new TaskController(crudService, searchService);
+      new FilteredTaskSearchService(taskRepository);
+  private static TaskService taskService = new TaskService(crudService, searchService);
 
   public static void main(String[] args) {
     Map<String, Integer> menuOptions = new HashMap<>();
     menuOptions.put("Sign In", 1);
     menuOptions.put("Sign Up", 2);
-    menuOptions.put("Exit", 3);
 
-    Object[] opArreglo = menuOptions.keySet().toArray();
-    int opcionIndice = 0;
+    Object[] optionsArray = menuOptions.keySet().toArray();
+    int optionIndex;
 
     do {
-      String opcion =
-          (String)
-              JOptionPane.showInputDialog(
-                  null,
-                  "Choose an option",
-                  "Task-List Login",
-                  JOptionPane.INFORMATION_MESSAGE,
-                  null,
-                  opArreglo,
-                  opArreglo[0]);
+      String opcion = View.inputOptions("Task-List Login", "Choose an option", optionsArray);
       if (opcion == null) {
-        JOptionPane.showMessageDialog(null, "You have to choose an option!");
+        if (View.confirm("Are you sure you want to exit?")) break;
       } else {
-        opcionIndice = menuOptions.get(opcion);
+        optionIndex = menuOptions.get(opcion);
 
-        switch (opcionIndice) {
-          case 1 -> userController.signIn();
-          case 2 -> userController.signUp();
-          case 3 -> opcionIndice =
-              (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?") == 0) ? 4 : 0;
+        if (optionIndex == 1) {
+          userService.signIn();
+        } else if (optionIndex == 2) {
+          userService.signUp();
         }
       }
-    } while (opcionIndice != 4);
+    } while (true);
   }
 }

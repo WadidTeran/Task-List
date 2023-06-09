@@ -1,19 +1,15 @@
-package controllers;
+package services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 import models.*;
-import services.CRUDServiceImpl;
-import services.FilteredTaskSearchService;
-import utils.RepetitiveTaskManager;
-import utils.TaskCreatorModificator;
-import utils.TaskOperationType;
 import views.View;
 
-public class TaskController {
+public class TaskService {
   public static final int MAX_TASK_NAME_LENGTH = 50;
   public static final int MAX_DESCRIPTION_LENGTH = 300;
   public static final String NO_PENDING_TASKS_WARNING = "You don't have any pending tasks.";
@@ -29,13 +25,13 @@ public class TaskController {
   private final CRUDServiceImpl crudService;
   private final FilteredTaskSearchService searchService;
 
-  public TaskController(CRUDServiceImpl crudService, FilteredTaskSearchService searchService) {
+  public TaskService(CRUDServiceImpl crudService, FilteredTaskSearchService searchService) {
     this.crudService = crudService;
     this.searchService = searchService;
   }
 
   public void createTask() {
-    TaskCreatorModificator.process(new TaskBuilder(), TaskOperationType.CREATION, crudService);
+    TaskCreatorModificatorService.process(new TaskBuilder(), TaskOperationType.CREATION, crudService);
   }
 
   public void modifyTask() {
@@ -46,7 +42,7 @@ public class TaskController {
           Task taskToModify = optTask.get();
           TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
 
-          TaskCreatorModificator.process(taskBuilder, TaskOperationType.MODIFICATION, crudService);
+          TaskCreatorModificatorService.process(taskBuilder, TaskOperationType.MODIFICATION, crudService);
         } else {
           View.message("The task's id doesn't exist!");
         }
@@ -72,7 +68,7 @@ public class TaskController {
             task.setCompletedDate(LocalDate.now());
             crudService.saveTask(task);
             if (task.getRepeatingConfig() != null) {
-              RepetitiveTaskManager.manageRepetitiveTask(task, crudService);
+              RepetitiveTaskService.manageRepetitiveTask(task, crudService);
             }
           }
         } else {
@@ -201,7 +197,7 @@ public class TaskController {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       ArrayList<Category> categories = crudService.findAllCategories();
       if (categories.isEmpty()) {
-        View.message(CategoryController.NO_CATEGORIES_WARNING);
+        View.message(CategoryService.NO_CATEGORIES_WARNING);
       } else {
         Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
 

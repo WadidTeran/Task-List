@@ -3,6 +3,7 @@ package models;
 import java.time.MonthDay;
 import java.util.Set;
 import lombok.Data;
+import services.IRepeatOnConfigVisitor;
 
 @Data
 public class YearlyRepeatOnConfig implements RepeatOnConfig {

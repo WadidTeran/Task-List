@@ -3,6 +3,7 @@ package models;
 import java.time.DayOfWeek;
 import java.util.Set;
 import lombok.Data;
+import services.IRepeatOnConfigVisitor;
 
 @Data
 public class WeeklyRepeatOnConfig implements RepeatOnConfig {

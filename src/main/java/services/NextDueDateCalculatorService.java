@@ -1,4 +1,4 @@
-package models;
+package services;
 
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -8,15 +8,16 @@ import java.time.MonthDay;
 import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
+import models.*;
 
-public class NextDueDateCalculator implements IRepeatOnConfigVisitor {
+public class NextDueDateCalculatorService implements IRepeatOnConfigVisitor {
   private final LocalDate oldDueDate;
   private final LocalTime oldSpecifiedTime;
   private final Integer repeatInterval;
   @Getter private LocalDate nextDueDate;
   @Getter private LocalTime nextSpecifiedTime;
 
-  public NextDueDateCalculator(Task task) {
+  public NextDueDateCalculatorService(Task task) {
     oldDueDate = task.getDueDate();
     oldSpecifiedTime = task.getSpecifiedTime();
     repeatInterval = task.getRepeatingConfig().getRepeatInterval();

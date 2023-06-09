@@ -1,4 +1,10 @@
-package models;
+package services;
+
+import models.HourRepeatOnConfig;
+import models.DailyRepeatOnConfig;
+import models.WeeklyRepeatOnConfig;
+import models.MonthlyRepeatOnConfig;
+import models.YearlyRepeatOnConfig;
 
 public interface IRepeatOnConfigVisitor {
   void visit(HourRepeatOnConfig repeatOnConfig);

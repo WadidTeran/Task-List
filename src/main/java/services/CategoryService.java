@@ -1,12 +1,11 @@
-package controllers;
+package services;
 
 import java.util.ArrayList;
 import models.Category;
-import services.CRUDServiceImpl;
 import utils.UserLogin;
 import views.View;
 
-public class CategoryController {
+public class CategoryService {
   public static final String NO_CATEGORIES_WARNING = "You don't have any categories created yet.";
   private static final int MAX_CATEGORY_NAME_LENGTH = 50;
   private static final int MAXIMUM_CATEGORIES = 10;
@@ -17,7 +16,7 @@ public class CategoryController {
       "You cannot create more than " + MAXIMUM_CATEGORIES + " categories!";
   private final CRUDServiceImpl crudService;
 
-  public CategoryController(CRUDServiceImpl crudService) {
+  public CategoryService(CRUDServiceImpl crudService) {
     this.crudService = crudService;
   }
 
