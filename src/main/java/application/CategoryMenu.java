@@ -1,0 +1,55 @@
+package application;
+
+import java.util.HashMap;
+import services.*;
+
+public class CategoryMenu extends AbstractMenu {
+  public CategoryMenu(
+      CRUDServiceImpl crudService,
+      FilteredTaskSearchService searchService,
+      UserService userService,
+      TaskService taskService,
+      CategoryService categoryService) {
+    super(crudService, searchService, userService, taskService, categoryService);
+    title = "Category Options";
+  }
+
+  @Override
+  public void configureMenuOptions() {
+    menuOptions = new HashMap<>();
+    menuOptions.put("Create Category", 1);
+    menuOptions.put("List All Categories", 2);
+    menuOptions.put("Rename Category", 3);
+    menuOptions.put("Delete Category", 4);
+    menuOptions.put("Back", 5);
+  }
+
+  @Override
+  public AbstractMenu options(int optionIndex) {
+    switch (optionIndex) {
+      case 1 -> {
+        categoryService.createCategory();
+        return this;
+      }
+      case 2 -> {
+        categoryService.searchCategories();
+        return this;
+      }
+      case 3 -> {
+        categoryService.renameCategory();
+        return this;
+      }
+      case 4 -> {
+        categoryService.deleteCategory();
+        return this;
+      }
+      case 5 -> {
+        return SingletonMenuFactory.getMainMenu(
+            crudService, searchService, userService, taskService, categoryService);
+      }
+      default -> {
+        return null;
+      }
+    }
+  }
+}

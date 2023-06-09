@@ -3,36 +3,45 @@ package application;
 import java.util.HashMap;
 import services.*;
 
-public class LoginMenu extends AbstractMenu {
+public class AccountSettingsMenu extends AbstractMenu {
 
-  public LoginMenu(
+  protected AccountSettingsMenu(
       CRUDServiceImpl crudService,
       FilteredTaskSearchService searchService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     super(crudService, searchService, userService, taskService, categoryService);
-    configureMenuOptions();
-    title = "Task-List Login";
+    title = "Account Settings Menu";
   }
 
   @Override
   public void configureMenuOptions() {
     menuOptions = new HashMap<>();
-    menuOptions.put("Sign In", 1);
-    menuOptions.put("Sign Up", 2);
+    menuOptions.put("Change Email", 1);
+    menuOptions.put("Change Password", 2);
+    menuOptions.put("Delete Account", 3);
+    menuOptions.put("Back", 4);
   }
 
   @Override
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
       case 1 -> {
-        userService.signIn();
-        return SingletonMenuFactory.getMainMenu(crudService, searchService, userService, taskService, categoryService);
+        userService.changeEmail();
+        return this;
       }
       case 2 -> {
-        userService.signUp();
+        userService.changePassword();
         return this;
+      }
+      case 3 -> {
+        userService.deleteUser();
+        return this;
+      }
+      case 4 -> {
+        return SingletonMenuFactory.getMainMenu(
+            crudService, searchService, userService, taskService, categoryService);
       }
       default -> {
         return null;
