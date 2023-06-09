@@ -77,11 +77,16 @@ public class UserService {
 
     if (checkPassword(password)) {
       String newPassword = View.input("Insert the new password.");
-      if (View.confirm("Are you sure you want to change your password?")) {
-        User currentUser = UserLogin.getUser();
-        currentUser.setPassword(newPassword);
-        crudService.saveUser(currentUser);
-        View.message("Password changed successfully.");
+      String newPasswordConfirm = View.input("Confirm the new password.");
+      if (newPassword.equals(newPasswordConfirm)) {
+        if (View.confirm("Are you sure you want to change your password?")) {
+          User currentUser = UserLogin.getUser();
+          currentUser.setPassword(newPassword);
+          crudService.saveUser(currentUser);
+          View.message("Password changed successfully.");
+        }
+      } else {
+        View.message("Password confirmation failed!");
       }
     } else {
       View.message("Incorrect password.");
