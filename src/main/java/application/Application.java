@@ -1,6 +1,5 @@
 package application;
 
-
 import models.Category;
 import models.Task;
 import models.User;
@@ -23,12 +22,13 @@ public class Application {
       new FilteredTaskSearchService(taskRepository);
   private static final TaskService taskService = new TaskService(crudService, searchService);
 
-  private Application(){}
+  private Application() {}
 
   public static void start() {
-    AbstractMenu actualState = new LoginMenu(crudService, searchService, userService, taskService, categoryService);
-    while (actualState != null) {
-      actualState = actualState.showMenu();
+    AbstractMenu currentMenu =
+        new LoginMenu(crudService, searchService, userService, taskService, categoryService);
+    while (currentMenu != null) {
+      currentMenu = currentMenu.showMenu();
     }
   }
 }
