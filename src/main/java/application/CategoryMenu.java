@@ -11,7 +11,7 @@ public class CategoryMenu extends AbstractMenu {
       TaskService taskService,
       CategoryService categoryService) {
     super(crudService, searchService, userService, taskService, categoryService);
-    title = "Category Options";
+    title = "Category Menu";
   }
 
   @Override

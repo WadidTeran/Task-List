@@ -11,8 +11,9 @@ public class TaskMenu extends AbstractMenu {
       TaskService taskService,
       CategoryService categoryService) {
     super(crudService, searchService, userService, taskService, categoryService);
-    title = "Task Options";
+    title = "Task Menu";
   }
+
   @Override
   public void configureMenuOptions() {
     menuOptions = new HashMap<>();
@@ -53,7 +54,8 @@ public class TaskMenu extends AbstractMenu {
             crudService, searchService, userService, taskService, categoryService);
       }
       case 7 -> {
-        return SingletonMenuFactory.getMainMenu(crudService, searchService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getMainMenu(
+            crudService, searchService, userService, taskService, categoryService);
       }
       default -> {
         return null;
