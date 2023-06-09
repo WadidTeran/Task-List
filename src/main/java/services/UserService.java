@@ -11,15 +11,15 @@ public class UserService {
     this.crudService = crudService;
   }
 
-  public void signIn() {
-    String email = View.input("Email");
+  public boolean signIn() {
+    String email = View.input("Email").toLowerCase();
     String password = View.input("Password");
 
-    UserLogin.logInUser(email, password, crudService);
+    return UserLogin.logInUser(email, password, crudService);
   }
 
   public void signUp() {
-    String email = View.input("Email");
+    String email = View.input("Email").toLowerCase();
     String password = View.input("Password");
 
     if (!crudService.checkUserEmail(email)) {
@@ -31,7 +31,7 @@ public class UserService {
     }
   }
 
-  public void deleteUser() {
+  public boolean deleteUser() {
     String password = View.input("If you want to delete your account, insert your password.");
 
     if (checkPassword(password)) {
@@ -39,10 +39,12 @@ public class UserService {
         signOut();
         crudService.deleteUser(UserLogin.getUser());
         View.message("You have deleted your account succesfully...");
+        return true;
       }
     } else {
       View.message("Authentication failed!");
     }
+    return false;
   }
 
   public void signOut() {
@@ -53,7 +55,7 @@ public class UserService {
     String password = View.input("If you want to change your email, insert your password.");
 
     if (checkPassword(password)) {
-      String newEmail = View.input("Insert the new email.");
+      String newEmail = View.input("Insert the new email.").toLowerCase();
       if (crudService.checkUserEmail(newEmail)) {
         View.message("An user with this email already exists!");
       } else if (View.confirm(

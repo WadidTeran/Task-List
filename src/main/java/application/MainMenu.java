@@ -1,6 +1,7 @@
 package application;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import services.*;
 
 public class MainMenu extends AbstractMenu {
@@ -12,12 +13,12 @@ public class MainMenu extends AbstractMenu {
       TaskService taskService,
       CategoryService categoryService) {
     super(crudService, searchService, userService, taskService, categoryService);
-    title = "Task-List Menu";
+    title = "Task-List App";
   }
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
     menuOptions.put("Tasks", 1);
     menuOptions.put("Categories", 2);
     menuOptions.put("Account Settings", 3);

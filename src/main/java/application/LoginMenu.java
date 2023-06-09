@@ -1,6 +1,6 @@
 package application;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import services.*;
 
 public class LoginMenu extends AbstractMenu {
@@ -18,7 +18,7 @@ public class LoginMenu extends AbstractMenu {
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
     menuOptions.put("Sign In", 1);
     menuOptions.put("Sign Up", 2);
   }
@@ -27,8 +27,11 @@ public class LoginMenu extends AbstractMenu {
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
       case 1 -> {
-        userService.signIn();
-        return SingletonMenuFactory.getMainMenu(crudService, searchService, userService, taskService, categoryService);
+        if (userService.signIn()) {
+          return SingletonMenuFactory.getMainMenu(
+              crudService, searchService, userService, taskService, categoryService);
+        }
+        return this;
       }
       case 2 -> {
         userService.signUp();

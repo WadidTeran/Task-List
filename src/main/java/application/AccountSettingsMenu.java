@@ -1,7 +1,8 @@
 package application;
 
-import java.util.HashMap;
 import services.*;
+
+import java.util.LinkedHashMap;
 
 public class AccountSettingsMenu extends AbstractMenu {
 
@@ -17,7 +18,7 @@ public class AccountSettingsMenu extends AbstractMenu {
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
     menuOptions.put("Change Email", 1);
     menuOptions.put("Change Password", 2);
     menuOptions.put("Delete Account", 3);
@@ -36,7 +37,9 @@ public class AccountSettingsMenu extends AbstractMenu {
         return this;
       }
       case 3 -> {
-        userService.deleteUser();
+        if(userService.deleteUser()){
+          return SingletonMenuFactory.getLoginMenu(crudService, searchService, userService, taskService, categoryService);
+        }
         return this;
       }
       case 4 -> {

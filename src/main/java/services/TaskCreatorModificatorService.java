@@ -7,7 +7,7 @@ import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,7 +22,7 @@ public class TaskCreatorModificatorService {
   private TaskCreatorModificatorService() {}
 
   private static String switchMenuAndTitle(TaskOperationType taskOperationType) {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
 
     if (taskOperationType == TaskOperationType.CREATION) {
       menuOptions.put("Set name", 1);
@@ -107,7 +107,7 @@ public class TaskCreatorModificatorService {
             taskBuilder.setDescription(description);
           }
         } else if (opcionIndice == 5) {
-          Map<String, Relevance> relevanceMap = new HashMap<>();
+          Map<String, Relevance> relevanceMap = new LinkedHashMap<>();
           relevanceMap.put("None", Relevance.NONE);
           relevanceMap.put("Low", Relevance.LOW);
           relevanceMap.put("Medium", Relevance.MEDIUM);
@@ -134,222 +134,229 @@ public class TaskCreatorModificatorService {
             taskBuilder.setCategory(categoryObj);
           }
         } else if (opcionIndice == 7) {
-          if (taskBuilder.build().getRepeatingConfig() != null
-              && (View.confirm("Do you want to set this task as not repetitive?"))) {
-            taskBuilder.setRepeatingConfig(null);
-            continue;
-          }
-
-          RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
-
-          Map<String, RepeatType> repeatTypeMap = new HashMap<>();
-          repeatTypeMap.put("Hour", RepeatType.HOUR);
-          repeatTypeMap.put("Daily", RepeatType.DAILY);
-          repeatTypeMap.put("Weekly", RepeatType.WEEKLY);
-          repeatTypeMap.put("Monthly", RepeatType.MONTHLY);
-          repeatTypeMap.put("Yearly", RepeatType.YEARLY);
-
-          Object[] repeatTypeOptionsArray = repeatTypeMap.keySet().toArray();
-
-          String repeatTypeStr =
-              View.inputOptions(title, "Choose a type of repetition", repeatTypeOptionsArray);
-
-          RepeatType repeatType;
-
-          if (repeatTypeStr == null) {
-            View.message("You have to choose a type of repetition!");
-            continue;
-          } else {
-            repeatType = repeatTypeMap.get(repeatTypeStr);
-
-            if (repeatType.equals(RepeatType.HOUR)
-                && taskBuilder.build().getSpecifiedTime() == null) {
-              View.message(
-                  "To set a task as hourly repetitive you must set first a specified time for this task!");
+          if (taskBuilder.build().getDueDate() != null) {
+            if (taskBuilder.build().getRepeatingConfig() != null
+                && (View.confirm("Do you want to set this task as not repetitive?"))) {
+              taskBuilder.setRepeatingConfig(null);
               continue;
             }
+            RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
 
-            repeatingConfig.setRepeatType(repeatType);
-          }
+            Map<String, RepeatType> repeatTypeMap = new LinkedHashMap<>();
+            repeatTypeMap.put("Hour", RepeatType.HOUR);
+            repeatTypeMap.put("Daily", RepeatType.DAILY);
+            repeatTypeMap.put("Weekly", RepeatType.WEEKLY);
+            repeatTypeMap.put("Monthly", RepeatType.MONTHLY);
+            repeatTypeMap.put("Yearly", RepeatType.YEARLY);
 
-          if (View.confirm("Do you want to set a end date for repetitions?")) {
-            String repeatEndsAtStr = View.input("Repeat ends at (yyyy-mm-dd)");
+            Object[] repeatTypeOptionsArray = repeatTypeMap.keySet().toArray();
+
+            String repeatTypeStr =
+                View.inputOptions(title, "Choose a type of repetition", repeatTypeOptionsArray);
+
+            RepeatType repeatType;
+
+            if (repeatTypeStr == null) {
+              View.message("You have to choose a type of repetition!");
+              continue;
+            } else {
+              repeatType = repeatTypeMap.get(repeatTypeStr);
+
+              if (repeatType.equals(RepeatType.HOUR)
+                  && taskBuilder.build().getSpecifiedTime() == null) {
+                View.message(
+                    "To set a task as hourly repetitive you must set first a specified time for this task!");
+                continue;
+              }
+
+              repeatingConfig.setRepeatType(repeatType);
+            }
+
+            if (View.confirm("Do you want to set a end date for repetitions?")) {
+              String repeatEndsAtStr = View.input("Repeat ends at (yyyy-mm-dd)");
+
+              try {
+                LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
+                repeatingConfig.setRepeatEndsAt(repeatEndsAt);
+              } catch (DateTimeParseException e) {
+                View.message("Invalid end date format.");
+                continue;
+              }
+            }
+
+            String typeStr;
+            if (repeatType.equals(RepeatType.HOUR)) typeStr = "hour";
+            else if (repeatType.equals(RepeatType.DAILY)) typeStr = "days";
+            else if (repeatType.equals(RepeatType.WEEKLY)) typeStr = "weeks";
+            else if (repeatType.equals(RepeatType.MONTHLY)) typeStr = "months";
+            else typeStr = "years";
 
             try {
-              LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
-              repeatingConfig.setRepeatEndsAt(repeatEndsAt);
-            } catch (DateTimeParseException e) {
-              View.message("Invalid end date format.");
+              Integer interval = Integer.parseInt(View.input("Repeat each ? " + typeStr));
+              repeatingConfig.setRepeatInterval(interval);
+            } catch (NumberFormatException nfe) {
+              View.message("Invalid interval: interval must be an integer.");
               continue;
             }
+
+            switch (repeatType) {
+              case HOUR -> {
+                HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
+                Set<Integer> minutes = new TreeSet<>();
+                int minute;
+
+                AtomicInteger ai = new AtomicInteger(0);
+                int[] minutesOptionsArray =
+                    IntStream.generate(ai::getAndIncrement).limit(60).toArray();
+                Object[] minuteOptionsArrayObj =
+                    Arrays.stream(minutesOptionsArray).boxed().toArray();
+                boolean keep = true;
+
+                do {
+                  try {
+                    minute =
+                        Integer.parseInt(
+                            View.inputOptions(
+                                title, "Choose a specific minute", minuteOptionsArrayObj));
+                    minutes.add(minute);
+
+                    if (View.confirm("Do you want to add another minute?")) keep = false;
+                  } catch (NumberFormatException nfe) {
+                    View.message("Invalid minute! Try again.");
+                  }
+                } while (keep);
+
+                hourRepeatOnConfig.setMinutes(minutes);
+                repeatingConfig.setRepeatOn(hourRepeatOnConfig);
+              }
+              case DAILY -> {
+                DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
+                Set<LocalTime> hours = new TreeSet<>();
+                LocalTime hour;
+                String hourStr;
+
+                boolean keep = true;
+
+                do {
+                  try {
+                    hourStr = View.input("Add one specific hour (00:00 - 23:59)");
+                    hour = LocalTime.parse(hourStr.trim());
+
+                    hours.add(hour);
+
+                    if (hours.size() == 24
+                        || View.confirm("Do you want to add another hour? (24 max)")) keep = false;
+                  } catch (DateTimeParseException e) {
+                    View.message("Invalid hour! Try again.");
+                  }
+                } while (keep);
+
+                dailyRepeatOnConfig.setHours(hours);
+                repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
+              }
+              case WEEKLY -> {
+                WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
+                Set<DayOfWeek> daysOfWeek = new TreeSet<>();
+                DayOfWeek dayOfWeek;
+                String dayOfWeekStr;
+
+                Map<String, DayOfWeek> daysOfWeekMap = new LinkedHashMap<>();
+                daysOfWeekMap.put("Monday", DayOfWeek.MONDAY);
+                daysOfWeekMap.put("Tuesday", DayOfWeek.TUESDAY);
+                daysOfWeekMap.put("Wednesday", DayOfWeek.WEDNESDAY);
+                daysOfWeekMap.put("Thursday", DayOfWeek.THURSDAY);
+                daysOfWeekMap.put("Friday", DayOfWeek.FRIDAY);
+                daysOfWeekMap.put("Saturday", DayOfWeek.SATURDAY);
+                daysOfWeekMap.put("Sunday", DayOfWeek.SUNDAY);
+
+                Object[] daysOfWeekArray = daysOfWeekMap.keySet().toArray();
+
+                boolean keep = true;
+
+                do {
+                  dayOfWeekStr =
+                      View.inputOptions(
+                          title, "Choose a specific day of the week", daysOfWeekArray);
+
+                  if (dayOfWeekStr == null) {
+                    View.message("You have to choose a specific day of the week!");
+                  } else {
+                    dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
+                    daysOfWeek.add(dayOfWeek);
+
+                    if (View.confirm("Do you want to add another day of the week?")) keep = false;
+                  }
+
+                } while (keep);
+
+                weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
+                repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
+              }
+              case MONTHLY -> {
+                MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
+                Set<Integer> daysOfMonth = new TreeSet<>();
+                int dayOfMonth;
+
+                AtomicInteger ai = new AtomicInteger(1);
+                int[] daysOfMonthOptionsArray =
+                    IntStream.generate(ai::getAndIncrement).limit(31).toArray();
+                Object[] daysOfMonthOptionsArrayStr =
+                    Arrays.stream(daysOfMonthOptionsArray).boxed().toArray();
+                boolean keep = true;
+
+                do {
+                  try {
+                    dayOfMonth =
+                        Integer.parseInt(
+                            View.inputOptions(
+                                title, "Choose a day of the month", daysOfMonthOptionsArrayStr));
+
+                    daysOfMonth.add(dayOfMonth);
+
+                    if (View.confirm("Do you want to add another day of the month?")) keep = false;
+                  } catch (NumberFormatException nfe) {
+                    View.message("Invalid day of the month! Try again.");
+                  }
+                } while (keep);
+
+                monthlyRepeatOnConfig.setDaysOfMonth(daysOfMonth);
+                repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
+              }
+              case YEARLY -> {
+                YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
+                Set<MonthDay> daysOfYear = new TreeSet<>();
+                MonthDay monthDay;
+                String monthDayStr;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+
+                boolean keep = true;
+
+                do {
+                  try {
+                    monthDayStr = View.input("Add one specific date of the year (MM-dd)");
+                    monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
+
+                    daysOfYear.add(monthDay);
+
+                    if (daysOfYear.size() == 12
+                        || View.confirm("Do you want to add another date of the year? (12 max)"))
+                      keep = false;
+                  } catch (DateTimeParseException e) {
+                    View.message("Invalid date of the year! Try again.");
+                  }
+                } while (keep);
+
+                yearlyRepeatOnConfig.setDaysOfYear(daysOfYear);
+                repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
+              }
+            }
+
+            taskBuilder.setRepeatingConfig(repeatingConfig);
+
+          } else {
+            View.message("You have to set a due date first!");
           }
 
-          String typeStr;
-          if (repeatType.equals(RepeatType.HOUR)) typeStr = "hour";
-          else if (repeatType.equals(RepeatType.DAILY)) typeStr = "days";
-          else if (repeatType.equals(RepeatType.WEEKLY)) typeStr = "weeks";
-          else if (repeatType.equals(RepeatType.MONTHLY)) typeStr = "months";
-          else typeStr = "years";
-
-          try {
-            Integer interval = Integer.parseInt(View.input("Repeat each ? " + typeStr));
-            repeatingConfig.setRepeatInterval(interval);
-          } catch (NumberFormatException nfe) {
-            View.message("Invalid interval: interval must be an integer.");
-            continue;
-          }
-
-          switch (repeatType) {
-            case HOUR -> {
-              HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
-              Set<Integer> minutes = new TreeSet<>();
-              int minute;
-
-              AtomicInteger ai = new AtomicInteger(0);
-              int[] minutesOptionsArray =
-                  IntStream.generate(ai::getAndIncrement).limit(60).toArray();
-              Object[] minuteOptionsArrayObj = Arrays.stream(minutesOptionsArray).boxed().toArray();
-              boolean keep = true;
-
-              do {
-                try {
-                  minute =
-                      Integer.parseInt(
-                          View.inputOptions(
-                              title, "Choose a specific minute", minuteOptionsArrayObj));
-                  minutes.add(minute);
-
-                  if (View.confirm("Do you want to add another minute?")) keep = false;
-                } catch (NumberFormatException nfe) {
-                  View.message("Invalid minute! Try again.");
-                }
-              } while (keep);
-
-              hourRepeatOnConfig.setMinutes(minutes);
-              repeatingConfig.setRepeatOn(hourRepeatOnConfig);
-            }
-            case DAILY -> {
-              DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
-              Set<LocalTime> hours = new TreeSet<>();
-              LocalTime hour;
-              String hourStr;
-
-              boolean keep = true;
-
-              do {
-                try {
-                  hourStr = View.input("Add one specific hour (00:00 - 23:59)");
-                  hour = LocalTime.parse(hourStr.trim());
-
-                  hours.add(hour);
-
-                  if (hours.size() == 24
-                      || View.confirm("Do you want to add another hour? (24 max)")) keep = false;
-                } catch (DateTimeParseException e) {
-                  View.message("Invalid hour! Try again.");
-                }
-              } while (keep);
-
-              dailyRepeatOnConfig.setHours(hours);
-              repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
-            }
-            case WEEKLY -> {
-              WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
-              Set<DayOfWeek> daysOfWeek = new TreeSet<>();
-              DayOfWeek dayOfWeek;
-              String dayOfWeekStr;
-
-              Map<String, DayOfWeek> daysOfWeekMap = new HashMap<>();
-              daysOfWeekMap.put("Monday", DayOfWeek.MONDAY);
-              daysOfWeekMap.put("Tuesday", DayOfWeek.TUESDAY);
-              daysOfWeekMap.put("Wednesday", DayOfWeek.WEDNESDAY);
-              daysOfWeekMap.put("Thursday", DayOfWeek.THURSDAY);
-              daysOfWeekMap.put("Friday", DayOfWeek.FRIDAY);
-              daysOfWeekMap.put("Saturday", DayOfWeek.SATURDAY);
-              daysOfWeekMap.put("Sunday", DayOfWeek.SUNDAY);
-
-              Object[] daysOfWeekArray = daysOfWeekMap.keySet().toArray();
-
-              boolean keep = true;
-
-              do {
-                dayOfWeekStr =
-                    View.inputOptions(title, "Choose a specific day of the week", daysOfWeekArray);
-
-                if (dayOfWeekStr == null) {
-                  View.message("You have to choose a specific day of the week!");
-                } else {
-                  dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
-                  daysOfWeek.add(dayOfWeek);
-
-                  if (View.confirm("Do you want to add another day of the week?")) keep = false;
-                }
-
-              } while (keep);
-
-              weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
-              repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
-            }
-            case MONTHLY -> {
-              MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
-              Set<Integer> daysOfMonth = new TreeSet<>();
-              int dayOfMonth;
-
-              AtomicInteger ai = new AtomicInteger(1);
-              int[] daysOfMonthOptionsArray =
-                  IntStream.generate(ai::getAndIncrement).limit(31).toArray();
-              Object[] daysOfMonthOptionsArrayStr =
-                  Arrays.stream(daysOfMonthOptionsArray).boxed().toArray();
-              boolean keep = true;
-
-              do {
-                try {
-                  dayOfMonth =
-                      Integer.parseInt(
-                          View.inputOptions(
-                              title, "Choose a day of the month", daysOfMonthOptionsArrayStr));
-
-                  daysOfMonth.add(dayOfMonth);
-
-                  if (View.confirm("Do you want to add another day of the month?")) keep = false;
-                } catch (NumberFormatException nfe) {
-                  View.message("Invalid day of the month! Try again.");
-                }
-              } while (keep);
-
-              monthlyRepeatOnConfig.setDaysOfMonth(daysOfMonth);
-              repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
-            }
-            case YEARLY -> {
-              YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
-              Set<MonthDay> daysOfYear = new TreeSet<>();
-              MonthDay monthDay;
-              String monthDayStr;
-              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
-
-              boolean keep = true;
-
-              do {
-                try {
-                  monthDayStr = View.input("Add one specific date of the year (MM-dd)");
-                  monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
-
-                  daysOfYear.add(monthDay);
-
-                  if (daysOfYear.size() == 12
-                      || View.confirm("Do you want to add another date of the year? (12 max)"))
-                    keep = false;
-                } catch (DateTimeParseException e) {
-                  View.message("Invalid date of the year! Try again.");
-                }
-              } while (keep);
-
-              yearlyRepeatOnConfig.setDaysOfYear(daysOfYear);
-              repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
-            }
-          }
-
-          taskBuilder.setRepeatingConfig(repeatingConfig);
         } else if (opcionIndice == 8) {
           if (taskBuilder.build().getName() != null) {
             String varString = (title.contains("modification")) ? "update" : "create";

@@ -2,7 +2,7 @@ package services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -165,7 +165,7 @@ public class TaskService {
 
   public void searchTasksByRelevance() {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
-      Map<String, Relevance> relevanceMap = new HashMap<>();
+      Map<String, Relevance> relevanceMap = new LinkedHashMap<>();
       relevanceMap.put("None", Relevance.NONE);
       relevanceMap.put("Low", Relevance.LOW);
       relevanceMap.put("Medium", Relevance.MEDIUM);

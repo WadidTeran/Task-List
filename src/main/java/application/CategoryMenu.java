@@ -1,6 +1,7 @@
 package application;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import services.*;
 
 public class CategoryMenu extends AbstractMenu {
@@ -16,7 +17,7 @@ public class CategoryMenu extends AbstractMenu {
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
     menuOptions.put("Create Category", 1);
     menuOptions.put("List All Categories", 2);
     menuOptions.put("Rename Category", 3);

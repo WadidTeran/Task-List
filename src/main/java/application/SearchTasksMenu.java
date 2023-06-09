@@ -2,7 +2,7 @@ package application;
 
 import services.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SearchTasksMenu extends AbstractMenu {
   protected SearchTasksMenu(
@@ -17,7 +17,7 @@ public class SearchTasksMenu extends AbstractMenu {
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
     menuOptions.put("Search a specific task", 1);
     menuOptions.put("Search tasks by category", 2);
     menuOptions.put("Search tasks by relevance", 3);

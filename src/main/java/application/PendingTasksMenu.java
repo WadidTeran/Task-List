@@ -1,6 +1,7 @@
 package application;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import services.*;
 
 public class PendingTasksMenu extends AbstractMenu {
@@ -16,7 +17,7 @@ public class PendingTasksMenu extends AbstractMenu {
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new HashMap<>();
+    menuOptions = new LinkedHashMap<>();
     menuOptions.put("Set A Task As Completed", 1);
     menuOptions.put("View Pending Tasks For Today", 2);
     menuOptions.put("View Future Pending Tasks", 3);

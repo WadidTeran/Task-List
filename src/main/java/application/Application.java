@@ -25,10 +25,26 @@ public class Application {
   private Application() {}
 
   public static void start() {
+    createTestData();
     AbstractMenu currentMenu =
         new LoginMenu(crudService, searchService, userService, taskService, categoryService);
     while (currentMenu != null) {
       currentMenu = currentMenu.showMenu();
     }
+
+  }
+
+  private static void createTestData(){
+    User user = new User("admin", "secret");
+
+    Category category1 = new Category("Football", user);
+    Category category2 = new Category("Study", user);
+    Category category3 = new Category("Chess Tournament", user);
+
+    crudService.saveUser(user);
+
+    crudService.saveCategory(category1);
+    crudService.saveCategory(category2);
+    crudService.saveCategory(category3);
   }
 }

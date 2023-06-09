@@ -11,7 +11,7 @@ public class UserLogin {
 
   private UserLogin() {}
 
-  public static void logInUser(String email, String password, CRUDServiceImpl crudService) {
+  public static boolean logInUser(String email, String password, CRUDServiceImpl crudService) {
     if (!crudService.checkUserEmail(email)) {
       View.message("This user doesn't exist.");
     } else if (!crudService.validateUserPassword(email, password)) {
@@ -19,7 +19,9 @@ public class UserLogin {
     } else {
       user = crudService.getUserByEmail(email);
       View.message("Welcome!");
+      return true;
     }
+    return false;
   }
 
   public static void logOutUser() {

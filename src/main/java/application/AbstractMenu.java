@@ -25,6 +25,7 @@ public abstract class AbstractMenu {
     this.userService = userService;
     this.taskService = taskService;
     this.categoryService = categoryService;
+    configureMenuOptions();
   }
 
   public AbstractMenu showMenu(){

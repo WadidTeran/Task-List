@@ -92,7 +92,7 @@ public class CategoryService {
         } else if (View.confirm("Are you sure you want to delete \"" + category + "\" category?")) {
           Category categoryToDelete = crudService.getCategoryByName(category);
           crudService.deleteCategory(categoryToDelete);
-          View.message("Category \"" + categoryToDelete + "\" deleted succesfully.");
+          View.message("Category \"" + categoryToDelete.getName() + "\" deleted succesfully.");
         }
       }
     }

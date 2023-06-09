@@ -8,14 +8,16 @@ public class TaskBuilder {
   private Task task;
 
   public TaskBuilder() {
-    this.task = new Task();
-    this.task.setUser(UserLogin.getUser());
-    this.task.setRelevance(Relevance.NONE);
+    task = new Task();
+    task.setUser(UserLogin.getUser());
+    task.setRelevance(Relevance.NONE);
+    task.setCompleted(false);
+    task.setDescription("");
   }
 
   public TaskBuilder(String name) {
     this();
-    this.task.setName(name);
+    task.setName(name);
   }
 
   public TaskBuilder(Task task) {
