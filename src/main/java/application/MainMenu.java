@@ -5,14 +5,12 @@ import java.util.LinkedHashMap;
 import services.*;
 
 public class MainMenu extends AbstractMenu {
-
   public MainMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     title = "Task-List App";
   }
 
@@ -30,20 +28,20 @@ public class MainMenu extends AbstractMenu {
     switch (optionIndex) {
       case 1 -> {
         return SingletonMenuFactory.getTaskMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       case 2 -> {
         return SingletonMenuFactory.getCategoryMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       case 3 -> {
         return SingletonMenuFactory.getAccountSettingsMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       case 4 -> {
         userService.signOut();
         return SingletonMenuFactory.getLoginMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       default -> {
         return null;

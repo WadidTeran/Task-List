@@ -7,12 +7,11 @@ import java.util.LinkedHashMap;
 public class AccountSettingsMenu extends AbstractMenu {
 
   protected AccountSettingsMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     title = "Account Settings Menu";
   }
 
@@ -37,14 +36,15 @@ public class AccountSettingsMenu extends AbstractMenu {
         return this;
       }
       case 3 -> {
-        if(userService.deleteUser()){
-          return SingletonMenuFactory.getLoginMenu(crudService, searchService, userService, taskService, categoryService);
+        if (userService.deleteUser()) {
+          return SingletonMenuFactory.getLoginMenu(
+              crudService, userService, taskService, categoryService);
         }
         return this;
       }
       case 4 -> {
         return SingletonMenuFactory.getMainMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       default -> {
         return null;

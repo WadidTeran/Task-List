@@ -6,22 +6,19 @@ import views.View;
 import java.util.Map;
 
 public abstract class AbstractMenu {
-  protected final CRUDServiceImpl crudService;
+  protected final ICRUDService crudService;
   protected final UserService userService;
   protected final CategoryService categoryService;
-  protected final FilteredTaskSearchService searchService;
   protected final TaskService taskService;
   protected Map<String, Integer> menuOptions;
   protected String title;
 
   protected AbstractMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     this.crudService = crudService;
-    this.searchService = searchService;
     this.userService = userService;
     this.taskService = taskService;
     this.categoryService = categoryService;

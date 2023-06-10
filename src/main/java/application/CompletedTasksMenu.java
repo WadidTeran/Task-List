@@ -6,12 +6,11 @@ import services.*;
 
 public class CompletedTasksMenu extends AbstractMenu {
   protected CompletedTasksMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     title = "Completed Tasks Menu";
   }
 
@@ -41,7 +40,7 @@ public class CompletedTasksMenu extends AbstractMenu {
       }
       case 4 -> {
         return SingletonMenuFactory.getTaskMenu(
-                crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       default -> {
         return null;

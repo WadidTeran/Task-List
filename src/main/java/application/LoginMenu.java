@@ -6,12 +6,11 @@ import services.*;
 public class LoginMenu extends AbstractMenu {
 
   public LoginMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     configureMenuOptions();
     title = "Task-List Login";
   }
@@ -29,7 +28,7 @@ public class LoginMenu extends AbstractMenu {
       case 1 -> {
         if (userService.signIn()) {
           return SingletonMenuFactory.getMainMenu(
-              crudService, searchService, userService, taskService, categoryService);
+              crudService, userService, taskService, categoryService);
         }
         return this;
       }

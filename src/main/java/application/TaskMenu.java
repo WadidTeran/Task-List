@@ -6,12 +6,11 @@ import services.*;
 
 public class TaskMenu extends AbstractMenu {
   public TaskMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     title = "Task Menu";
   }
 
@@ -32,11 +31,11 @@ public class TaskMenu extends AbstractMenu {
     switch (optionIndex) {
       case 1 -> {
         return SingletonMenuFactory.getPendingTasksMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       case 2 -> {
         return SingletonMenuFactory.getSearchTasksMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       case 3 -> {
         taskService.createTask();
@@ -52,11 +51,11 @@ public class TaskMenu extends AbstractMenu {
       }
       case 6 -> {
         return SingletonMenuFactory.getCompletedTasksMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       case 7 -> {
         return SingletonMenuFactory.getMainMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       default -> {
         return null;

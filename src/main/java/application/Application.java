@@ -11,17 +11,14 @@ import services.*;
 import views.View;
 
 public class Application {
-
   private static final IRepository<User> userRepository = new UserRepository();
   private static final IRepository<Task> taskRepository = new TaskRepository();
   private static final IRepository<Category> categoryRepository = new CategoryRepository();
-  private static final CRUDServiceImpl crudService =
+  private static final ICRUDService crudService =
       new CRUDServiceImpl(userRepository, taskRepository, categoryRepository);
   private static final UserService userService = new UserService(crudService);
   private static final CategoryService categoryService = new CategoryService(crudService);
-  private static final FilteredTaskSearchService searchService =
-      new FilteredTaskSearchService(taskRepository);
-  private static final TaskService taskService = new TaskService(crudService, searchService);
+  private static final TaskService taskService = new TaskService(crudService, categoryService);
 
   private Application() {}
 
@@ -29,14 +26,13 @@ public class Application {
     View.message("PAY ATTENTION");
     createTestData();
     AbstractMenu currentMenu =
-        new LoginMenu(crudService, searchService, userService, taskService, categoryService);
+        new LoginMenu(crudService, userService, taskService, categoryService);
     while (currentMenu != null) {
       currentMenu = currentMenu.showMenu();
     }
-
   }
 
-  private static void createTestData(){
+  private static void createTestData() {
     User user = new User("admin", "secret");
 
     Category category1 = new Category("Football", user);

@@ -6,12 +6,11 @@ import services.*;
 
 public class CategoryMenu extends AbstractMenu {
   public CategoryMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     title = "Category Menu";
   }
 
@@ -46,7 +45,7 @@ public class CategoryMenu extends AbstractMenu {
       }
       case 5 -> {
         return SingletonMenuFactory.getMainMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       default -> {
         return null;

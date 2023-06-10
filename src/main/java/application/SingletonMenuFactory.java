@@ -15,109 +15,92 @@ public class SingletonMenuFactory {
   private SingletonMenuFactory() {}
 
   public static AbstractMenu getLoginMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (loginMenu == null) {
-      loginMenu =
-          new LoginMenu(crudService, searchService, userService, taskService, categoryService);
+      loginMenu = new LoginMenu(crudService, userService, taskService, categoryService);
     }
     return loginMenu;
   }
 
   public static AbstractMenu getMainMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (mainMenu == null) {
-      mainMenu =
-          new MainMenu(crudService, searchService, userService, taskService, categoryService);
+      mainMenu = new MainMenu(crudService, userService, taskService, categoryService);
     }
     return mainMenu;
   }
 
   public static AbstractMenu getTaskMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (taskMenu == null) {
-      taskMenu =
-          new TaskMenu(crudService, searchService, userService, taskService, categoryService);
+      taskMenu = new TaskMenu(crudService, userService, taskService, categoryService);
     }
     return taskMenu;
   }
 
   public static AbstractMenu getCategoryMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (categoryMenu == null) {
-      categoryMenu =
-          new CategoryMenu(crudService, searchService, userService, taskService, categoryService);
+      categoryMenu = new CategoryMenu(crudService, userService, taskService, categoryService);
     }
     return categoryMenu;
   }
 
   public static AbstractMenu getAccountSettingsMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (accountSettingsMenu == null) {
       accountSettingsMenu =
-          new AccountSettingsMenu(
-              crudService, searchService, userService, taskService, categoryService);
+          new AccountSettingsMenu(crudService, userService, taskService, categoryService);
     }
     return accountSettingsMenu;
   }
 
   public static AbstractMenu getSearchTasksMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (searchTasksMenu == null) {
-      searchTasksMenu =
-          new SearchTasksMenu(
-              crudService, searchService, userService, taskService, categoryService);
+      searchTasksMenu = new SearchTasksMenu(crudService, userService, taskService, categoryService);
     }
     return searchTasksMenu;
   }
 
   public static AbstractMenu getCompletedTasksMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (completedTasksMenu == null) {
       completedTasksMenu =
-          new CompletedTasksMenu(
-              crudService, searchService, userService, taskService, categoryService);
+          new CompletedTasksMenu(crudService, userService, taskService, categoryService);
     }
     return completedTasksMenu;
   }
 
   public static AbstractMenu getPendingTasksMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
     if (pendingTasksMenu == null) {
       pendingTasksMenu =
-          new PendingTasksMenu(
-              crudService, searchService, userService, taskService, categoryService);
+          new PendingTasksMenu(crudService, userService, taskService, categoryService);
     }
     return pendingTasksMenu;
   }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
 
 import models.*;
 import views.View;
@@ -23,15 +24,10 @@ public class TaskService {
   private static final boolean TASK_STATUS_COMPLETED = true;
   private static final boolean TASK_STATUS_PENDING = false;
   private final ICRUDService crudService;
-  private final FilteredTaskSearchService searchService;
   private final CategoryService categoryService;
 
-  public TaskService(
-      ICRUDService crudService,
-      FilteredTaskSearchService searchService,
-      CategoryService categoryService) {
+  public TaskService(ICRUDService crudService, CategoryService categoryService) {
     this.crudService = crudService;
-    this.searchService = searchService;
     this.categoryService = categoryService;
   }
 
@@ -135,7 +131,16 @@ public class TaskService {
   }
 
   public void searchFuturePendingTasks() {
-    List<Task> futurePendingTasks = searchService.getFuturePendingTasks();
+    List<Task> futurePendingTasks =
+        getAllPendingTasks().stream()
+            .filter(
+                t -> {
+                  if (t.getDueDate() != null) {
+                    return t.getDueDate().isAfter(LocalDate.now());
+                  }
+                  return false;
+                })
+            .collect(Collectors.toList());
     if (futurePendingTasks.isEmpty()) {
       View.message("You don't have future pending tasks.");
     } else {
@@ -144,7 +149,16 @@ public class TaskService {
   }
 
   public void searchPendingTasksForToday() {
-    List<Task> pendingTasksForToday = searchService.getPendingTasksForToday();
+    List<Task> pendingTasksForToday =
+        getAllPendingTasks().stream()
+            .filter(
+                t -> {
+                  if (t.getDueDate() != null) {
+                    return t.getDueDate().isEqual(LocalDate.now());
+                  }
+                  return false;
+                })
+            .collect(Collectors.toList());
     if (pendingTasksForToday.isEmpty()) {
       View.message("You don't have pending tasks for today.");
     } else {
@@ -153,7 +167,16 @@ public class TaskService {
   }
 
   public void searchPastPendingTasks() {
-    List<Task> pastPendingTasks = searchService.getPastPendingTasks();
+    List<Task> pastPendingTasks =
+        getAllPendingTasks().stream()
+            .filter(
+                t -> {
+                  if (t.getDueDate() != null) {
+                    return t.getDueDate().isBefore(LocalDate.now());
+                  }
+                  return false;
+                })
+            .collect(Collectors.toList());
     if (pastPendingTasks.isEmpty()) {
       View.message("You don't have previous pending tasks.");
     } else {
@@ -162,7 +185,7 @@ public class TaskService {
   }
 
   public void searchAllPendingTasks() {
-    List<Task> pendingTasks = searchService.getAllPendingTasks();
+    List<Task> pendingTasks = getAllPendingTasks();
     if (pendingTasks.isEmpty()) {
       View.message(NO_PENDING_TASKS_WARNING);
     } else {
@@ -188,7 +211,10 @@ public class TaskService {
         View.message("You have to choose a level of relevance!");
       } else {
         Relevance relevance = relevanceMap.get(relevanceStr);
-        List<Task> relevanceTasks = searchService.getRelevanceTasks(relevance);
+        List<Task> relevanceTasks =
+            getAllPendingTasks().stream()
+                .filter(t -> t.getRelevance() == relevance)
+                .collect(Collectors.toList());
         if (relevanceTasks.isEmpty()) {
           View.message("You don't have task with this relevance.");
         } else {
@@ -217,7 +243,16 @@ public class TaskService {
           View.message("The category " + category + " doesn't exist.");
         } else {
           Category categoryObj = categoryService.getCategoryByName(category);
-          List<Task> categoryTasks = searchService.getCategoryTasks(categoryObj);
+          List<Task> categoryTasks =
+              getAllPendingTasks().stream()
+                  .filter(
+                      t -> {
+                        if (t.getCategory() != null) {
+                          return t.getCategory().getName().equals(categoryObj.getName());
+                        }
+                        return false;
+                      })
+                  .collect(Collectors.toList());
           if (categoryTasks.isEmpty()) {
             View.message("You don't have task in this category.");
           } else {
@@ -231,7 +266,7 @@ public class TaskService {
   }
 
   public void searchCompletedTasks() {
-    List<Task> completedTasks = searchService.getCompletedTasks();
+    List<Task> completedTasks = getCompletedTasks();
     if (completedTasks.isEmpty()) {
       View.message(NO_COMPLETED_TASKS_WARNING);
     } else {
@@ -240,7 +275,7 @@ public class TaskService {
   }
 
   public void deleteCompletedTasks() {
-    List<Task> completedTasks = searchService.getCompletedTasks();
+    List<Task> completedTasks = getCompletedTasks();
     if (completedTasks.isEmpty()) {
       View.message(NO_COMPLETED_TASKS_WARNING);
     } else if (View.confirm("Are you sure you want to delete all completed tasks?")) {
@@ -269,9 +304,7 @@ public class TaskService {
 
   private Optional<Task> askForATask(String message, boolean taskStatus) {
     List<Task> tasks =
-        (taskStatus == TASK_STATUS_COMPLETED)
-            ? searchService.getCompletedTasks()
-            : searchService.getAllPendingTasks();
+        (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
 
     Object[] taskArray = tasks.stream().map(t -> t.getTaskId() + " - " + t.getName()).toArray();
 
@@ -289,9 +322,19 @@ public class TaskService {
 
   private boolean checkExistenceOfTasks(boolean taskStatus) {
     List<Task> tasks =
-        (taskStatus == TASK_STATUS_COMPLETED)
-            ? searchService.getCompletedTasks()
-            : searchService.getAllPendingTasks();
+        (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
     return !tasks.isEmpty();
+  }
+
+  private List<Task> getAllPendingTasks() {
+    return crudService.findAllTasks().stream()
+        .filter(t -> !t.isCompleted())
+        .collect(Collectors.toList());
+  }
+
+  private List<Task> getCompletedTasks() {
+    return crudService.findAllTasks().stream()
+        .filter(Task::isCompleted)
+        .collect(Collectors.toList());
   }
 }

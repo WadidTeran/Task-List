@@ -6,12 +6,11 @@ import services.*;
 
 public class PendingTasksMenu extends AbstractMenu {
   public PendingTasksMenu(
-      CRUDServiceImpl crudService,
-      FilteredTaskSearchService searchService,
+      ICRUDService crudService,
       UserService userService,
       TaskService taskService,
       CategoryService categoryService) {
-    super(crudService, searchService, userService, taskService, categoryService);
+    super(crudService, userService, taskService, categoryService);
     title = "Pending Tasks Menu";
   }
 
@@ -51,7 +50,7 @@ public class PendingTasksMenu extends AbstractMenu {
       }
       case 6 -> {
         return SingletonMenuFactory.getTaskMenu(
-            crudService, searchService, userService, taskService, categoryService);
+            crudService, userService, taskService, categoryService);
       }
       default -> {
         return null;
