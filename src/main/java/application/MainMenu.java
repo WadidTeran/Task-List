@@ -17,10 +17,10 @@ public class MainMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Tasks", 1);
-    menuOptions.put("Categories", 2);
-    menuOptions.put("Account Settings", 3);
-    menuOptions.put("Sign Out", 4);
+    menuOptions.put("TASKS", 1);
+    menuOptions.put("CATEGORIES", 2);
+    menuOptions.put("ACCOUNT SETTINGS", 3);
+    menuOptions.put("SIGN OUT", 4);
   }
 
   @Override

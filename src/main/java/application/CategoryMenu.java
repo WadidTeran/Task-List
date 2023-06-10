@@ -17,11 +17,11 @@ public class CategoryMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Create Category", 1);
-    menuOptions.put("List All Categories", 2);
-    menuOptions.put("Rename Category", 3);
-    menuOptions.put("Delete Category", 4);
-    menuOptions.put("Back", 5);
+    menuOptions.put("CREATE CATEGORY", 1);
+    menuOptions.put("LIST ALL CATEGORIES", 2);
+    menuOptions.put("RENAME CATEGORY", 3);
+    menuOptions.put("DELETE CATEGORY", 4);
+    menuOptions.put("BACK", 5);
   }
 
   @Override

@@ -17,13 +17,13 @@ public class TaskMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Pending Tasks", 1);
-    menuOptions.put("Search Tasks", 2);
-    menuOptions.put("Create Task", 3);
-    menuOptions.put("Modify Task", 4);
-    menuOptions.put("Delete Task", 5);
-    menuOptions.put("Completed Tasks", 6);
-    menuOptions.put("Back", 7);
+    menuOptions.put("PENDING TASKS", 1);
+    menuOptions.put("SEARCH TASKS", 2);
+    menuOptions.put("CREATE TASK", 3);
+    menuOptions.put("MODIFY TASK", 4);
+    menuOptions.put("DELETE TASK", 5);
+    menuOptions.put("COMPLETED TASKS", 6);
+    menuOptions.put("BACK", 7);
   }
 
   @Override

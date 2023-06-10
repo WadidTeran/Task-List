@@ -17,10 +17,10 @@ public class SearchTasksMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Search a specific task", 1);
-    menuOptions.put("Search tasks by category", 2);
-    menuOptions.put("Search tasks by relevance", 3);
-    menuOptions.put("Back", 4);
+    menuOptions.put("SEARCH A SPECIFIC TASK", 1);
+    menuOptions.put("SEARCH TASKS BY CATEGORY", 2);
+    menuOptions.put("SEARCH TASKS BY RELEVANCE", 3);
+    menuOptions.put("BACK", 4);
   }
 
   @Override

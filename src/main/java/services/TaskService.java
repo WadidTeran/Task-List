@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
-import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
 import models.*;
@@ -70,7 +69,7 @@ public class TaskService {
             task.setCompleted(true);
             task.setCompletedDate(LocalDate.now());
             crudService.saveTask(task);
-            if (task.getRepeatingConfig() != null) {
+            if (task.isRepetitive()) {
               RepetitiveTaskService.manageRepetitiveTask(task, crudService);
             }
           }
@@ -195,12 +194,7 @@ public class TaskService {
 
   public void searchTasksByRelevance() {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
-      Map<String, Relevance> relevanceMap = new LinkedHashMap<>();
-      relevanceMap.put("None", Relevance.NONE);
-      relevanceMap.put("Low", Relevance.LOW);
-      relevanceMap.put("Medium", Relevance.MEDIUM);
-      relevanceMap.put("High", Relevance.HIGH);
-
+      Map<String, Relevance> relevanceMap = Relevance.getRelevanceMap();
       Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
 
       String relevanceStr =

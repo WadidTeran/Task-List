@@ -8,7 +8,6 @@ import repositories.IRepository;
 import repositories.TaskRepository;
 import repositories.UserRepository;
 import services.*;
-import views.View;
 
 public class Application {
   private static final IRepository<User> userRepository = new UserRepository();
@@ -23,7 +22,6 @@ public class Application {
   private Application() {}
 
   public static void start() {
-    View.message("PAY ATTENTION");
     createTestData();
     AbstractMenu currentMenu =
         new LoginMenu(crudService, userService, taskService, categoryService);

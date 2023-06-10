@@ -17,10 +17,10 @@ public class CompletedTasksMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("View All Completed Tasks", 1);
-    menuOptions.put("Set A Completed Task As Pending", 2);
-    menuOptions.put("Delete All Completed Task", 3);
-    menuOptions.put("Back", 4);
+    menuOptions.put("VIEW ALL COMPLETED TASKS", 1);
+    menuOptions.put("SET A COMPLETED TASK AS PENDING", 2);
+    menuOptions.put("DELETE ALL COMPLETED TASK", 3);
+    menuOptions.put("BACK", 4);
   }
 
   @Override

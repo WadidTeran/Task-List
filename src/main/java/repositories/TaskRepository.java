@@ -1,6 +1,6 @@
 package repositories;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import models.Task;
@@ -14,11 +14,10 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
   }
 
   @Override
-  public ArrayList<Task> findAll() {
-    return (ArrayList<Task>)
-        this.connection.getTasks().stream()
-            .filter(t -> t.getUser().equals(UserLogin.getLoggedUser()))
-            .collect(Collectors.toList());
+  public List<Task> findAll() {
+    return this.connection.getTasks().stream()
+        .filter(t -> t.getUser().equals(UserLogin.getLoggedUser()))
+        .collect(Collectors.toList());
   }
 
   @Override

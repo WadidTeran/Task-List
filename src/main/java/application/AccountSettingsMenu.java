@@ -18,10 +18,10 @@ public class AccountSettingsMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Change Email", 1);
-    menuOptions.put("Change Password", 2);
-    menuOptions.put("Delete Account", 3);
-    menuOptions.put("Back", 4);
+    menuOptions.put("CHANGE EMAIL", 1);
+    menuOptions.put("CHANGE PASSWORD", 2);
+    menuOptions.put("DELETE ACCOUNT", 3);
+    menuOptions.put("BACK", 4);
   }
 
   @Override

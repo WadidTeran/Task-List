@@ -49,7 +49,7 @@ public class TaskCreatorModificatorService {
         : "Task modification mode";
   }
 
-  // TODO: THIS METHOD NEEDS TO BE REFACTORED && REPLACE TEXT INPUTS FOR OPTION INPUTS
+  // TODO: THIS METHOD NEEDS TO BE REFACTORED
   public static void process(
       TaskBuilder taskBuilder,
       TaskOperationType taskOperationType,
@@ -111,12 +111,7 @@ public class TaskCreatorModificatorService {
             taskBuilder.setDescription(description);
           }
         } else if (opcionIndice == 5) {
-          Map<String, Relevance> relevanceMap = new LinkedHashMap<>();
-          relevanceMap.put("None", Relevance.NONE);
-          relevanceMap.put("Low", Relevance.LOW);
-          relevanceMap.put("Medium", Relevance.MEDIUM);
-          relevanceMap.put("High", Relevance.HIGH);
-
+          Map<String, Relevance> relevanceMap = Relevance.getRelevanceMap();
           Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
 
           String relevanceStr =
@@ -129,7 +124,11 @@ public class TaskCreatorModificatorService {
             taskBuilder.setRelevance(relevance);
           }
         } else if (opcionIndice == 6) {
-          String category = View.input("Category");
+          Object[] categoriesArray =
+              crudService.findAllCategories().stream().map(Category::getName).toArray();
+
+          String category =
+              View.inputOptions("Category selector", "Choose the category", categoriesArray);
 
           if (!categoryService.checkCategoryName(category)) {
             View.message("The category " + category + " doesn't exist.");

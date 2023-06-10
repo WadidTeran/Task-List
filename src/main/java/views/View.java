@@ -24,19 +24,19 @@ public class View {
   private View() {}
 
   public static void message(String message) {
-    JOptionPane.showMessageDialog(null, message);
+    JOptionPane.showMessageDialog(null, message.toUpperCase());
   }
 
   public static String input(String message) {
-    return JOptionPane.showInputDialog(message);
+    return JOptionPane.showInputDialog(message.toUpperCase());
   }
 
   public static String inputOptions(String title, String message, Object[] optionsArray) {
     return (String)
         JOptionPane.showInputDialog(
             null,
-            message,
-            title,
+            message.toUpperCase(),
+            title.toUpperCase(),
             JOptionPane.INFORMATION_MESSAGE,
             null,
             optionsArray,
@@ -44,7 +44,7 @@ public class View {
   }
 
   public static boolean confirm(String message) {
-    return JOptionPane.showConfirmDialog(null, message) == 0;
+    return JOptionPane.showConfirmDialog(null, message.toUpperCase()) == 0;
   }
 
   public static void displayOneTask(Task task) {

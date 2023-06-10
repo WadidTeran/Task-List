@@ -18,8 +18,8 @@ public class LoginMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Sign In", 1);
-    menuOptions.put("Sign Up", 2);
+    menuOptions.put("SIGN IN", 1);
+    menuOptions.put("SIGN UP", 2);
   }
 
   @Override

@@ -26,4 +26,8 @@ public class Task {
   public Boolean isCompleted() {
     return completed;
   }
+
+  public boolean isRepetitive() {
+    return repeatingConfig != null;
+  }
 }

@@ -17,12 +17,12 @@ public class PendingTasksMenu extends AbstractMenu {
   @Override
   public void configureMenuOptions() {
     menuOptions = new LinkedHashMap<>();
-    menuOptions.put("Set A Task As Completed", 1);
-    menuOptions.put("View Pending Tasks For Today", 2);
-    menuOptions.put("View Future Pending Tasks", 3);
-    menuOptions.put("View Previous Pending Tasks", 4);
-    menuOptions.put("View All Pending Tasks", 5);
-    menuOptions.put("Back", 6);
+    menuOptions.put("SET A TASK AS COMPLETED", 1);
+    menuOptions.put("VIEW PENDING TASKS FOR TODAY", 2);
+    menuOptions.put("VIEW FUTURE PENDING TASKS", 3);
+    menuOptions.put("VIEW PREVIOUS PENDING TASKS", 4);
+    menuOptions.put("VIEW ALL PENDING TASKS", 5);
+    menuOptions.put("BACK", 6);
   }
 
   @Override
