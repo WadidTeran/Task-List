@@ -7,23 +7,23 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.swing.*;
+import java.io.File;
 import java.util.Properties;
 
-public class EmailSenderService extends JFrame {
+public class EmailSenderService {
   private final String senderEmail;
-  private final String SERVICE;
+  private final String service;
   private final String password;
   private final Session session;
   private final MimeMessage message;
 
   public EmailSenderService() {
-    senderEmail = "alxisM16@gmail.com";
-    password = "osobbxvakhymgiut";
-    SERVICE = "smtp.gmail.com";
+    senderEmail = "listtaskapp@gmail.com";
+    password = "siwrggjduvteeqkb";
+    service = "smtp.gmail.com";
 
     Properties properties = new Properties();
-    properties.put("mail.smtp.host", SERVICE);
+    properties.put("mail.smtp.host", service);
     properties.put("mail.smtp.starttls.enable", "true");
     properties.put("mail.smtp.port", 587);
     properties.put("mail.smtp.user", senderEmail);
@@ -35,7 +35,7 @@ public class EmailSenderService extends JFrame {
   }
 
   public void sendEmailWithFile(
-      String subject, String textBody, String fileDataSource, String receiverEmail) {
+          String subject, String textBody, String fileDataSource, String receiverEmail) {
 
     try {
 
@@ -46,7 +46,7 @@ public class EmailSenderService extends JFrame {
       emailElements.addBodyPart(emailBody);
 
       MimeBodyPart attachFile = new MimeBodyPart();
-      FileDataSource file = new FileDataSource(fileDataSource);
+      File file = new File(fileDataSource);
       attachFile.setDataHandler(new DataHandler(new FileDataSource(fileDataSource)));
       attachFile.setFileName(file.getName());
       emailElements.addBodyPart(attachFile);
@@ -56,10 +56,11 @@ public class EmailSenderService extends JFrame {
       message.setSubject(subject);
       message.setContent(emailElements);
       Transport transport = session.getTransport("smtp");
-      transport.connect(SERVICE, senderEmail, password);
+      transport.connect(service, senderEmail, password);
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
       System.out.println("Procces completed successfully");
+      file.deleteOnExit();
     } catch (MessagingException me) {
       me.printStackTrace();
     }
@@ -73,7 +74,7 @@ public class EmailSenderService extends JFrame {
       message.setSubject(subject);
       message.setText(textBody);
       Transport transport = session.getTransport("smtp");
-      transport.connect(SERVICE, senderEmail, password);
+      transport.connect(service, senderEmail, password);
       transport.sendMessage(message, message.getAllRecipients());
       transport.close();
       System.out.println("Procces completed successfully");

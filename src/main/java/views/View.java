@@ -1,6 +1,6 @@
 package views;
 
-import static views.ViewExternalMethods.*;
+import static views.ExternalViewMethods.*;
 
 import java.util.Formatter;
 import java.util.List;
