@@ -9,9 +9,10 @@ import models.TaskBuilder;
 public class RepetitiveTaskService {
   private RepetitiveTaskService() {}
 
-  public static void manageRepetitiveTask(Task task, CRUDServiceImpl crudService) {
+  public static void manageRepetitiveTask(Task task, ICRUDService crudService) {
     TaskBuilder taskBuilder = TaskBuilder.taskBuilderWithClonedTask(task);
-    NextDueDateCalculatorService nextDueDateCalculatorService = new NextDueDateCalculatorService(task);
+    NextDueDateCalculatorService nextDueDateCalculatorService =
+        new NextDueDateCalculatorService(task);
 
     makeVisitorVisit(task, nextDueDateCalculatorService);
 

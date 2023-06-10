@@ -1,12 +1,11 @@
 package services;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import models.Category;
 import models.Relevance;
 import models.Task;
-import repositories.IRepository;
 
 public class FilteredTaskSearchService
     implements ICategoryTasksService,
@@ -14,87 +13,82 @@ public class FilteredTaskSearchService
         IPendingTasksService,
         IRelevanceTasksService {
 
-  private final IRepository<Task> taskRepository;
+  private final ICRUDService crudService;
 
-  public FilteredTaskSearchService(IRepository<Task> taskRepository) {
-    this.taskRepository = taskRepository;
+  public FilteredTaskSearchService(ICRUDService crudService) {
+    this.crudService = crudService;
   }
 
   @Override
-  public ArrayList<Task> getCategoryTasks(Category category) {
-    return (ArrayList<Task>)
-        getAllPendingTasks().stream()
-            .filter(
-                t -> {
-                  if (t.getCategory() != null) {
-                    return t.getCategory().getName().equals(category.getName());
-                  }
-                  return false;
-                })
-            .collect(Collectors.toList());
+  public List<Task> getCategoryTasks(Category category) {
+    return getAllPendingTasks().stream()
+        .filter(
+            t -> {
+              if (t.getCategory() != null) {
+                return t.getCategory().getName().equals(category.getName());
+              }
+              return false;
+            })
+        .collect(Collectors.toList());
   }
 
   @Override
-  public ArrayList<Task> getCompletedTasks() {
-    return (ArrayList<Task>)
-        taskRepository.findAll().stream().filter(Task::isCompleted).collect(Collectors.toList());
+  public List<Task> getCompletedTasks() {
+    return crudService.findAllTasks().stream()
+        .filter(Task::isCompleted)
+        .collect(Collectors.toList());
   }
 
   @Override
-  public ArrayList<Task> getFuturePendingTasks() {
-    return (ArrayList<Task>)
-        getAllPendingTasks().stream()
-            .filter(
-                t -> {
-                  if (t.getDueDate() != null) {
-                    return t.getDueDate().isAfter(LocalDate.now());
-                  }
-                  return false;
-                })
-            .collect(Collectors.toList());
+  public List<Task> getFuturePendingTasks() {
+    return getAllPendingTasks().stream()
+        .filter(
+            t -> {
+              if (t.getDueDate() != null) {
+                return t.getDueDate().isAfter(LocalDate.now());
+              }
+              return false;
+            })
+        .collect(Collectors.toList());
   }
 
   @Override
-  public ArrayList<Task> getPastPendingTasks() {
-    return (ArrayList<Task>)
-        getAllPendingTasks().stream()
-            .filter(
-                t -> {
-                  if (t.getDueDate() != null) {
-                    return t.getDueDate().isBefore(LocalDate.now());
-                  }
-                  return false;
-                })
-            .collect(Collectors.toList());
+  public List<Task> getPastPendingTasks() {
+    return getAllPendingTasks().stream()
+        .filter(
+            t -> {
+              if (t.getDueDate() != null) {
+                return t.getDueDate().isBefore(LocalDate.now());
+              }
+              return false;
+            })
+        .collect(Collectors.toList());
   }
 
   @Override
-  public ArrayList<Task> getPendingTasksForToday() {
-    return (ArrayList<Task>)
-        getAllPendingTasks().stream()
-            .filter(
-                t -> {
-                  if (t.getDueDate() != null) {
-                    return t.getDueDate().isEqual(LocalDate.now());
-                  }
-                  return false;
-                })
-            .collect(Collectors.toList());
+  public List<Task> getPendingTasksForToday() {
+    return getAllPendingTasks().stream()
+        .filter(
+            t -> {
+              if (t.getDueDate() != null) {
+                return t.getDueDate().isEqual(LocalDate.now());
+              }
+              return false;
+            })
+        .collect(Collectors.toList());
   }
 
   @Override
-  public ArrayList<Task> getAllPendingTasks() {
-    return (ArrayList<Task>)
-        taskRepository.findAll().stream()
-            .filter(t -> !t.isCompleted())
-            .collect(Collectors.toList());
+  public List<Task> getAllPendingTasks() {
+    return crudService.findAllTasks().stream()
+        .filter(t -> !t.isCompleted())
+        .collect(Collectors.toList());
   }
 
   @Override
-  public ArrayList<Task> getRelevanceTasks(Relevance relevance) {
-    return (ArrayList<Task>)
-        getAllPendingTasks().stream()
-            .filter(t -> t.getRelevance() == relevance)
-            .collect(Collectors.toList());
+  public List<Task> getRelevanceTasks(Relevance relevance) {
+    return getAllPendingTasks().stream()
+        .filter(t -> t.getRelevance() == relevance)
+        .collect(Collectors.toList());
   }
 }

@@ -52,7 +52,7 @@ public class TaskCreatorModificatorService {
   public static void process(
       TaskBuilder taskBuilder,
       TaskOperationType taskOperationType,
-      CRUDServiceImpl crudService,
+      ICRUDService crudService,
       CategoryService categoryService) {
 
     String title = switchMenuAndTitle(taskOperationType);

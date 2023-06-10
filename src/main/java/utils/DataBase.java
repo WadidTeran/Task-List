@@ -1,15 +1,17 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import models.Category;
 import models.Task;
 import models.User;
 
 public class DataBase {
-  @Getter private final ArrayList<User> users = new ArrayList<>();
-  @Getter private final ArrayList<Task> tasks = new ArrayList<>();
-  @Getter private final ArrayList<Category> categories = new ArrayList<>();
+  @Getter private final List<User> users = new ArrayList<>();
+  @Getter private final List<Task> tasks = new ArrayList<>();
+  @Getter private final List<Category> categories = new ArrayList<>();
   private Long lastUserId;
   private Long lastTaskId;
   private Long lastCategoryId;
@@ -42,7 +44,9 @@ public class DataBase {
     int userId = (int) ((long) user.getUserId());
 
     for (int i = (userId) - 1; i > 0; i--) {
-      if (i < users.size() && users.get(i) != null && users.get(i).getUserId().equals(user.getUserId())) {
+      if (i < users.size()
+          && users.get(i) != null
+          && users.get(i).getUserId().equals(user.getUserId())) {
         users.set(i, user);
         break;
       }
@@ -53,7 +57,9 @@ public class DataBase {
   public Task updateTask(Task task) {
     int taskId = (int) ((long) task.getTaskId());
     for (int i = (taskId - 1); i > 0; i--) {
-      if (i < tasks.size() && tasks.get(i) != null && tasks.get(i).getTaskId().equals(task.getTaskId())) {
+      if (i < tasks.size()
+          && tasks.get(i) != null
+          && tasks.get(i).getTaskId().equals(task.getTaskId())) {
         tasks.set(i, task);
         break;
       }
@@ -64,7 +70,9 @@ public class DataBase {
   public Category updateCategory(Category category) {
     int categoryId = (int) ((long) category.getCategoryId());
     for (int i = (categoryId - 1); i > 0; i--) {
-      if (i < categories.size() && categories.get(i) != null && categories.get(i).getCategoryId().equals(category.getCategoryId())) {
+      if (i < categories.size()
+          && categories.get(i) != null
+          && categories.get(i).getCategoryId().equals(category.getCategoryId())) {
         categories.set(i, category);
         break;
       }
@@ -85,10 +93,11 @@ public class DataBase {
 
   public void deleteCategory(Category category) {
     this.categories.remove(category);
-    tasks.forEach(task -> {
-      if (task.getCategory().equals(category)) {
-        task.setCategory(null);
-      }
-    });
+    tasks.forEach(
+        task -> {
+          if (task.getCategory().equals(category)) {
+            task.setCategory(null);
+          }
+        });
   }
 }

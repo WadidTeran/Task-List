@@ -1,6 +1,7 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import models.Category;
 import utils.UserLogin;
 import views.View;
@@ -14,9 +15,9 @@ public class CategoryService {
       "Category names cannot be longer than " + MAX_CATEGORY_NAME_LENGTH + " characters!";
   private static final String MAXIMUM_CATEGORIES_WARNING =
       "You cannot create more than " + MAXIMUM_CATEGORIES + " categories!";
-  private final CRUDServiceImpl crudService;
+  private final ICRUDService crudService;
 
-  public CategoryService(CRUDServiceImpl crudService) {
+  public CategoryService(ICRUDService crudService) {
     this.crudService = crudService;
   }
 
@@ -41,7 +42,7 @@ public class CategoryService {
   }
 
   public void renameCategory() {
-    ArrayList<Category> categories = crudService.findAllCategories();
+    List<Category> categories = crudService.findAllCategories();
     if (categories.isEmpty()) {
       View.message(NO_CATEGORIES_WARNING);
     } else {
@@ -77,7 +78,7 @@ public class CategoryService {
   }
 
   public void deleteCategory() {
-    ArrayList<Category> categories = crudService.findAllCategories();
+    List<Category> categories = crudService.findAllCategories();
     if (categories.isEmpty()) {
       View.message(NO_CATEGORIES_WARNING);
     } else {
@@ -99,7 +100,7 @@ public class CategoryService {
   }
 
   public void searchCategories() {
-    ArrayList<Category> categories = crudService.findAllCategories();
+    List<Category> categories = crudService.findAllCategories();
     if (categories.isEmpty()) {
       View.message(NO_CATEGORIES_WARNING);
     } else {

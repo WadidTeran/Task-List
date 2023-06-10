@@ -1,17 +1,17 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import models.Category;
 import models.Task;
 import models.User;
 
 public interface ICRUDService {
-  ArrayList<User> findAllUsers();
+  List<User> findAllUsers();
 
-  ArrayList<Task> findAllTasks();
+  List<Task> findAllTasks();
 
-  ArrayList<Category> findAllCategories();
+  List<Category> findAllCategories();
 
   User saveUser(User user);
 

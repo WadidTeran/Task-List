@@ -1,9 +1,9 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
 import models.Relevance;
 import models.Task;
 
 public interface IRelevanceTasksService {
-  ArrayList<Task> getRelevanceTasks(Relevance relevance);
+  List<Task> getRelevanceTasks(Relevance relevance);
 }

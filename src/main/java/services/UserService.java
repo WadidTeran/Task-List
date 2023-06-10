@@ -5,9 +5,9 @@ import utils.UserLogin;
 import views.View;
 
 public class UserService {
-  private final CRUDServiceImpl crudService;
+  private final ICRUDService crudService;
 
-  public UserService(CRUDServiceImpl crudService) {
+  public UserService(ICRUDService crudService) {
     this.crudService = crudService;
   }
 

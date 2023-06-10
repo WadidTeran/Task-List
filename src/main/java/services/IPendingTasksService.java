@@ -1,14 +1,14 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
 import models.Task;
 
 public interface IPendingTasksService {
-  ArrayList<Task> getFuturePendingTasks();
+  List<Task> getFuturePendingTasks();
 
-  ArrayList<Task> getPastPendingTasks();
+  List<Task> getPastPendingTasks();
 
-  ArrayList<Task> getPendingTasksForToday();
+  List<Task> getPendingTasksForToday();
 
-  ArrayList<Task> getAllPendingTasks();
+  List<Task> getAllPendingTasks();
 }

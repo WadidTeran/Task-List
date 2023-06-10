@@ -1,10 +1,10 @@
 package services;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import models.*;
 import views.View;
@@ -22,12 +22,12 @@ public class TaskService {
   private static final String NOT_A_NUMBER = "That is not a number.";
   private static final boolean TASK_STATUS_COMPLETED = true;
   private static final boolean TASK_STATUS_PENDING = false;
-  private final CRUDServiceImpl crudService;
+  private final ICRUDService crudService;
   private final FilteredTaskSearchService searchService;
   private final CategoryService categoryService;
 
   public TaskService(
-      CRUDServiceImpl crudService,
+      ICRUDService crudService,
       FilteredTaskSearchService searchService,
       CategoryService categoryService) {
     this.crudService = crudService;
@@ -135,7 +135,7 @@ public class TaskService {
   }
 
   public void searchFuturePendingTasks() {
-    ArrayList<Task> futurePendingTasks = searchService.getFuturePendingTasks();
+    List<Task> futurePendingTasks = searchService.getFuturePendingTasks();
     if (futurePendingTasks.isEmpty()) {
       View.message("You don't have future pending tasks.");
     } else {
@@ -144,7 +144,7 @@ public class TaskService {
   }
 
   public void searchPendingTasksForToday() {
-    ArrayList<Task> pendingTasksForToday = searchService.getPendingTasksForToday();
+    List<Task> pendingTasksForToday = searchService.getPendingTasksForToday();
     if (pendingTasksForToday.isEmpty()) {
       View.message("You don't have pending tasks for today.");
     } else {
@@ -153,7 +153,7 @@ public class TaskService {
   }
 
   public void searchPastPendingTasks() {
-    ArrayList<Task> pastPendingTasks = searchService.getPastPendingTasks();
+    List<Task> pastPendingTasks = searchService.getPastPendingTasks();
     if (pastPendingTasks.isEmpty()) {
       View.message("You don't have previous pending tasks.");
     } else {
@@ -162,7 +162,7 @@ public class TaskService {
   }
 
   public void searchAllPendingTasks() {
-    ArrayList<Task> pendingTasks = searchService.getAllPendingTasks();
+    List<Task> pendingTasks = searchService.getAllPendingTasks();
     if (pendingTasks.isEmpty()) {
       View.message(NO_PENDING_TASKS_WARNING);
     } else {
@@ -188,7 +188,7 @@ public class TaskService {
         View.message("You have to choose a level of relevance!");
       } else {
         Relevance relevance = relevanceMap.get(relevanceStr);
-        ArrayList<Task> relevanceTasks = searchService.getRelevanceTasks(relevance);
+        List<Task> relevanceTasks = searchService.getRelevanceTasks(relevance);
         if (relevanceTasks.isEmpty()) {
           View.message("You don't have task with this relevance.");
         } else {
@@ -202,7 +202,7 @@ public class TaskService {
 
   public void searchTasksByCategory() {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
-      ArrayList<Category> categories = crudService.findAllCategories();
+      List<Category> categories = crudService.findAllCategories();
       if (categories.isEmpty()) {
         View.message(CategoryService.NO_CATEGORIES_WARNING);
       } else {
@@ -217,7 +217,7 @@ public class TaskService {
           View.message("The category " + category + " doesn't exist.");
         } else {
           Category categoryObj = categoryService.getCategoryByName(category);
-          ArrayList<Task> categoryTasks = searchService.getCategoryTasks(categoryObj);
+          List<Task> categoryTasks = searchService.getCategoryTasks(categoryObj);
           if (categoryTasks.isEmpty()) {
             View.message("You don't have task in this category.");
           } else {
@@ -231,7 +231,7 @@ public class TaskService {
   }
 
   public void searchCompletedTasks() {
-    ArrayList<Task> completedTasks = searchService.getCompletedTasks();
+    List<Task> completedTasks = searchService.getCompletedTasks();
     if (completedTasks.isEmpty()) {
       View.message(NO_COMPLETED_TASKS_WARNING);
     } else {
@@ -240,7 +240,7 @@ public class TaskService {
   }
 
   public void deleteCompletedTasks() {
-    ArrayList<Task> completedTasks = searchService.getCompletedTasks();
+    List<Task> completedTasks = searchService.getCompletedTasks();
     if (completedTasks.isEmpty()) {
       View.message(NO_COMPLETED_TASKS_WARNING);
     } else if (View.confirm("Are you sure you want to delete all completed tasks?")) {
@@ -268,7 +268,7 @@ public class TaskService {
   }
 
   private Optional<Task> askForATask(String message, boolean taskStatus) {
-    ArrayList<Task> tasks =
+    List<Task> tasks =
         (taskStatus == TASK_STATUS_COMPLETED)
             ? searchService.getCompletedTasks()
             : searchService.getAllPendingTasks();
@@ -288,7 +288,7 @@ public class TaskService {
   }
 
   private boolean checkExistenceOfTasks(boolean taskStatus) {
-    ArrayList<Task> tasks =
+    List<Task> tasks =
         (taskStatus == TASK_STATUS_COMPLETED)
             ? searchService.getCompletedTasks()
             : searchService.getAllPendingTasks();

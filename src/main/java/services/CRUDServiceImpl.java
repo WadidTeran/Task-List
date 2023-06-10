@@ -1,6 +1,6 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import models.Category;
 import models.Task;
@@ -22,17 +22,17 @@ public class CRUDServiceImpl implements ICRUDService {
   }
 
   @Override
-  public ArrayList<User> findAllUsers() {
+  public List<User> findAllUsers() {
     return userRepository.findAll();
   }
 
   @Override
-  public ArrayList<Task> findAllTasks() {
+  public List<Task> findAllTasks() {
     return taskRepository.findAll();
   }
 
   @Override
-  public ArrayList<Category> findAllCategories() {
+  public List<Category> findAllCategories() {
     return categoryRepository.findAll();
   }
 

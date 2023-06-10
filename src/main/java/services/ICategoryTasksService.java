@@ -1,9 +1,10 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import models.Category;
 import models.Task;
 
 public interface ICategoryTasksService {
-  ArrayList<Task> getCategoryTasks(Category category);
+  List<Task> getCategoryTasks(Category category);
 }

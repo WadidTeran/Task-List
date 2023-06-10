@@ -1,8 +1,8 @@
 package services;
 
-import java.util.ArrayList;
+import java.util.List;
 import models.Task;
 
 public interface ICompletedTasksService {
-  ArrayList<Task> getCompletedTasks();
+  List<Task> getCompletedTasks();
 }
