@@ -18,14 +18,14 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
   public ArrayList<Category> findAll() {
     return (ArrayList<Category>)
         this.connection.getCategories().stream()
-            .filter(c -> c.getUser().equals(UserLogin.getUser()))
+            .filter(c -> c.getUser().equals(UserLogin.getLoggedUser()))
             .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Category> getById(Long id) {
     return findAll().stream()
-        .filter(c -> c.getCategoryId().equals(id) && c.getUser().equals(UserLogin.getUser()))
+        .filter(c -> c.getCategoryId().equals(id) && c.getUser().equals(UserLogin.getLoggedUser()))
         .findFirst();
   }
 
@@ -42,7 +42,7 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
 
   @Override
   public void delete(Category category) {
-    if (category.getUser().equals(UserLogin.getUser())) {
+    if (category.getUser().equals(UserLogin.getLoggedUser())) {
       this.connection.deleteCategory(category);
     }
   }

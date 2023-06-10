@@ -80,39 +80,4 @@ public class CRUDServiceImpl implements ICRUDService {
   public Optional<Category> getCategoryById(Long id) {
     return categoryRepository.getById(id);
   }
-
-  @Override
-  public void deleteCompletedTasks(ICompletedTasksService completedTasksService) {
-    ArrayList<Task> completedTasks = completedTasksService.getCompletedTasks();
-
-    for (Task completedTask : completedTasks) {
-      taskRepository.delete(completedTask);
-    }
-  }
-
-  public boolean checkUserEmail(String email) {
-    return findAllUsers().stream().anyMatch(u -> u.getEmail().equals(email));
-  }
-
-  public boolean validateUserPassword(String email, String password) {
-    return getUserByEmail(email).getPassword().equals(password);
-  }
-
-  public User getUserByEmail(String email) {
-    return findAllUsers().stream()
-        .filter(u -> u.getEmail().equals(email))
-        .findFirst()
-        .orElseThrow();
-  }
-
-  public boolean checkCategoryName(String category) {
-    return findAllCategories().stream().anyMatch(c -> c.getName().equals(category));
-  }
-
-  public Category getCategoryByName(String categoryName) {
-    return findAllCategories().stream()
-        .filter(c -> c.getName().equals(categoryName))
-        .findFirst()
-        .orElseThrow();
-  }
 }

@@ -17,14 +17,14 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
   public ArrayList<Task> findAll() {
     return (ArrayList<Task>)
         this.connection.getTasks().stream()
-            .filter(t -> t.getUser().equals(UserLogin.getUser()))
+            .filter(t -> t.getUser().equals(UserLogin.getLoggedUser()))
             .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Task> getById(Long id) {
     return findAll().stream()
-        .filter(t -> t.getTaskId().equals(id) && t.getUser().equals(UserLogin.getUser()))
+        .filter(t -> t.getTaskId().equals(id) && t.getUser().equals(UserLogin.getLoggedUser()))
         .findFirst();
   }
 
@@ -41,7 +41,7 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
 
   @Override
   public void delete(Task task) {
-    if (task.getUser().equals(UserLogin.getUser())) {
+    if (task.getUser().equals(UserLogin.getLoggedUser())) {
       this.connection.deleteTask(task);
     }
   }

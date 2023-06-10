@@ -15,14 +15,25 @@ public class UserService {
     String email = View.input("Email").toLowerCase();
     String password = View.input("Password");
 
-    return UserLogin.logInUser(email, password, crudService);
+    if (!checkUserEmail(email)) {
+      View.message("This user doesn't exist.");
+    } else if (!validateUserPassword(email, password)) {
+      View.message("Invalid password.");
+    } else {
+      User user = getUserByEmail(email);
+      View.message("Welcome!");
+
+      UserLogin.logInUser(user);
+      return true;
+    }
+    return false;
   }
 
   public void signUp() {
     String email = View.input("Email").toLowerCase();
     String password = View.input("Password");
 
-    if (!crudService.checkUserEmail(email)) {
+    if (!checkUserEmail(email)) {
       User user = new User(email, password);
       crudService.saveUser(user);
       View.message("User registered successfully!");
@@ -37,7 +48,7 @@ public class UserService {
     if (checkPassword(password)) {
       if (View.confirm("Are you sure you want to delete your account?")) {
         signOut();
-        crudService.deleteUser(UserLogin.getUser());
+        crudService.deleteUser(UserLogin.getLoggedUser());
         View.message("You have deleted your account succesfully...");
         return true;
       }
@@ -56,15 +67,15 @@ public class UserService {
 
     if (checkPassword(password)) {
       String newEmail = View.input("Insert the new email.").toLowerCase();
-      if (crudService.checkUserEmail(newEmail)) {
+      if (checkUserEmail(newEmail)) {
         View.message("An user with this email already exists!");
       } else if (View.confirm(
           "Are you sure you want to change your email from "
-              + UserLogin.getUser().getEmail()
+              + UserLogin.getLoggedUser().getEmail()
               + " to "
               + newEmail
               + "?")) {
-        User currentUser = UserLogin.getUser();
+        User currentUser = UserLogin.getLoggedUser();
         currentUser.setEmail(newEmail);
         crudService.saveUser(currentUser);
         View.message("Email changed successfully.");
@@ -82,7 +93,7 @@ public class UserService {
       String newPasswordConfirm = View.input("Confirm the new password.");
       if (newPassword.equals(newPasswordConfirm)) {
         if (View.confirm("Are you sure you want to change your password?")) {
-          User currentUser = UserLogin.getUser();
+          User currentUser = UserLogin.getLoggedUser();
           currentUser.setPassword(newPassword);
           crudService.saveUser(currentUser);
           View.message("Password changed successfully.");
@@ -96,6 +107,21 @@ public class UserService {
   }
 
   private boolean checkPassword(String password) {
-    return UserLogin.getUser().getPassword().equals(password);
+    return UserLogin.getLoggedUser().getPassword().equals(password);
+  }
+
+  private boolean checkUserEmail(String email) {
+    return crudService.findAllUsers().stream().anyMatch(u -> u.getEmail().equals(email));
+  }
+
+  private boolean validateUserPassword(String email, String password) {
+    return getUserByEmail(email).getPassword().equals(password);
+  }
+
+  private User getUserByEmail(String email) {
+    return crudService.findAllUsers().stream()
+        .filter(u -> u.getEmail().equals(email))
+        .findFirst()
+        .orElseThrow();
   }
 }

@@ -30,6 +30,4 @@ public interface ICRUDService {
   Optional<Task> getTaskById(Long id);
 
   Optional<Category> getCategoryById(Long id);
-
-  void deleteCompletedTasks(ICompletedTasksService completedTasksService);
 }

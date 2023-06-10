@@ -24,14 +24,20 @@ public class TaskService {
   private static final boolean TASK_STATUS_PENDING = false;
   private final CRUDServiceImpl crudService;
   private final FilteredTaskSearchService searchService;
+  private final CategoryService categoryService;
 
-  public TaskService(CRUDServiceImpl crudService, FilteredTaskSearchService searchService) {
+  public TaskService(
+      CRUDServiceImpl crudService,
+      FilteredTaskSearchService searchService,
+      CategoryService categoryService) {
     this.crudService = crudService;
     this.searchService = searchService;
+    this.categoryService = categoryService;
   }
 
   public void createTask() {
-    TaskCreatorModificatorService.process(new TaskBuilder(), TaskOperationType.CREATION, crudService);
+    TaskCreatorModificatorService.process(
+        new TaskBuilder(), TaskOperationType.CREATION, crudService, categoryService);
   }
 
   public void modifyTask() {
@@ -42,7 +48,8 @@ public class TaskService {
           Task taskToModify = optTask.get();
           TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
 
-          TaskCreatorModificatorService.process(taskBuilder, TaskOperationType.MODIFICATION, crudService);
+          TaskCreatorModificatorService.process(
+              taskBuilder, TaskOperationType.MODIFICATION, crudService, categoryService);
         } else {
           View.message("The task's id doesn't exist!");
         }
@@ -206,10 +213,10 @@ public class TaskService {
 
         if (category == null) {
           View.message("You have to choose a category!");
-        } else if (!crudService.checkCategoryName(category)) {
+        } else if (!categoryService.checkCategoryName(category)) {
           View.message("The category " + category + " doesn't exist.");
         } else {
-          Category categoryObj = crudService.getCategoryByName(category);
+          Category categoryObj = categoryService.getCategoryByName(category);
           ArrayList<Task> categoryTasks = searchService.getCategoryTasks(categoryObj);
           if (categoryTasks.isEmpty()) {
             View.message("You don't have task in this category.");
@@ -233,10 +240,13 @@ public class TaskService {
   }
 
   public void deleteCompletedTasks() {
-    if (searchService.getCompletedTasks().isEmpty()) {
+    ArrayList<Task> completedTasks = searchService.getCompletedTasks();
+    if (completedTasks.isEmpty()) {
       View.message(NO_COMPLETED_TASKS_WARNING);
     } else if (View.confirm("Are you sure you want to delete all completed tasks?")) {
-      crudService.deleteCompletedTasks(searchService);
+      for (Task completedTask : completedTasks) {
+        crudService.deleteTask(completedTask);
+      }
     }
   }
 

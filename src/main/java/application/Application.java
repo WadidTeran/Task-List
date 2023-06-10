@@ -8,6 +8,7 @@ import repositories.IRepository;
 import repositories.TaskRepository;
 import repositories.UserRepository;
 import services.*;
+import views.View;
 
 public class Application {
 
@@ -25,6 +26,7 @@ public class Application {
   private Application() {}
 
   public static void start() {
+    View.message("PAY ATTENTION");
     createTestData();
     AbstractMenu currentMenu =
         new LoginMenu(crudService, searchService, userService, taskService, categoryService);

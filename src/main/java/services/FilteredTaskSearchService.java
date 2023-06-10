@@ -85,12 +85,16 @@ public class FilteredTaskSearchService
   @Override
   public ArrayList<Task> getAllPendingTasks() {
     return (ArrayList<Task>)
-        taskRepository.findAll().stream().filter(t -> !t.isCompleted()).collect(Collectors.toList());
+        taskRepository.findAll().stream()
+            .filter(t -> !t.isCompleted())
+            .collect(Collectors.toList());
   }
 
   @Override
   public ArrayList<Task> getRelevanceTasks(Relevance relevance) {
     return (ArrayList<Task>)
-        getAllPendingTasks().stream().filter(t -> t.getRelevance() == relevance).collect(Collectors.toList());
+        getAllPendingTasks().stream()
+            .filter(t -> t.getRelevance() == relevance)
+            .collect(Collectors.toList());
   }
 }

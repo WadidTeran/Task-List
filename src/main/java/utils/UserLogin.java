@@ -1,34 +1,22 @@
 package utils;
 
-import lombok.Getter;
 import models.User;
-import services.CRUDServiceImpl;
-import views.View;
 
 public class UserLogin {
 
-  @Getter private static User user;
+  private static User loggedUser;
 
   private UserLogin() {}
 
-  public static boolean logInUser(String email, String password, CRUDServiceImpl crudService) {
-    if (!crudService.checkUserEmail(email)) {
-      View.message("This user doesn't exist.");
-    } else if (!crudService.validateUserPassword(email, password)) {
-      View.message("Invalid password.");
-    } else {
-      user = crudService.getUserByEmail(email);
-      View.message("Welcome!");
-      return true;
-    }
-    return false;
+  public static void logInUser(User user) {
+    loggedUser = user;
   }
 
   public static void logOutUser() {
-    user = null;
+    loggedUser = null;
   }
 
-  public static boolean isUserLogged() {
-    return user != null;
+  public static User getLoggedUser() {
+    return loggedUser;
   }
 }

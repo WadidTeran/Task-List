@@ -50,7 +50,10 @@ public class TaskCreatorModificatorService {
   }
 
   public static void process(
-      TaskBuilder taskBuilder, TaskOperationType taskOperationType, CRUDServiceImpl crudService) {
+      TaskBuilder taskBuilder,
+      TaskOperationType taskOperationType,
+      CRUDServiceImpl crudService,
+      CategoryService categoryService) {
 
     String title = switchMenuAndTitle(taskOperationType);
     Object[] opArreglo = menuOptions.keySet().toArray();
@@ -127,10 +130,10 @@ public class TaskCreatorModificatorService {
         } else if (opcionIndice == 6) {
           String category = View.input("Category");
 
-          if (!crudService.checkCategoryName(category)) {
+          if (!categoryService.checkCategoryName(category)) {
             View.message("The category " + category + " doesn't exist.");
           } else {
-            Category categoryObj = crudService.getCategoryByName(category);
+            Category categoryObj = categoryService.getCategoryByName(category);
             taskBuilder.setCategory(categoryObj);
           }
         } else if (opcionIndice == 7) {

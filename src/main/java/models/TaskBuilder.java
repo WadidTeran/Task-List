@@ -9,7 +9,7 @@ public class TaskBuilder {
 
   public TaskBuilder() {
     task = new Task();
-    task.setUser(UserLogin.getUser());
+    task.setUser(UserLogin.getLoggedUser());
     task.setRelevance(Relevance.NONE);
     task.setCompleted(false);
     task.setDescription("");
