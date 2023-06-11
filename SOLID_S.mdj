@@ -9036,7 +9036,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIffdzLRavhrc="
 									},
-									"name": "Category category"
+									"name": "Category category",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -9081,7 +9082,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIffrlM2s7iwQ="
 									},
-									"name": "Relevance relevance"
+									"name": "Relevance relevance",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -19515,7 +19517,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgxYmd0AYKnQ="
 									},
-									"name": "Task task"
+									"name": "Task task",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -19523,7 +19526,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgxYmd0AYKnQ="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								}
 							]
 						},
@@ -20138,7 +20142,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIgvtR1z8KPe8="
 									},
-									"name": "User user"
+									"name": "User user",
+									"type": ""
 								}
 							]
 						},
@@ -20591,7 +20596,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInRNfZODqAtQ="
 									},
-									"name": "TaskBuilder taskBuilder"
+									"name": "TaskBuilder taskBuilder",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20599,7 +20605,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInRNfZODqAtQ="
 									},
-									"name": "TaskOperationType taskOperationType"
+									"name": "TaskOperationType taskOperationType",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -20607,7 +20614,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInRNfZODqAtQ="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -22258,13 +22266,30 @@
 											"height": 13,
 											"text": "+options(int optionIndex): AbstractMenu",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGIqXW+Y6IwKsY=",
+											"_parent": {
+												"$ref": "AAAAAAGIoWIkDeJhIfE="
+											},
+											"model": {
+												"$ref": "AAAAAAGIqXW+J6ItSf4="
+											},
+											"font": "Arial;13;2",
+											"left": 677,
+											"top": 492,
+											"width": 251.798828125,
+											"height": 13,
+											"text": "+handleBackButton(): AbstractMenu",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 672,
 									"top": 442,
 									"width": 261.798828125,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -22304,7 +22329,7 @@
 							"left": 672,
 							"top": 319,
 							"width": 261.798828125,
-							"height": 176,
+							"height": 191,
 							"nameCompartment": {
 								"$ref": "AAAAAAGIoWIkDeJb5LA="
 							},
@@ -24398,8 +24423,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 520,
-									"top": 561,
+									"left": 521,
+									"top": 564,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24419,8 +24444,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 512,
-									"top": 548,
+									"left": 513,
+									"top": 551,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -24440,8 +24465,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 537,
-									"top": 586,
+									"left": 536,
+									"top": 589,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -24459,7 +24484,7 @@
 								"$ref": "AAAAAAGIoWIoyuKDHNI="
 							},
 							"lineStyle": 1,
-							"points": "387:671;671:490",
+							"points": "388:671;671:495",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogPU8+ZYdIg="
@@ -24492,8 +24517,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 587,
-									"top": 565,
+									"left": 581,
+									"top": 572,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24513,8 +24538,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 577,
-									"top": 554,
+									"left": 571,
+									"top": 560,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -24534,8 +24559,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 606,
-									"top": 588,
+									"left": 600,
+									"top": 595,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -24553,7 +24578,7 @@
 								"$ref": "AAAAAAGIoWJxUOMnAE8="
 							},
 							"lineStyle": 1,
-							"points": "495:671;699:495",
+							"points": "495:671;687:510",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogPfcuZpLpo="
@@ -24586,8 +24611,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 648,
-									"top": 567,
+									"left": 644,
+									"top": 574,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24607,8 +24632,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 636,
-									"top": 558,
+									"left": 633,
+									"top": 564,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -24628,8 +24653,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 671,
-									"top": 586,
+									"left": 667,
+									"top": 593,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -24647,7 +24672,7 @@
 								"$ref": "AAAAAAGIoWJ25ONQ3aA="
 							},
 							"lineStyle": 1,
-							"points": "589:671;731:495",
+							"points": "590:671;723:510",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogPoLuZ69Ok="
@@ -24681,7 +24706,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 811,
-									"top": 579,
+									"top": 586,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24702,7 +24727,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 796,
-									"top": 581,
+									"top": 588,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -24723,7 +24748,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 840,
-									"top": 574,
+									"top": 581,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -24741,7 +24766,7 @@
 								"$ref": "AAAAAAGIogLmaOYd9qw="
 							},
 							"lineStyle": 1,
-							"points": "838:671;814:495",
+							"points": "838:671;815:510",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogPwl+aL/R4="
@@ -24774,8 +24799,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 727,
-									"top": 572,
+									"left": 726,
+									"top": 579,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24795,8 +24820,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 713,
-									"top": 567,
+									"left": 712,
+									"top": 574,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -24816,8 +24841,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 756,
-									"top": 581,
+									"left": 755,
+									"top": 588,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -24835,7 +24860,7 @@
 								"$ref": "AAAAAAGIoWJQmOKsPBI="
 							},
 							"lineStyle": 1,
-							"points": "713:671;772:495",
+							"points": "713:671;769:510",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogP5meacxFE="
@@ -24868,8 +24893,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 892,
-									"top": 584,
+									"left": 894,
+									"top": 591,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24889,8 +24914,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 879,
-									"top": 592,
+									"left": 881,
+									"top": 599,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -24910,8 +24935,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 917,
-									"top": 569,
+									"left": 919,
+									"top": 576,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -24929,7 +24954,7 @@
 								"$ref": "AAAAAAGIoWJ7iuN5r/4="
 							},
 							"lineStyle": 1,
-							"points": "956:671;854:495",
+							"points": "955:671;859:510",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogQCLOatfnA="
@@ -24962,8 +24987,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 984,
-									"top": 588,
+									"left": 990,
+									"top": 595,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -24983,8 +25008,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 974,
-									"top": 599,
+									"left": 980,
+									"top": 606,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -25004,8 +25029,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1005,
-									"top": 565,
+									"left": 1009,
+									"top": 572,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -25023,7 +25048,7 @@
 								"$ref": "AAAAAAGIoWJZ/eLVxXU="
 							},
 							"lineStyle": 1,
-							"points": "1092:671;899:495",
+							"points": "1091:671;910:510",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogQJ3+a+2DU="
@@ -25056,8 +25081,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1084,
-									"top": 583,
+									"left": 1083,
+									"top": 587,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -25078,7 +25103,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 1076,
-									"top": 596,
+									"top": 600,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -25098,8 +25123,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1099,
-									"top": 558,
+									"left": 1098,
+									"top": 560,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -25117,7 +25142,7 @@
 								"$ref": "AAAAAAGIoWJqkuL+Uz8="
 							},
 							"lineStyle": 1,
-							"points": "1250:671;934:484",
+							"points": "1249:671;934:490",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGIogQSmebPqQ8="
@@ -26738,6 +26763,28 @@
 								}
 							],
 							"isAbstract": true
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGIqXW+J6ItSf4=",
+							"_parent": {
+								"$ref": "AAAAAAGIoWIkDeJYJ5w="
+							},
+							"name": "handleBackButton",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGIqXXYA6I0BBo=",
+									"_parent": {
+										"$ref": "AAAAAAGIqXW+J6ItSf4="
+									},
+									"type": {
+										"$ref": "AAAAAAGIoWIkDeJYJ5w="
+									},
+									"direction": "return"
+								}
+							],
+							"isAbstract": true
 						}
 					],
 					"isAbstract": true
@@ -27137,7 +27184,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofgtt+VxE/k="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27145,7 +27193,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofgtt+VxE/k="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27153,7 +27202,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofgtt+VxE/k="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27161,7 +27211,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofgtt+VxE/k="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27190,7 +27241,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofjzY+WFRlw="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27198,7 +27250,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofjzY+WFRlw="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27206,7 +27259,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofjzY+WFRlw="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27214,7 +27268,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofjzY+WFRlw="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27243,7 +27298,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofj6IeWYNo8="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27251,7 +27307,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofj6IeWYNo8="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27259,7 +27316,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofj6IeWYNo8="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27267,7 +27325,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofj6IeWYNo8="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27296,7 +27355,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkJTOWr9zw="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27304,7 +27364,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkJTOWr9zw="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27312,7 +27373,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkJTOWr9zw="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27320,7 +27382,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkJTOWr9zw="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27349,7 +27412,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkPFOW+n/I="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27357,7 +27421,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkPFOW+n/I="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27365,7 +27430,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkPFOW+n/I="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27373,7 +27439,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkPFOW+n/I="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27402,7 +27469,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkUjOXRbSc="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27410,7 +27478,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkUjOXRbSc="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27418,7 +27487,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkUjOXRbSc="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27426,7 +27496,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkUjOXRbSc="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27455,7 +27526,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkao+XkAO8="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27463,7 +27535,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkao+XkAO8="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27471,7 +27544,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkao+XkAO8="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27479,7 +27553,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIofkao+XkAO8="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27508,7 +27583,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIogZti+bu16U="
 									},
-									"name": "ICRUDService crudService"
+									"name": "ICRUDService crudService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27516,7 +27592,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIogZti+bu16U="
 									},
-									"name": "UserService userService"
+									"name": "UserService userService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27524,7 +27601,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIogZti+bu16U="
 									},
-									"name": "TaskService taskService"
+									"name": "TaskService taskService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -27532,7 +27610,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGIogZti+bu16U="
 									},
-									"name": "CategoryService categoryService"
+									"name": "CategoryService categoryService",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
