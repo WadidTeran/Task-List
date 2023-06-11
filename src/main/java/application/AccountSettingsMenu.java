@@ -21,7 +21,6 @@ public class AccountSettingsMenu extends AbstractMenu {
     menuOptions.put("CHANGE EMAIL", 1);
     menuOptions.put("CHANGE PASSWORD", 2);
     menuOptions.put("DELETE ACCOUNT", 3);
-    menuOptions.put("BACK", 4);
   }
 
   @Override
@@ -42,13 +41,14 @@ public class AccountSettingsMenu extends AbstractMenu {
         }
         return this;
       }
-      case 4 -> {
-        return SingletonMenuFactory.getMainMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return SingletonMenuFactory.getMainMenu(crudService, userService, taskService, categoryService);
   }
 }

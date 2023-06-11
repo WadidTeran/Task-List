@@ -3,6 +3,7 @@ package application;
 import java.util.LinkedHashMap;
 
 import services.*;
+import views.View;
 
 public class MainMenu extends AbstractMenu {
   public MainMenu(
@@ -20,7 +21,6 @@ public class MainMenu extends AbstractMenu {
     menuOptions.put("TASKS", 1);
     menuOptions.put("CATEGORIES", 2);
     menuOptions.put("ACCOUNT SETTINGS", 3);
-    menuOptions.put("SIGN OUT", 4);
   }
 
   @Override
@@ -38,14 +38,19 @@ public class MainMenu extends AbstractMenu {
         return SingletonMenuFactory.getAccountSettingsMenu(
             crudService, userService, taskService, categoryService);
       }
-      case 4 -> {
-        userService.signOut();
-        return SingletonMenuFactory.getLoginMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    if (View.confirm("Are you sure you want to sign out?")) {
+      userService.signOut();
+      return SingletonMenuFactory.getLoginMenu(
+          crudService, userService, taskService, categoryService);
+    }
+    return this;
   }
 }

@@ -20,7 +20,6 @@ public class SearchTasksMenu extends AbstractMenu {
     menuOptions.put("SEARCH A SPECIFIC TASK", 1);
     menuOptions.put("SEARCH TASKS BY CATEGORY", 2);
     menuOptions.put("SEARCH TASKS BY RELEVANCE", 3);
-    menuOptions.put("BACK", 4);
   }
 
   @Override
@@ -38,13 +37,14 @@ public class SearchTasksMenu extends AbstractMenu {
         taskService.searchTasksByRelevance();
         return this;
       }
-      case 4 -> {
-        return SingletonMenuFactory.getTaskMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return SingletonMenuFactory.getTaskMenu(crudService, userService, taskService, categoryService);
   }
 }

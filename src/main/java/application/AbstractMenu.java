@@ -31,15 +31,16 @@ public abstract class AbstractMenu {
 
     String opcion = View.inputOptions(title, "Choose an option", optionsArray);
     if (opcion == null) {
-      if (View.confirm("Are you sure you want to exit?")) return null;
+      return handleBackButton();
     } else {
       optionIndex = menuOptions.get(opcion);
       return options(optionIndex);
     }
-    return null;
   }
 
   public abstract void configureMenuOptions();
 
   public abstract AbstractMenu options(int optionIndex);
+
+  public abstract AbstractMenu handleBackButton();
 }

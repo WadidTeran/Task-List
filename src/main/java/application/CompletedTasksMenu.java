@@ -20,7 +20,6 @@ public class CompletedTasksMenu extends AbstractMenu {
     menuOptions.put("VIEW ALL COMPLETED TASKS", 1);
     menuOptions.put("SET A COMPLETED TASK AS PENDING", 2);
     menuOptions.put("DELETE ALL COMPLETED TASK", 3);
-    menuOptions.put("BACK", 4);
   }
 
   @Override
@@ -38,13 +37,14 @@ public class CompletedTasksMenu extends AbstractMenu {
         taskService.deleteCompletedTasks();
         return this;
       }
-      case 4 -> {
-        return SingletonMenuFactory.getTaskMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return SingletonMenuFactory.getTaskMenu(crudService, userService, taskService, categoryService);
   }
 }

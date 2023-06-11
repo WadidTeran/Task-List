@@ -21,7 +21,6 @@ public class CategoryMenu extends AbstractMenu {
     menuOptions.put("LIST ALL CATEGORIES", 2);
     menuOptions.put("RENAME CATEGORY", 3);
     menuOptions.put("DELETE CATEGORY", 4);
-    menuOptions.put("BACK", 5);
   }
 
   @Override
@@ -43,13 +42,14 @@ public class CategoryMenu extends AbstractMenu {
         categoryService.deleteCategory();
         return this;
       }
-      case 5 -> {
-        return SingletonMenuFactory.getMainMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return SingletonMenuFactory.getMainMenu(crudService, userService, taskService, categoryService);
   }
 }

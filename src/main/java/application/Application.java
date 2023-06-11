@@ -9,6 +9,8 @@ import repositories.TaskRepository;
 import repositories.UserRepository;
 import services.*;
 
+import javax.swing.UIManager;
+
 public class Application {
   private static final IRepository<User> userRepository = new UserRepository();
   private static final IRepository<Task> taskRepository = new TaskRepository();
@@ -23,8 +25,12 @@ public class Application {
 
   public static void start() {
     createTestData();
+
+    UIManager.put("OptionPane.cancelButtonText", "BACK");
+
     AbstractMenu currentMenu =
         new LoginMenu(crudService, userService, taskService, categoryService);
+
     while (currentMenu != null) {
       currentMenu = currentMenu.showMenu();
     }

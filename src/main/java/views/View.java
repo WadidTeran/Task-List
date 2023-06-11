@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
 import models.Category;
 import models.Relevance;
 import models.RepeatTaskConfig;
@@ -44,7 +45,9 @@ public class View {
   }
 
   public static boolean confirm(String message) {
-    return JOptionPane.showConfirmDialog(null, message.toUpperCase()) == 0;
+    return JOptionPane.showConfirmDialog(
+            null, message.toUpperCase(), "CONFIRMATION", JOptionPane.YES_NO_OPTION)
+        == 0;
   }
 
   public static void displayOneTask(Task task) {

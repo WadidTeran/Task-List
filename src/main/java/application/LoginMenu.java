@@ -2,6 +2,7 @@ package application;
 
 import java.util.LinkedHashMap;
 import services.*;
+import views.View;
 
 public class LoginMenu extends AbstractMenu {
 
@@ -40,5 +41,10 @@ public class LoginMenu extends AbstractMenu {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return View.confirm("Are you sure you want to exit?") ? null : this;
   }
 }

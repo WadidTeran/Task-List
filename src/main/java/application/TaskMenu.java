@@ -23,7 +23,6 @@ public class TaskMenu extends AbstractMenu {
     menuOptions.put("MODIFY TASK", 4);
     menuOptions.put("DELETE TASK", 5);
     menuOptions.put("COMPLETED TASKS", 6);
-    menuOptions.put("BACK", 7);
   }
 
   @Override
@@ -53,13 +52,14 @@ public class TaskMenu extends AbstractMenu {
         return SingletonMenuFactory.getCompletedTasksMenu(
             crudService, userService, taskService, categoryService);
       }
-      case 7 -> {
-        return SingletonMenuFactory.getMainMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return SingletonMenuFactory.getMainMenu(crudService, userService, taskService, categoryService);
   }
 }

@@ -22,7 +22,6 @@ public class PendingTasksMenu extends AbstractMenu {
     menuOptions.put("VIEW FUTURE PENDING TASKS", 3);
     menuOptions.put("VIEW PREVIOUS PENDING TASKS", 4);
     menuOptions.put("VIEW ALL PENDING TASKS", 5);
-    menuOptions.put("BACK", 6);
   }
 
   @Override
@@ -48,13 +47,14 @@ public class PendingTasksMenu extends AbstractMenu {
         taskService.searchAllPendingTasks();
         return this;
       }
-      case 6 -> {
-        return SingletonMenuFactory.getTaskMenu(
-            crudService, userService, taskService, categoryService);
-      }
       default -> {
         return null;
       }
     }
+  }
+
+  @Override
+  public AbstractMenu handleBackButton() {
+    return SingletonMenuFactory.getTaskMenu(crudService, userService, taskService, categoryService);
   }
 }
