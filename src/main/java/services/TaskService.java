@@ -222,41 +222,30 @@ public class TaskService {
   }
 
   public void searchTasksByCategory() {
-    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
-      List<Category> categories = crudService.findAllCategories();
-      if (categories.isEmpty()) {
-        View.message(CategoryService.NO_CATEGORIES_WARNING);
-      } else {
-        Object[] categoriesArray = categories.stream().map(Category::getName).toArray();
-
-        String category =
-            View.inputOptions("Category selector", "Choose the category", categoriesArray);
-
-        if (category == null) {
-          View.message("You have to choose a category!");
-        } else if (!categoryService.checkCategoryName(category)) {
-          View.message("The category " + category + " doesn't exist.");
+    if (!checkExistenceOfTasks(TASK_STATUS_PENDING)) {
+      View.message(NO_PENDING_TASKS_WARNING);
+    } else if (crudService.findAllCategories().isEmpty()) {
+      View.message(CategoryService.NO_CATEGORIES_WARNING);
+    } else {
+      Optional<Category> categoryOptional = categoryService.askForACategory();
+      if (categoryOptional.isPresent()) {
+        Category categoryObj = categoryOptional.get();
+        List<Task> categoryTasks =
+            getAllPendingTasks().stream()
+                .filter(
+                    t -> {
+                      if (t.getCategory() != null) {
+                        return t.getCategory().getName().equals(categoryObj.getName());
+                      }
+                      return false;
+                    })
+                .collect(Collectors.toList());
+        if (categoryTasks.isEmpty()) {
+          View.message("You don't have tasks in this category.");
         } else {
-          Category categoryObj = categoryService.getCategoryByName(category);
-          List<Task> categoryTasks =
-              getAllPendingTasks().stream()
-                  .filter(
-                      t -> {
-                        if (t.getCategory() != null) {
-                          return t.getCategory().getName().equals(categoryObj.getName());
-                        }
-                        return false;
-                      })
-                  .collect(Collectors.toList());
-          if (categoryTasks.isEmpty()) {
-            View.message("You don't have task in this category.");
-          } else {
-            View.displayTasksByCategory(categoryTasks, categoryObj);
-          }
+          View.displayTasksByCategory(categoryTasks, categoryObj);
         }
       }
-    } else {
-      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
@@ -306,7 +295,6 @@ public class TaskService {
     String task = View.inputOptions("Task selector", message, taskArray);
 
     if (task == null) {
-      View.message("You have to choose a task!");
       return Optional.empty();
     } else {
       String idSection = task.split("-")[0].trim();

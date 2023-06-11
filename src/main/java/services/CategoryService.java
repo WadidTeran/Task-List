@@ -1,8 +1,11 @@
 package services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import models.Category;
+import models.Task;
 import utils.UserLogin;
 import views.View;
 
@@ -117,5 +120,20 @@ public class CategoryService {
         .filter(c -> c.getName().equals(categoryName))
         .findFirst()
         .orElseThrow();
+  }
+
+  public Optional<Category> askForACategory() {
+    Object[] categoriesArray =
+        crudService.findAllCategories().stream().map(Category::getName).toArray();
+
+    String category =
+        View.inputOptions("Category selector", "Choose the category", categoriesArray);
+
+    if (category == null) {
+      return Optional.empty();
+    } else {
+      Category categoryObj = getCategoryByName(category);
+      return Optional.of(categoryObj);
+    }
   }
 }
