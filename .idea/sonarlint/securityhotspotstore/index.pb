@@ -66,7 +66,3 @@ N
 src/main/java/models/Task.java,e\f\efb9cb60a3bf64c836d1493979f534a0a10db9b3
 S
 #src/main/java/models/Relevance.java,6\5\659b15709de7d376403105c6c3f29507c1c214c8
-c
-3src/main/java/application/SingletonMenuFactory.java,6\0\60db266c54cf80f909f849dfe109b41a0e7b8e29
-W
-'src/main/java/services/TaskService.java,1\8\18c774b0c5f03835c4610061ac136a4d63b65e36

@@ -1,22 +1,18 @@
-package application;
+package menus;
 
-import java.util.LinkedHashMap;
-
-import services.*;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
 
 public class PendingTasksMenu extends AbstractMenu {
   public PendingTasksMenu(
-      ICRUDService crudService,
-      UserService userService,
-      TaskService taskService,
-      CategoryService categoryService) {
-    super(crudService, userService, taskService, categoryService);
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    super(userService, taskService, categoryService);
     title = "Pending Tasks Menu";
   }
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new LinkedHashMap<>();
     menuOptions.put("SET A TASK AS COMPLETED", 1);
     menuOptions.put("VIEW PENDING TASKS FOR TODAY", 2);
     menuOptions.put("VIEW FUTURE PENDING TASKS", 3);
@@ -55,6 +51,6 @@ public class PendingTasksMenu extends AbstractMenu {
 
   @Override
   public AbstractMenu handleBackButton() {
-    return SingletonMenuFactory.getTaskMenu(crudService, userService, taskService, categoryService);
+    return SingletonMenuFactory.getTaskMenu(userService, taskService, categoryService);
   }
 }

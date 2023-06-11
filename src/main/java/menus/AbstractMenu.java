@@ -1,27 +1,26 @@
-package application;
+package menus;
 
-import services.*;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
 import views.View;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class AbstractMenu {
-  protected final ICRUDService crudService;
   protected final UserService userService;
   protected final CategoryService categoryService;
   protected final TaskService taskService;
-  protected Map<String, Integer> menuOptions;
+  protected final Map<String, Integer> menuOptions;
   protected String title;
 
   protected AbstractMenu(
-      ICRUDService crudService,
-      UserService userService,
-      TaskService taskService,
-      CategoryService categoryService) {
-    this.crudService = crudService;
+      UserService userService, TaskService taskService, CategoryService categoryService) {
     this.userService = userService;
     this.taskService = taskService;
     this.categoryService = categoryService;
+    this.menuOptions = new LinkedHashMap<>();
     configureMenuOptions();
   }
 

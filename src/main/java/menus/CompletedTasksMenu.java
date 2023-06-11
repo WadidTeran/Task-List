@@ -1,22 +1,18 @@
-package application;
+package menus;
 
-import java.util.LinkedHashMap;
-
-import services.*;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
 
 public class CompletedTasksMenu extends AbstractMenu {
   protected CompletedTasksMenu(
-      ICRUDService crudService,
-      UserService userService,
-      TaskService taskService,
-      CategoryService categoryService) {
-    super(crudService, userService, taskService, categoryService);
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    super(userService, taskService, categoryService);
     title = "Completed Tasks Menu";
   }
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new LinkedHashMap<>();
     menuOptions.put("VIEW ALL COMPLETED TASKS", 1);
     menuOptions.put("SET A COMPLETED TASK AS PENDING", 2);
     menuOptions.put("DELETE ALL COMPLETED TASK", 3);
@@ -45,6 +41,6 @@ public class CompletedTasksMenu extends AbstractMenu {
 
   @Override
   public AbstractMenu handleBackButton() {
-    return SingletonMenuFactory.getTaskMenu(crudService, userService, taskService, categoryService);
+    return SingletonMenuFactory.getTaskMenu(userService, taskService, categoryService);
   }
 }

@@ -1,5 +1,7 @@
 package application;
 
+import menus.AbstractMenu;
+import menus.LoginMenu;
 import models.Category;
 import models.Task;
 import models.User;
@@ -7,7 +9,11 @@ import repositories.CategoryRepository;
 import repositories.IRepository;
 import repositories.TaskRepository;
 import repositories.UserRepository;
-import services.*;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
+import services.ICRUDService;
+import services.CRUDServiceImpl;
 
 import javax.swing.UIManager;
 
@@ -30,8 +36,7 @@ public class Application {
     UIManager.put("OptionPane.yesButtonText", "YES");
     UIManager.put("OptionPane.noButtonText", "NO");
 
-    AbstractMenu currentMenu =
-        new LoginMenu(crudService, userService, taskService, categoryService);
+    AbstractMenu currentMenu = new LoginMenu(userService, taskService, categoryService);
 
     while (currentMenu != null) {
       currentMenu = currentMenu.showMenu();

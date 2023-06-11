@@ -1,22 +1,18 @@
-package application;
+package menus;
 
-import java.util.LinkedHashMap;
-
-import services.*;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
 
 public class TaskMenu extends AbstractMenu {
   public TaskMenu(
-      ICRUDService crudService,
-      UserService userService,
-      TaskService taskService,
-      CategoryService categoryService) {
-    super(crudService, userService, taskService, categoryService);
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    super(userService, taskService, categoryService);
     title = "Task Menu";
   }
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new LinkedHashMap<>();
     menuOptions.put("PENDING TASKS", 1);
     menuOptions.put("SEARCH TASKS", 2);
     menuOptions.put("CREATE TASK", 3);
@@ -29,12 +25,10 @@ public class TaskMenu extends AbstractMenu {
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
       case 1 -> {
-        return SingletonMenuFactory.getPendingTasksMenu(
-            crudService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getPendingTasksMenu(userService, taskService, categoryService);
       }
       case 2 -> {
-        return SingletonMenuFactory.getSearchTasksMenu(
-            crudService, userService, taskService, categoryService);
+        return SingletonMenuFactory.getSearchTasksMenu(userService, taskService, categoryService);
       }
       case 3 -> {
         taskService.createTask();
@@ -50,7 +44,7 @@ public class TaskMenu extends AbstractMenu {
       }
       case 6 -> {
         return SingletonMenuFactory.getCompletedTasksMenu(
-            crudService, userService, taskService, categoryService);
+            userService, taskService, categoryService);
       }
       default -> {
         return null;
@@ -60,6 +54,6 @@ public class TaskMenu extends AbstractMenu {
 
   @Override
   public AbstractMenu handleBackButton() {
-    return SingletonMenuFactory.getMainMenu(crudService, userService, taskService, categoryService);
+    return SingletonMenuFactory.getMainMenu(userService, taskService, categoryService);
   }
 }

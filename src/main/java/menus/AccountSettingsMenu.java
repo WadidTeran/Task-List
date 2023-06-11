@@ -1,23 +1,19 @@
-package application;
+package menus;
 
-import services.*;
-
-import java.util.LinkedHashMap;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
 
 public class AccountSettingsMenu extends AbstractMenu {
 
   protected AccountSettingsMenu(
-      ICRUDService crudService,
-      UserService userService,
-      TaskService taskService,
-      CategoryService categoryService) {
-    super(crudService, userService, taskService, categoryService);
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    super(userService, taskService, categoryService);
     title = "Account Settings Menu";
   }
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new LinkedHashMap<>();
     menuOptions.put("CHANGE EMAIL", 1);
     menuOptions.put("CHANGE PASSWORD", 2);
     menuOptions.put("DELETE ACCOUNT", 3);
@@ -36,8 +32,7 @@ public class AccountSettingsMenu extends AbstractMenu {
       }
       case 3 -> {
         if (userService.deleteUser()) {
-          return SingletonMenuFactory.getLoginMenu(
-              crudService, userService, taskService, categoryService);
+          return SingletonMenuFactory.getLoginMenu(userService, taskService, categoryService);
         }
         return this;
       }
@@ -49,6 +44,6 @@ public class AccountSettingsMenu extends AbstractMenu {
 
   @Override
   public AbstractMenu handleBackButton() {
-    return SingletonMenuFactory.getMainMenu(crudService, userService, taskService, categoryService);
+    return SingletonMenuFactory.getMainMenu(userService, taskService, categoryService);
   }
 }

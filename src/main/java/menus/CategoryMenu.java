@@ -1,22 +1,18 @@
-package application;
+package menus;
 
-import java.util.LinkedHashMap;
-
-import services.*;
+import services.UserService;
+import services.CategoryService;
+import services.TaskService;
 
 public class CategoryMenu extends AbstractMenu {
   public CategoryMenu(
-      ICRUDService crudService,
-      UserService userService,
-      TaskService taskService,
-      CategoryService categoryService) {
-    super(crudService, userService, taskService, categoryService);
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    super(userService, taskService, categoryService);
     title = "Category Menu";
   }
 
   @Override
   public void configureMenuOptions() {
-    menuOptions = new LinkedHashMap<>();
     menuOptions.put("CREATE CATEGORY", 1);
     menuOptions.put("LIST ALL CATEGORIES", 2);
     menuOptions.put("RENAME CATEGORY", 3);
@@ -50,6 +46,6 @@ public class CategoryMenu extends AbstractMenu {
 
   @Override
   public AbstractMenu handleBackButton() {
-    return SingletonMenuFactory.getMainMenu(crudService, userService, taskService, categoryService);
+    return SingletonMenuFactory.getMainMenu(userService, taskService, categoryService);
   }
 }
