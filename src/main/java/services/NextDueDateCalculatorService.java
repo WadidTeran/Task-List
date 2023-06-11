@@ -24,6 +24,8 @@ public class NextDueDateCalculatorService implements IRepeatOnConfigVisitor {
 
     nextDueDate = oldDueDate;
     nextSpecifiedTime = oldSpecifiedTime;
+
+    task.getRepeatingConfig().getRepeatOn().accept(this);
   }
 
   @Override

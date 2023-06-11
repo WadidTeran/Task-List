@@ -1,6 +1,7 @@
 package services;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class TaskService {
             task.setCompletedDate(LocalDate.now());
             crudService.saveTask(task);
             if (task.isRepetitive()) {
-              RepetitiveTaskService.manageRepetitiveTask(task, crudService);
+              manageRepetitiveTask(task);
             }
           }
         } else {
@@ -330,5 +331,24 @@ public class TaskService {
     return crudService.findAllTasks().stream()
         .filter(Task::isCompleted)
         .collect(Collectors.toList());
+  }
+
+  private void manageRepetitiveTask(Task task) {
+    NextDueDateCalculatorService nextDueDateCalculatorService =
+        new NextDueDateCalculatorService(task);
+    LocalDate nextDueDate = nextDueDateCalculatorService.getNextDueDate();
+
+    if (task.getRepeatingConfig().isEndlesslyRepeatable()
+        || nextDueDate.isBefore(task.getRepeatingConfig().getRepeatEndsAt())) {
+      LocalTime nextSpecifiedTime = nextDueDateCalculatorService.getNextSpecifiedTime();
+
+      Task repeatedTask =
+          TaskBuilder.taskBuilderWithClonedTask(task)
+              .setDueDate(nextDueDate)
+              .setSpecifiedTime(nextSpecifiedTime)
+              .build();
+
+      crudService.saveTask(repeatedTask);
+    }
   }
 }

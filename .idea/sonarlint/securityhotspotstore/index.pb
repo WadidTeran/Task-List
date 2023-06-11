@@ -14,8 +14,6 @@ _
 /src/main/java/models/MonthlyRepeatOnConfig.java,0\c\0c862f45ca63e32b0f4bc7a1fdcc17ead494f688
 X
 (src/main/java/models/RepeatOnConfig.java,5\8\58b478ae4dfb50026158a9085e48caedab053004
-Z
-*src/main/java/models/RepeatTaskConfig.java,7\6\7644d474b517c60fd4194ba8e14d4dae06234781
 T
 $src/main/java/models/RepeatType.java,2\8\28287a9f283b25c58ef5da4d41051566725f2c3b
 ^
@@ -30,28 +28,8 @@ N
 src/main/java/models/User.java,f\7\f7010c4f46d3b9dd8d59899249df5ba3ee23f96b
 \
 ,src/main/java/models/HourRepeatOnConfig.java,9\7\97771e1706bf92245c9cd080bd69260138782cf8
-[
-+src/main/java/utils/DataBaseConnection.java,9\4\945fb03eb2beadeec82b8024111df558235f7a20
-R
-"src/main/java/utils/UserLogin.java,f\d\fd06244efbbfea2974d549b61bb26626f8e27f85
-Q
-!src/main/java/utils/DataBase.java,8\6\866341523ea30d2eb841d6a7b4559ceb0ce97dda
-b
-2src/main/java/services/IRepeatOnConfigVisitor.java,f\4\f4b2c211a749bdaa767066984e3a22f07f809bc3
-h
-8src/main/java/services/NextDueDateCalculatorService.java,d\0\d02c4e7c1742843ee2c163d7fde2243ed434fc40
 ]
 -src/main/java/services/TaskOperationType.java,c\4\c4a8c729963034f64828919eb68b9a520b990817
-X
-(src/main/java/services/ICRUDService.java,2\8\28932fd11b5001b62394b76c7977bc3621296e17
-[
-+src/main/java/services/CRUDServiceImpl.java,4\e\4e6c80be19dbcd5c483f19dfb130d5963e697371
-[
-+src/main/java/services/CategoryService.java,3\c\3c1cc46601a88a93d5af128355303a762c2e2726
-a
-1src/main/java/services/RepetitiveTaskService.java,b\6\b6629bdbab1cc333f074c7cd45e67d580cb3ab87
-U
-%src/main/java/models/TaskBuilder.java,5\7\575a8be5500fc85681c784df500834547c9b6239
 b
 2src/main/java/repositories/CategoryRepository.java,6\3\63e23392676237203e8af3b9277d1a44c0356c24
 ^
@@ -62,7 +40,3 @@ f
 +src/main/java/repositories/IRepository.java,5\f\5f80fefe96e8d702fb83b654cf614a3b27c05204
 ^
 .src/main/java/repositories/UserRepository.java,a\b\ab0c1571a03b3cbc85267459f3b01287ab8a97a8
-N
-src/main/java/models/Task.java,e\f\efb9cb60a3bf64c836d1493979f534a0a10db9b3
-S
-#src/main/java/models/Relevance.java,6\5\659b15709de7d376403105c6c3f29507c1c214c8

@@ -9,4 +9,8 @@ public class RepeatTaskConfig {
   private LocalDate repeatEndsAt;
   private Integer repeatInterval;
   private RepeatOnConfig repeatOn;
+
+  public boolean isEndlesslyRepeatable() {
+    return repeatEndsAt == null;
+  }
 }
