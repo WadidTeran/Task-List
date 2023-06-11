@@ -44,8 +44,6 @@ h
 -src/main/java/services/TaskOperationType.java,c\4\c4a8c729963034f64828919eb68b9a520b990817
 X
 (src/main/java/services/ICRUDService.java,2\8\28932fd11b5001b62394b76c7977bc3621296e17
-W
-'src/main/java/services/UserService.java,f\8\f88b0fc904fcbbe4a39e1cd49ea74cc88d783b2c
 [
 +src/main/java/services/CRUDServiceImpl.java,4\e\4e6c80be19dbcd5c483f19dfb130d5963e697371
 [
@@ -70,7 +68,5 @@ S
 #src/main/java/models/Relevance.java,6\5\659b15709de7d376403105c6c3f29507c1c214c8
 c
 3src/main/java/application/SingletonMenuFactory.java,6\0\60db266c54cf80f909f849dfe109b41a0e7b8e29
-i
-9src/main/java/services/TaskCreatorModificatorService.java,8\b\8bbf2940ec6e4c50bf268e6fc0503b213d346c00
 W
 'src/main/java/services/TaskService.java,1\8\18c774b0c5f03835c4610061ac136a4d63b65e36

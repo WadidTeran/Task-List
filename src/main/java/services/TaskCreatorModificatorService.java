@@ -25,23 +25,23 @@ public class TaskCreatorModificatorService {
     menuOptions = new LinkedHashMap<>();
 
     if (taskOperationType == TaskOperationType.CREATION) {
-      menuOptions.put("Set name", 1);
-      menuOptions.put("Set due date", 2);
-      menuOptions.put("Set a specified time", 3);
-      menuOptions.put("Set description", 4);
-      menuOptions.put("Set relevance", 5);
-      menuOptions.put("Set category", 6);
-      menuOptions.put("Set repeat config", 7);
-      menuOptions.put("Create", 8);
+      menuOptions.put("SET NAME", 1);
+      menuOptions.put("SET DUE DATE", 2);
+      menuOptions.put("SET A SPECIFIED TIME", 3);
+      menuOptions.put("SET DESCRIPTION", 4);
+      menuOptions.put("SET RELEVANCE", 5);
+      menuOptions.put("SET CATEGORY", 6);
+      menuOptions.put("SET REPEAT CONFIG", 7);
+      menuOptions.put("CREATE", 8);
     } else if (taskOperationType == TaskOperationType.MODIFICATION) {
-      menuOptions.put("Change name", 1);
-      menuOptions.put("Change due date", 2);
-      menuOptions.put("Change specified time", 3);
-      menuOptions.put("Change description", 4);
-      menuOptions.put("Change relevance", 5);
-      menuOptions.put("Change category", 6);
-      menuOptions.put("Change repeat config", 7);
-      menuOptions.put("Confirm changes", 8);
+      menuOptions.put("CHANGE NAME", 1);
+      menuOptions.put("CHANGE DUE DATE", 2);
+      menuOptions.put("CHANGE SPECIFIED TIME", 3);
+      menuOptions.put("CHANGE DESCRIPTION", 4);
+      menuOptions.put("CHANGE RELEVANCE", 5);
+      menuOptions.put("CHANGE CATEGORY", 6);
+      menuOptions.put("CHANGE REPEAT CONFIG", 7);
+      menuOptions.put("CONFIRM CHANGES", 8);
     }
 
     return (taskOperationType == TaskOperationType.CREATION)

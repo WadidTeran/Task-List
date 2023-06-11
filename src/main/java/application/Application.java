@@ -27,6 +27,8 @@ public class Application {
     createTestData();
 
     UIManager.put("OptionPane.cancelButtonText", "BACK");
+    UIManager.put("OptionPane.yesButtonText", "YES");
+    UIManager.put("OptionPane.noButtonText", "NO");
 
     AbstractMenu currentMenu =
         new LoginMenu(crudService, userService, taskService, categoryService);
