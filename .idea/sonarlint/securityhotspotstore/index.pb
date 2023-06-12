@@ -6,8 +6,6 @@
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 ]
 -src/main/java/models/DailyRepeatOnConfig.java,c\f\cf73201f00699216c71e3cd291326d1b700b1d4a
 _
@@ -18,8 +16,6 @@ X
 .src/main/java/models/WeeklyRepeatOnConfig.java,0\7\07fd03c58a84ac55618dff7f1872559b26b8be84
 ^
 .src/main/java/models/YearlyRepeatOnConfig.java,c\6\c61813768572e0e17c992551f8359eb5514c1847
-\
-,src/main/java/views/ViewExternalMethods.java,3\4\3484a5f97ba1d4af40c5eadd18c6f7be0858e067
 R
 "src/main/java/models/Category.java,7\2\728651237990c9bdabf45c80b9e2c9daa74d2bbe
 N

@@ -1,6 +1,6 @@
 package views;
 
-import static views.ViewExternalMethods.*;
+import static views.ExternalViewMethods.*;
 
 import java.util.Formatter;
 import java.util.List;
@@ -73,7 +73,7 @@ public class View {
         task.getSpecifiedTime(),
         cutString(task.getDescription()),
         task.getRelevance(),
-        cutString(task.getCategory().getName()),
+        (task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A"),
         displayRepeatingConfig(task.getRepeatingConfig(), "%188s"));
     lines();
   }
@@ -108,7 +108,7 @@ public class View {
           task.getSpecifiedTime(),
           cutString(task.getDescription()),
           task.getRelevance(),
-          cutString(task.getCategory().getName()));
+          (task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A"));
     }
 
     lines();
@@ -128,7 +128,7 @@ public class View {
           task.getSpecifiedTime(),
           cutString(task.getDescription()),
           task.getRelevance(),
-          cutString(task.getCategory().getName()));
+          (task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A"));
     }
 
     lines();
@@ -162,7 +162,7 @@ public class View {
           task.getDueDate(),
           task.getSpecifiedTime(),
           cutString(task.getDescription()),
-          cutString(task.getCategory().getName()));
+          (task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A"));
     }
     lines();
   }
@@ -193,7 +193,7 @@ public class View {
                 repeatTaskConfig.getRepeatType(),
                 repeatTaskConfig.getRepeatInterval(),
                 repeatTaskConfig.getRepeatEndsAt(),
-                getClassName(repeatTaskConfig.getRepeatOn()));
+                getNameClass(repeatTaskConfig.getRepeatOn()));
             result = ftmHead + "\n" + ftmBody;
           }
         }
@@ -217,7 +217,7 @@ public class View {
           task.getSpecifiedTime(),
           cutString(task.getDescription()),
           task.getRelevance(),
-          cutString(task.getCategory().getName()));
+          (task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A"));
     }
 
     lines();
