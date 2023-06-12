@@ -7,6 +7,8 @@ import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -632,16 +634,14 @@ public class TaskService {
     List<Task> tasks =
         (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
 
-    Object[] taskArray = tasks.stream().map(t -> t.getTaskId() + " - " + t.getName()).toArray();
+    Object[] taskArray = tasks.stream().map(Task::getName).toArray();
 
     String task = View.inputOptions("Task selector", message, taskArray);
 
     if (task == null) {
       return Optional.empty();
     } else {
-      String idSection = task.split("-")[0].trim();
-      Long id = Long.parseLong(idSection);
-      return crudService.getTaskById(id);
+      return getAllPendingTasks().stream().filter(t -> t.getName().equals(task)).findFirst();
     }
   }
 
@@ -705,9 +705,13 @@ public class TaskService {
     try {
       LocalDate startDate = LocalDate.parse(startDateStr);
       LocalDate endDate = LocalDate.parse(endDateStr);
-      if (startDate.isBefore(endDate)) {
+      if (!startDate.isAfter(endDate)) {
         RangeDates rangeDates = new RangeDates(startDate, endDate);
-        ProductivityEmailService.sendProductivityEmail(this, rangeDates);
+        try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
+          Runnable emailSendingProcess =
+              () -> ProductivityEmailService.sendProductivityEmail(this, rangeDates);
+          executor.execute(emailSendingProcess);
+        }
       } else {
         View.message("¡Start date must be before end date!");
       }
