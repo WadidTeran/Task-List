@@ -45,15 +45,19 @@ public class Application {
 
   private static void createTestData() {
     User user = new User("admin", "secret");
+    User user2 = new User("neolyamr@gmail.com", "secret");
 
     Category category1 = new Category("Football", user);
     Category category2 = new Category("Study", user);
     Category category3 = new Category("Chess Tournament", user);
+    Category category4 = new Category("Medical", user2);
 
     crudService.saveUser(user);
+    crudService.saveUser(user2);
 
     crudService.saveCategory(category1);
     crudService.saveCategory(category2);
     crudService.saveCategory(category3);
+    crudService.saveCategory(category4);
   }
 }

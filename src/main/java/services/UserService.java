@@ -13,7 +13,10 @@ public class UserService {
 
   public boolean signIn() {
     String email = View.input("Email");
+    if (email != null) email = email.toLowerCase();
+    else return false;
     String password = View.input("Password");
+    if (password == null) return false;
 
     if (!checkUserEmail(email)) {
       View.message("This user doesn't exist.");

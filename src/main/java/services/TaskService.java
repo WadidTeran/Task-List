@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import models.*;
+import utils.RangeDates;
 import views.View;
 
 public class TaskService {
@@ -694,6 +695,24 @@ public class TaskService {
       return Optional.empty();
     } else {
       return Optional.of(repeatTypeMap.get(repeatType));
+    }
+  }
+
+  public void sendProductivityEmail() {
+    String startDateStr = View.input("Start date (yyyy-MM-dd)");
+    String endDateStr = View.input("End date (yyyy-MM-dd)");
+
+    try {
+      LocalDate startDate = LocalDate.parse(startDateStr);
+      LocalDate endDate = LocalDate.parse(endDateStr);
+      if (startDate.isBefore(endDate)) {
+        RangeDates rangeDates = new RangeDates(startDate, endDate);
+        ProductivityEmailService.sendProductivityEmail(this, rangeDates);
+      } else {
+        View.message("¡Start date must be before end date!");
+      }
+    } catch (DateTimeParseException e) {
+      View.message("Invalid date format");
     }
   }
 }

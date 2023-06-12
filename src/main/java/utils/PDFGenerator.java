@@ -1,7 +1,5 @@
 package utils;
 
-import static utils.ExternalUtilityMethods.generateTitle;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
@@ -15,14 +13,25 @@ import lombok.Getter;
 import models.Relevance;
 import models.Task;
 
-public class PDFDocument {
+import static utils.ExternalUtilityMethods.countTaskByRelevance;
+
+public class PDFGenerator {
 
   private final Document document;
   @Getter private final String nameDocument;
 
-  public PDFDocument(String nameDocument) {
+  public PDFGenerator(String nameDocument) {
     document = new Document();
     this.nameDocument = "./" + nameDocument;
+  }
+
+  public static Paragraph generateTitle(String text) {
+    Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+    Paragraph title = new Paragraph(text, titleFont);
+    title.setAlignment(Element.ALIGN_CENTER);
+    title.setSpacingAfter(10);
+    title.setSpacingBefore(30);
+    return title;
   }
 
   public void generateBasicPDF(String title, String textBody) {
@@ -54,30 +63,27 @@ public class PDFDocument {
       document.add(p3);
       document.close();
     } catch (Exception ex) {
-      Logger.getLogger(PDFDocument.class.getName())
+      Logger.getLogger(PDFGenerator.class.getName())
           .log(Level.SEVERE, " Error trying to generate a document ", ex);
     }
   }
 
-  public void createProductivityPDF(List<Task> tasks, RangeDates rangeDates) {
+  public void generateProductivityPDF(List<Task> tasks, RangeDates rangeDates) {
 
     try {
       String path = new File(nameDocument).getCanonicalPath();
-      String[] headersRelevance = {
-        "NAME", "COMPLETED DATE", "SPECIFIED TIME", "DESCRIPTION", "CATEGORY", "REPETITIVE"
-      };
+      String[] headersRelevance = {"NAME", "COMPLETED DATE", "DESCRIPTION", "CATEGORY"};
       String[] titlesChart = {"PRODUCTIVITY GRAPH", "Relevance", "Completed tasks"};
-      float[] widthsRelevance = {18f, 15f, 14f, 20f, 20f, 13};
+      float[] widthsRelevance = {30f, 15f, 30f, 25f};
 
       PdfWriter.getInstance(document, new FileOutputStream(path));
       document.open();
 
       Paragraph dateRange =
           new Paragraph(
-              "From "
-                  + rangeDates.startDate().toString()
-                  + " to "
-                  + rangeDates.endDate().toString());
+              rangeDates.startDate().isEqual(rangeDates.endDate())
+                  ? "Of " + rangeDates.endDate()
+                  : "From " + rangeDates.startDate() + " to " + rangeDates.endDate());
       dateRange.setAlignment(Element.ALIGN_RIGHT);
       dateRange.setSpacingAfter(30);
 
@@ -96,15 +102,19 @@ public class PDFDocument {
       if (chartImageFile.exists()) {
         chartImageFile.deleteOnExit();
       }
-      for (int i = 0; i < Relevance.values().length; i++) {
-        PDFTable table = new PDFTable(headersRelevance, widthsRelevance);
-        document.add(generateTitle("COMPLETED TASKS BY " + Relevance.values()[i] + " RELEVANCE"));
-        document.add(table.fillTaskTablesByRelevance(tasks, Relevance.values()[i]));
+
+      int[] relevanceTaskCount = countTaskByRelevance(tasks);
+      for (int i = 0; i < relevanceTaskCount.length; i++) {
+        if (relevanceTaskCount[i] > 0) {
+          PDFTableGenerator table = new PDFTableGenerator(headersRelevance, widthsRelevance);
+          document.add(generateTitle("COMPLETED TASKS BY " + Relevance.values()[i] + " RELEVANCE"));
+          document.add(table.fillTaskTablesByRelevance(tasks, Relevance.values()[i]));
+        }
       }
       document.add(signature);
       document.close();
     } catch (Exception ex) {
-      Logger.getLogger(PDFDocument.class.getName())
+      Logger.getLogger(PDFGenerator.class.getName())
           .log(Level.SEVERE, " Error trying to generate a document ", ex);
     }
   }

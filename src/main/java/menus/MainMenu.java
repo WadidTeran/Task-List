@@ -1,6 +1,5 @@
 package menus;
 
-import services.ProductivityEmailService;
 import services.UserService;
 import services.CategoryService;
 import services.TaskService;
@@ -17,7 +16,7 @@ public class MainMenu extends AbstractMenu {
   public void configureMenuOptions() {
     menuOptions.put("TASKS", 1);
     menuOptions.put("CATEGORIES", 2);
-    menuOptions.put("SEND MONTHLY PRODUCTIVITY EMAIL", 3);
+    menuOptions.put("PRODUCTIVITY REPORT", 3);
     menuOptions.put("ACCOUNT SETTINGS", 4);
   }
 
@@ -31,7 +30,7 @@ public class MainMenu extends AbstractMenu {
         return SingletonMenuFactory.getCategoryMenu(userService, taskService, categoryService);
       }
       case 3 -> {
-        ProductivityEmailService.sendProductivityEmail(taskService);
+        taskService.sendProductivityEmail();
         return this;
       }
       case 4 -> {

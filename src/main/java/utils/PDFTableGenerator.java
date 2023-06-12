@@ -7,13 +7,11 @@ import java.util.List;
 import models.Relevance;
 import models.Task;
 
-import static views.ExternalViewMethods.getNameClass;
-
-public class PDFTable {
+public class PDFTableGenerator {
 
   private final PdfPTable table;
 
-  public PDFTable(String[] headers, float[] columnWidth) throws DocumentException {
+  public PDFTableGenerator(String[] headers, float[] columnWidth) throws DocumentException {
     table = new PdfPTable(headers.length);
     Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8);
     BaseColor customColor = BaseColor.ORANGE;
@@ -35,29 +33,15 @@ public class PDFTable {
         PdfPCell headerCell = new PdfPCell(new Phrase(task.getName(), headerFont));
         PdfPCell headerCell1 =
             new PdfPCell(new Phrase(task.getCompletedDate().toString(), headerFont));
-        PdfPCell headerCell2 =
-            new PdfPCell(
-                new Phrase(
-                    task.getSpecifiedTime() != null ? task.getSpecifiedTime().toString() : "N/A",
-                    headerFont));
         PdfPCell headerCell3 = new PdfPCell(new Phrase(task.getDescription(), headerFont));
         PdfPCell headerCell4 =
             new PdfPCell(
                 new Phrase(
                     task.getCategory() != null ? task.getCategory().getName() : "N/A", headerFont));
-        PdfPCell headerCell5 =
-            new PdfPCell(
-                new Phrase(
-                    task.getRepeatingConfig() != null
-                        ? getNameClass(task.getRepeatingConfig().getRepeatOn())
-                        : "N/A",
-                    headerFont));
         table.addCell(headerCell);
         table.addCell(headerCell1);
-        table.addCell(headerCell2);
         table.addCell(headerCell3);
         table.addCell(headerCell4);
-        table.addCell(headerCell5);
       }
     }
     return table;
