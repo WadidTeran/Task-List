@@ -22,26 +22,15 @@ public class CategoryMenu extends AbstractMenu {
   @Override
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
-      case 1 -> {
-        categoryService.createCategory();
-        return this;
-      }
-      case 2 -> {
-        categoryService.searchCategories();
-        return this;
-      }
-      case 3 -> {
-        categoryService.renameCategory();
-        return this;
-      }
-      case 4 -> {
-        categoryService.deleteCategory();
-        return this;
-      }
+      case 1 -> categoryService.createCategory();
+      case 2 -> categoryService.searchCategories();
+      case 3 -> categoryService.renameCategory();
+      case 4 -> categoryService.deleteCategory();
       default -> {
         return null;
       }
     }
+    return this;
   }
 
   @Override

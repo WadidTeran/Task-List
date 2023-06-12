@@ -32,11 +32,12 @@ public class TaskMenu extends AbstractMenu {
       }
       case 3 -> {
         taskService.createTask();
-        return this;
+        return SingletonMenuFactory.getTaskCreationMenu(userService, taskService, categoryService);
       }
       case 4 -> {
         taskService.modifyTask();
-        return this;
+        return SingletonMenuFactory.getTaskModificationMenu(
+            userService, taskService, categoryService);
       }
       case 5 -> {
         taskService.deleteTask();

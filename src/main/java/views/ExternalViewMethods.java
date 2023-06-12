@@ -23,8 +23,12 @@ public class ExternalViewMethods {
   }
 
   public static String getNameClass(Object obj) {
-    String className =
-        obj.getClass().getName().substring(obj.getClass().getName().lastIndexOf('.') + 1);
-    return className.substring(0, className.indexOf('R'));
+    if (obj != null) {
+      String className =
+          obj.getClass().getName().substring(obj.getClass().getName().lastIndexOf('.') + 1);
+      return className.substring(0, className.indexOf('R'));
+    } else {
+      return "N/A";
+    }
   }
 }

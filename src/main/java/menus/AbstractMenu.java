@@ -28,11 +28,11 @@ public abstract class AbstractMenu {
     Object[] optionsArray = menuOptions.keySet().toArray();
     int optionIndex;
 
-    String opcion = View.inputOptions(title, "Choose an option", optionsArray);
-    if (opcion == null) {
+    String option = View.inputOptions(title, "Choose an option", optionsArray);
+    if (option == null) {
       return handleBackButton();
     } else {
-      optionIndex = menuOptions.get(opcion);
+      optionIndex = menuOptions.get(option);
       return options(optionIndex);
     }
   }

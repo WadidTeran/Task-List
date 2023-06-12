@@ -12,7 +12,7 @@ public class UserService {
   }
 
   public boolean signIn() {
-    String email = View.input("Email").toLowerCase();
+    String email = View.input("Email");
     String password = View.input("Password");
 
     if (!checkUserEmail(email)) {
@@ -30,8 +30,11 @@ public class UserService {
   }
 
   public void signUp() {
-    String email = View.input("Email").toLowerCase();
+    String email = View.input("Email");
+    if (email != null) email = email.toLowerCase();
+    else return;
     String password = View.input("Password");
+    if (password == null) return;
 
     if (!checkUserEmail(email)) {
       User user = new User(email, password);

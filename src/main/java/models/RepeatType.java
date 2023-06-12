@@ -1,9 +1,19 @@
 package models;
 
 public enum RepeatType {
-  HOUR,
-  DAILY,
-  WEEKLY,
-  MONTHLY,
-  YEARLY
+  HOUR("hour"),
+  DAILY("days"),
+  WEEKLY("weeks"),
+  MONTHLY("months"),
+  YEARLY("years");
+  final String type;
+
+  RepeatType(String type) {
+    this.type = type;
+  }
+
+  @Override
+  public String toString() {
+    return type;
+  }
 }

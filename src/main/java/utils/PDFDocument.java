@@ -92,10 +92,13 @@ public class PDFDocument {
       document.add(
           ChartGenerator.generateBarChart(
               titlesChart, ChartGenerator.generateRelevanceDataset(tasks)));
+      File chartImageFile = new File("chart.png");
+      if (chartImageFile.exists()) {
+        chartImageFile.deleteOnExit();
+      }
       for (int i = 0; i < Relevance.values().length; i++) {
         PDFTable table = new PDFTable(headersRelevance, widthsRelevance);
-        document.add(
-            generateTitle("COMPLETED TASKS BY " + Relevance.values()[i] + " RELEVANCE"));
+        document.add(generateTitle("COMPLETED TASKS BY " + Relevance.values()[i] + " RELEVANCE"));
         document.add(table.fillTaskTablesByRelevance(tasks, Relevance.values()[i]));
       }
       document.add(signature);
@@ -105,5 +108,4 @@ public class PDFDocument {
           .log(Level.SEVERE, " Error trying to generate a document ", ex);
     }
   }
-
 }

@@ -21,22 +21,14 @@ public class SearchTasksMenu extends AbstractMenu {
   @Override
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
-      case 1 -> {
-        taskService.searchOneTask();
-        return this;
-      }
-      case 2 -> {
-        taskService.searchTasksByCategory();
-        return this;
-      }
-      case 3 -> {
-        taskService.searchTasksByRelevance();
-        return this;
-      }
+      case 1 -> taskService.searchOneTask();
+      case 2 -> taskService.searchTasksByCategory();
+      case 3 -> taskService.searchTasksByRelevance();
       default -> {
         return null;
       }
     }
+    return this;
   }
 
   @Override

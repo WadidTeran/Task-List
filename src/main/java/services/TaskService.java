@@ -1,12 +1,15 @@
 package services;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
+import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import models.*;
 import views.View;
@@ -30,17 +33,23 @@ public class TaskService {
   private final Object[] repeatTypeArray;
   private final Map<String, Relevance> relevanceMap;
   private final Object[] relevanceArray;
+  private final Map<String, DayOfWeek> daysOfWeekMap;
+  private final Object[] daysOfWeekArray;
+  private final Object[] minuteOptionsArrayObj;
+  private final Object[] daysOfMonthOptionsArrayStr;
+
+  private TaskBuilder taskBuilder;
 
   public TaskService(ICRUDService crudService, CategoryService categoryService) {
     this.crudService = crudService;
     this.categoryService = categoryService;
 
     repeatTypeMap = new LinkedHashMap<>();
-    repeatTypeMap.put("Hour", RepeatType.HOUR);
-    repeatTypeMap.put("Daily", RepeatType.DAILY);
-    repeatTypeMap.put("Weekly", RepeatType.WEEKLY);
-    repeatTypeMap.put("Monthly", RepeatType.MONTHLY);
-    repeatTypeMap.put("Yearly", RepeatType.YEARLY);
+    repeatTypeMap.put("HOUR", RepeatType.HOUR);
+    repeatTypeMap.put("DAILY", RepeatType.DAILY);
+    repeatTypeMap.put("WEEKLY", RepeatType.WEEKLY);
+    repeatTypeMap.put("MONTHLY", RepeatType.MONTHLY);
+    repeatTypeMap.put("YEARLY", RepeatType.YEARLY);
     repeatTypeArray = repeatTypeMap.keySet().toArray();
 
     relevanceMap = new LinkedHashMap<>();
@@ -49,11 +58,28 @@ public class TaskService {
     relevanceMap.put("MEDIUM", Relevance.MEDIUM);
     relevanceMap.put("HIGH", Relevance.HIGH);
     relevanceArray = relevanceMap.keySet().toArray();
+
+    daysOfWeekMap = new LinkedHashMap<>();
+    daysOfWeekMap.put("MONDAY", DayOfWeek.MONDAY);
+    daysOfWeekMap.put("TUESDAY", DayOfWeek.TUESDAY);
+    daysOfWeekMap.put("WEDNESDAY", DayOfWeek.WEDNESDAY);
+    daysOfWeekMap.put("THURSDAY", DayOfWeek.THURSDAY);
+    daysOfWeekMap.put("FRIDAY", DayOfWeek.FRIDAY);
+    daysOfWeekMap.put("SATURDAY", DayOfWeek.SATURDAY);
+    daysOfWeekMap.put("SUNDAY", DayOfWeek.SUNDAY);
+    daysOfWeekArray = daysOfWeekMap.keySet().toArray();
+
+    AtomicInteger ai = new AtomicInteger(0);
+    int[] minutesOptionsArray = IntStream.generate(ai::getAndIncrement).limit(60).toArray();
+    minuteOptionsArrayObj = Arrays.stream(minutesOptionsArray).boxed().toArray();
+
+    ai = new AtomicInteger(1);
+    int[] daysOfMonthOptionsArray = IntStream.generate(ai::getAndIncrement).limit(31).toArray();
+    daysOfMonthOptionsArrayStr = Arrays.stream(daysOfMonthOptionsArray).boxed().toArray();
   }
 
   public void createTask() {
-    TaskCreatorModificatorService.process(
-        new TaskBuilder(), TaskOperationType.CREATION, crudService, categoryService);
+    taskBuilder = new TaskBuilder();
   }
 
   public void modifyTask() {
@@ -62,10 +88,7 @@ public class TaskService {
         Optional<Task> optTask = askForATask("Choose a task to modify", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
           Task taskToModify = optTask.get();
-          TaskBuilder taskBuilder = new TaskBuilder(taskToModify);
-
-          TaskCreatorModificatorService.process(
-              taskBuilder, TaskOperationType.MODIFICATION, crudService, categoryService);
+          taskBuilder = new TaskBuilder(taskToModify);
         } else {
           View.message("The task's id doesn't exist!");
         }
@@ -75,6 +98,257 @@ public class TaskService {
     } else {
       View.message(NO_PENDING_TASKS_WARNING);
     }
+  }
+
+  public void processName() {
+    String name = View.input("Name");
+
+    if (name.length() > TaskService.MAX_TASK_NAME_LENGTH) {
+      View.message(TaskService.LONG_TASK_NAME_WARNING);
+    } else if (name.isBlank() || name.isEmpty()) {
+      View.message("Not a valid name!");
+    } else {
+      taskBuilder.setName(name);
+    }
+  }
+
+  public void processDueDate() {
+    String dueDateStr = View.input("Due date (yyyy-MM-dd)");
+
+    try {
+      LocalDate dueDate = LocalDate.parse(dueDateStr);
+      taskBuilder.setDueDate(dueDate);
+    } catch (DateTimeParseException e) {
+      View.message("Invalid due date format");
+    }
+  }
+
+  public void processSpecifiedTime() {
+    if (taskBuilder.build().getDueDate() != null) {
+      String specifiedTimeStr = View.input("Specified time in 24h time system (hh:mm)");
+
+      try {
+        LocalTime specifiedTime = LocalTime.parse(specifiedTimeStr);
+        taskBuilder.setSpecifiedTime(specifiedTime);
+      } catch (DateTimeParseException e) {
+        View.message("Invalid time format");
+      }
+    } else {
+      View.message("You have to set a due date first!");
+    }
+  }
+
+  public void processDescription() {
+    String description = View.input("Description");
+
+    if (description.length() > 300) {
+      View.message(TaskService.MAX_DESCRIPTION_LENGTH_WARNING);
+    } else if (description.isBlank() || description.isEmpty()) {
+      View.message("Not a valid description!");
+    } else {
+      taskBuilder.setDescription(description);
+    }
+  }
+
+  public void processRelevance() {
+    Optional<Relevance> relevanceOptional = askForARelevance();
+    relevanceOptional.ifPresent(relevance -> taskBuilder.setRelevance(relevance));
+  }
+
+  public void processCategory() {
+    Optional<Category> categoryOptional = categoryService.askForACategory();
+    categoryOptional.ifPresent(category -> taskBuilder.setCategory(category));
+  }
+
+  public void processRepeatConfig() {
+    if (taskBuilder.build().getDueDate() == null) {
+      View.message("You have to set a due date first!");
+    } else if (taskBuilder.build().getRepeatingConfig() != null
+        && (View.confirm("Do you want to set this task as not repetitive?"))) {
+      taskBuilder.setRepeatingConfig(null);
+    } else {
+      Optional<RepeatType> repeatTypeOptional = askForARepeatType();
+      if (repeatTypeOptional.isPresent()) {
+        RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
+        RepeatType repeatType = repeatTypeOptional.get();
+        if (repeatType.equals(RepeatType.HOUR) && taskBuilder.build().getSpecifiedTime() == null) {
+          View.message(
+              "To set a task as hourly repetitive you must set first a specified time for this task!");
+          return;
+        }
+
+        repeatingConfig.setRepeatType(repeatType);
+
+        if (View.confirm("Do you want to set a end date for repetitions?")) {
+          String repeatEndsAtStr = View.input("Repeat ends at (yyyy-mm-dd)");
+
+          try {
+            LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
+            repeatingConfig.setRepeatEndsAt(repeatEndsAt);
+          } catch (DateTimeParseException e) {
+            View.message("Invalid end date format.");
+            return;
+          }
+        }
+
+        try {
+          Integer interval = Integer.parseInt(View.input("Repeat each ? " + repeatType));
+          repeatingConfig.setRepeatInterval(interval);
+        } catch (NumberFormatException nfe) {
+          View.message("Invalid interval: interval must be an integer.");
+          return;
+        }
+
+        boolean keep = true;
+
+        switch (repeatType) {
+          case HOUR -> {
+            HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
+            Set<Integer> minutes = new TreeSet<>();
+            int minute;
+
+            do {
+              try {
+                minute =
+                    Integer.parseInt(
+                        View.inputOptions(
+                            "Minute selector", "Choose a specific minute", minuteOptionsArrayObj));
+                minutes.add(minute);
+
+                if (!View.confirm("Do you want to add another minute?")) keep = false;
+              } catch (NumberFormatException nfe) {
+                if (minutes.isEmpty()) {
+                  View.message("You have to specify at least one minute!");
+                } else {
+                  keep = false;
+                }
+              }
+            } while (keep);
+
+            hourRepeatOnConfig.setMinutes(minutes);
+            repeatingConfig.setRepeatOn(hourRepeatOnConfig);
+          }
+          case DAILY -> {
+            DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
+            Set<LocalTime> hours = new TreeSet<>();
+            LocalTime hour;
+            String hourStr;
+
+            do {
+              try {
+                hourStr = View.input("Add one specific hour (00:00 - 23:59)");
+                hour = LocalTime.parse(hourStr.trim());
+
+                hours.add(hour);
+
+                if (hours.size() == 24
+                    || !View.confirm("Do you want to add another hour? (24 max)")) keep = false;
+              } catch (DateTimeParseException e) {
+                View.message("Invalid hour! Try again.");
+              }
+            } while (keep);
+
+            dailyRepeatOnConfig.setHours(hours);
+            repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
+          }
+          case WEEKLY -> {
+            WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
+            Set<DayOfWeek> daysOfWeek = new TreeSet<>();
+            DayOfWeek dayOfWeek;
+            String dayOfWeekStr;
+
+            do {
+              dayOfWeekStr =
+                  View.inputOptions(
+                      "Day of week selector", "Choose a specific day of the week", daysOfWeekArray);
+
+              if (dayOfWeekStr == null) {
+                View.message("You have to choose a specific day of the week!");
+              } else {
+                dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
+                daysOfWeek.add(dayOfWeek);
+
+                if (!View.confirm("Do you want to add another day of the week?")) keep = false;
+              }
+
+            } while (keep);
+
+            weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
+            repeatingConfig.setRepeatOn(weeklyRepeatOnConfig);
+          }
+          case MONTHLY -> {
+            MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
+            Set<Integer> daysOfMonth = new TreeSet<>();
+            int dayOfMonth;
+
+            do {
+              try {
+                dayOfMonth =
+                    Integer.parseInt(
+                        View.inputOptions(
+                            "Day of month selector",
+                            "Choose a day of the month",
+                            daysOfMonthOptionsArrayStr));
+
+                daysOfMonth.add(dayOfMonth);
+
+                if (!View.confirm("Do you want to add another day of the month?")) keep = false;
+              } catch (NumberFormatException nfe) {
+                View.message("Invalid day of the month! Try again.");
+              }
+            } while (keep);
+
+            monthlyRepeatOnConfig.setDaysOfMonth(daysOfMonth);
+            repeatingConfig.setRepeatOn(monthlyRepeatOnConfig);
+          }
+          case YEARLY -> {
+            YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
+            Set<MonthDay> daysOfYear = new TreeSet<>();
+            MonthDay monthDay;
+            String monthDayStr;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+
+            do {
+              try {
+                monthDayStr = View.input("Add one specific date of the year (MM-dd)");
+                monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
+
+                daysOfYear.add(monthDay);
+
+                if (daysOfYear.size() == 12
+                    || !View.confirm("Do you want to add another date of the year? (12 max)"))
+                  keep = false;
+              } catch (DateTimeParseException e) {
+                View.message("Invalid date of the year! Try again.");
+              }
+            } while (keep);
+
+            yearlyRepeatOnConfig.setDaysOfYear(daysOfYear);
+            repeatingConfig.setRepeatOn(yearlyRepeatOnConfig);
+          }
+        }
+
+        taskBuilder.setRepeatingConfig(repeatingConfig);
+      }
+    }
+  }
+
+  public boolean finishProcess(String processType) {
+    if (taskBuilder.build().getName() != null) {
+      if (View.confirm(
+          "Are you sure you want to "
+              + processType
+              + " \""
+              + taskBuilder.build().getName()
+              + "\"?")) {
+        Task newTask = taskBuilder.build();
+        crudService.saveTask(newTask);
+        return true;
+      }
+    } else {
+      View.message("You have to set a name for this task!");
+    }
+    return false;
   }
 
   public void setAsCompletedTask() {

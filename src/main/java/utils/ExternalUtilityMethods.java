@@ -25,7 +25,7 @@ public class ExternalUtilityMethods {
     return tasksByRelevance;
   }
 
-  public static Paragraph generateTitle(String text)  {
+  public static Paragraph generateTitle(String text) {
     Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
     Paragraph title = new Paragraph(text, titleFont);
     title.setAlignment(Element.ALIGN_CENTER);
@@ -33,4 +33,5 @@ public class ExternalUtilityMethods {
     title.setSpacingBefore(30);
     return title;
   }
+
 }

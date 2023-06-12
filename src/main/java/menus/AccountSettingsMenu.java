@@ -22,24 +22,18 @@ public class AccountSettingsMenu extends AbstractMenu {
   @Override
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
-      case 1 -> {
-        userService.changeEmail();
-        return this;
-      }
-      case 2 -> {
-        userService.changePassword();
-        return this;
-      }
+      case 1 -> userService.changeEmail();
+      case 2 -> userService.changePassword();
       case 3 -> {
         if (userService.deleteUser()) {
           return SingletonMenuFactory.getLoginMenu(userService, taskService, categoryService);
         }
-        return this;
       }
       default -> {
         return null;
       }
     }
+    return this;
   }
 
   @Override

@@ -23,19 +23,15 @@ public class LoginMenu extends AbstractMenu {
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
       case 1 -> {
-        if (userService.signIn()) {
+        if (userService.signIn())
           return SingletonMenuFactory.getMainMenu(userService, taskService, categoryService);
-        }
-        return this;
       }
-      case 2 -> {
-        userService.signUp();
-        return this;
-      }
+      case 2 -> userService.signUp();
       default -> {
         return null;
       }
     }
+    return this;
   }
 
   @Override
