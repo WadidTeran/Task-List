@@ -37,7 +37,6 @@ public class TaskService {
   private final Object[] daysOfWeekArray;
   private final Object[] minuteOptionsArrayObj;
   private final Object[] daysOfMonthOptionsArrayStr;
-
   private TaskBuilder taskBuilder;
 
   public TaskService(ICRUDService crudService, CategoryService categoryService) {
