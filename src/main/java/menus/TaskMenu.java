@@ -35,14 +35,12 @@ public class TaskMenu extends AbstractMenu {
         return SingletonMenuFactory.getTaskCreationMenu(userService, taskService, categoryService);
       }
       case 4 -> {
-        taskService.modifyTask();
-        return SingletonMenuFactory.getTaskModificationMenu(
-            userService, taskService, categoryService);
+        if (taskService.modifyTask()) {
+          return SingletonMenuFactory.getTaskModificationMenu(
+              userService, taskService, categoryService);
+        }
       }
-      case 5 -> {
-        taskService.deleteTask();
-        return this;
-      }
+      case 5 -> taskService.deleteTask();
       case 6 -> {
         return SingletonMenuFactory.getCompletedTasksMenu(
             userService, taskService, categoryService);
@@ -51,6 +49,7 @@ public class TaskMenu extends AbstractMenu {
         return null;
       }
     }
+    return this;
   }
 
   @Override

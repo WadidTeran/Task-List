@@ -37,6 +37,12 @@ public class RepeatTaskConfigBuilder {
     repeatTaskConfig = new RepeatTaskConfig();
   }
 
+  public boolean isValidToBuild() {
+    return repeatTaskConfig.getRepeatOn() != null
+        && repeatTaskConfig.getRepeatType() != null
+        && repeatTaskConfig.getRepeatInterval() != null;
+  }
+
   public RepeatTaskConfig build() {
     return repeatTaskConfig;
   }

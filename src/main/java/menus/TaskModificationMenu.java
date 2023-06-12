@@ -34,7 +34,12 @@ public class TaskModificationMenu extends AbstractMenu {
       case 4 -> taskService.processDescription();
       case 5 -> taskService.processRelevance();
       case 6 -> taskService.processCategory();
-      case 7 -> taskService.processRepeatConfig();
+      case 7 -> {
+        if (taskService.processRepeatConfig()) {
+          return SingletonMenuFactory.getModificationRepeatConfigMenu(
+              userService, taskService, categoryService);
+        }
+      }
       case 8 -> {
         if (taskService.finishProcess("update")) {
           return SingletonMenuFactory.getTaskMenu(userService, taskService, categoryService);

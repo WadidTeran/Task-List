@@ -33,7 +33,12 @@ public class TaskCreationMenu extends AbstractMenu {
       case 4 -> taskService.processDescription();
       case 5 -> taskService.processRelevance();
       case 6 -> taskService.processCategory();
-      case 7 -> taskService.processRepeatConfig();
+      case 7 -> {
+        if (taskService.processRepeatConfig()) {
+          return SingletonMenuFactory.getCreationRepeatConfigMenu(
+              userService, taskService, categoryService);
+        }
+      }
       case 8 -> {
         if (taskService.finishProcess("create")) {
           return SingletonMenuFactory.getTaskMenu(userService, taskService, categoryService);

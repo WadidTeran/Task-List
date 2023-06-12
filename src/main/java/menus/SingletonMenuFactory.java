@@ -15,6 +15,8 @@ public class SingletonMenuFactory {
   private static AbstractMenu pendingTasksMenu;
   private static AbstractMenu taskCreationMenu;
   private static AbstractMenu taskModificationMenu;
+  private static AbstractMenu creationRepeatConfigMenu;
+  private static AbstractMenu modificationRepeatConfigMenu;
 
   private SingletonMenuFactory() {}
 
@@ -96,5 +98,23 @@ public class SingletonMenuFactory {
       taskModificationMenu = new TaskModificationMenu(userService, taskService, categoryService);
     }
     return taskModificationMenu;
+  }
+
+  public static AbstractMenu getCreationRepeatConfigMenu(
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    if (creationRepeatConfigMenu == null) {
+      creationRepeatConfigMenu =
+          new CreationRepeatConfigMenu(userService, taskService, categoryService);
+    }
+    return creationRepeatConfigMenu;
+  }
+
+  public static AbstractMenu getModificationRepeatConfigMenu(
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    if (modificationRepeatConfigMenu == null) {
+      modificationRepeatConfigMenu =
+          new ModificationRepeatConfigMenu(userService, taskService, categoryService);
+    }
+    return modificationRepeatConfigMenu;
   }
 }
