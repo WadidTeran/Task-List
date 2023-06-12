@@ -2,6 +2,7 @@ package services;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
@@ -25,10 +26,29 @@ public class TaskService {
   private static final boolean TASK_STATUS_PENDING = false;
   private final ICRUDService crudService;
   private final CategoryService categoryService;
+  private final Map<String, RepeatType> repeatTypeMap;
+  private final Object[] repeatTypeArray;
+  private final Map<String, Relevance> relevanceMap;
+  private final Object[] relevanceArray;
 
   public TaskService(ICRUDService crudService, CategoryService categoryService) {
     this.crudService = crudService;
     this.categoryService = categoryService;
+
+    repeatTypeMap = new LinkedHashMap<>();
+    repeatTypeMap.put("Hour", RepeatType.HOUR);
+    repeatTypeMap.put("Daily", RepeatType.DAILY);
+    repeatTypeMap.put("Weekly", RepeatType.WEEKLY);
+    repeatTypeMap.put("Monthly", RepeatType.MONTHLY);
+    repeatTypeMap.put("Yearly", RepeatType.YEARLY);
+    repeatTypeArray = repeatTypeMap.keySet().toArray();
+
+    relevanceMap = new LinkedHashMap<>();
+    relevanceMap.put("NONE", Relevance.NONE);
+    relevanceMap.put("LOW", Relevance.LOW);
+    relevanceMap.put("MEDIUM", Relevance.MEDIUM);
+    relevanceMap.put("HIGH", Relevance.HIGH);
+    relevanceArray = relevanceMap.keySet().toArray();
   }
 
   public void createTask() {
@@ -194,30 +214,22 @@ public class TaskService {
   }
 
   public void searchTasksByRelevance() {
-    if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
-      Map<String, Relevance> relevanceMap = Relevance.getRelevanceMap();
-      Object[] relevanceOptionsArray = relevanceMap.keySet().toArray();
-
-      String relevanceStr =
-          View.inputOptions(
-              "Relevance selector", "Choose a level of relevance", relevanceOptionsArray);
-
-      if (relevanceStr == null) {
-        View.message("You have to choose a level of relevance!");
-      } else {
-        Relevance relevance = relevanceMap.get(relevanceStr);
+    if (!checkExistenceOfTasks(TASK_STATUS_PENDING)) {
+      View.message(NO_PENDING_TASKS_WARNING);
+    } else {
+      Optional<Relevance> relevanceOptional = askForARelevance();
+      if (relevanceOptional.isPresent()) {
+        Relevance relevance = relevanceOptional.get();
         List<Task> relevanceTasks =
             getAllPendingTasks().stream()
                 .filter(t -> t.getRelevance() == relevance)
                 .collect(Collectors.toList());
         if (relevanceTasks.isEmpty()) {
-          View.message("You don't have task with this relevance.");
+          View.message("You don't have any task with this relevance.");
         } else {
           View.displayTasksByRelevance(relevanceTasks, relevance);
         }
       }
-    } else {
-      View.message(NO_PENDING_TASKS_WARNING);
     }
   }
 
@@ -337,6 +349,28 @@ public class TaskService {
               .build();
 
       crudService.saveTask(repeatedTask);
+    }
+  }
+
+  private Optional<Relevance> askForARelevance() {
+    String relevance =
+        View.inputOptions("Relevance selector", "Choose the relevance", relevanceArray);
+
+    if (relevance == null) {
+      return Optional.empty();
+    } else {
+      return Optional.of(relevanceMap.get(relevance));
+    }
+  }
+
+  private Optional<RepeatType> askForARepeatType() {
+    String repeatType =
+        View.inputOptions("Repeat Type selector", "Choose the repeat type", repeatTypeArray);
+
+    if (repeatType == null) {
+      return Optional.empty();
+    } else {
+      return Optional.of(repeatTypeMap.get(repeatType));
     }
   }
 }
