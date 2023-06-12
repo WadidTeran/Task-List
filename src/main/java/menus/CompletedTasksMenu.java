@@ -21,22 +21,14 @@ public class CompletedTasksMenu extends AbstractMenu {
   @Override
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
-      case 1 -> {
-        taskService.searchCompletedTasks();
-        return this;
-      }
-      case 2 -> {
-        taskService.setAsPendingTask();
-        return this;
-      }
-      case 3 -> {
-        taskService.deleteCompletedTasks();
-        return this;
-      }
+      case 1 -> taskService.searchCompletedTasks();
+      case 2 -> taskService.setAsPendingTask();
+      case 3 -> taskService.deleteCompletedTasks();
       default -> {
         return null;
       }
     }
+    return this;
   }
 
   @Override

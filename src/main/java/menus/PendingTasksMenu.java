@@ -23,30 +23,16 @@ public class PendingTasksMenu extends AbstractMenu {
   @Override
   public AbstractMenu options(int optionIndex) {
     switch (optionIndex) {
-      case 1 -> {
-        taskService.setAsCompletedTask();
-        return this;
-      }
-      case 2 -> {
-        taskService.searchPendingTasksForToday();
-        return this;
-      }
-      case 3 -> {
-        taskService.searchFuturePendingTasks();
-        return this;
-      }
-      case 4 -> {
-        taskService.searchPastPendingTasks();
-        return this;
-      }
-      case 5 -> {
-        taskService.searchAllPendingTasks();
-        return this;
-      }
+      case 1 -> taskService.setAsCompletedTask();
+      case 2 -> taskService.searchPendingTasksForToday();
+      case 3 -> taskService.searchFuturePendingTasks();
+      case 4 -> taskService.searchPastPendingTasks();
+      case 5 -> taskService.searchAllPendingTasks();
       default -> {
         return null;
       }
     }
+    return this;
   }
 
   @Override

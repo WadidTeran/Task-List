@@ -13,6 +13,8 @@ public class SingletonMenuFactory {
   private static AbstractMenu completedTasksMenu;
   private static AbstractMenu searchTasksMenu;
   private static AbstractMenu pendingTasksMenu;
+  private static AbstractMenu taskCreationMenu;
+  private static AbstractMenu taskModificationMenu;
 
   private SingletonMenuFactory() {}
 
@@ -78,5 +80,21 @@ public class SingletonMenuFactory {
       pendingTasksMenu = new PendingTasksMenu(userService, taskService, categoryService);
     }
     return pendingTasksMenu;
+  }
+
+  public static AbstractMenu getTaskCreationMenu(
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    if (taskCreationMenu == null) {
+      taskCreationMenu = new TaskCreationMenu(userService, taskService, categoryService);
+    }
+    return taskCreationMenu;
+  }
+
+  public static AbstractMenu getTaskModificationMenu(
+      UserService userService, TaskService taskService, CategoryService categoryService) {
+    if (taskModificationMenu == null) {
+      taskModificationMenu = new TaskModificationMenu(userService, taskService, categoryService);
+    }
+    return taskModificationMenu;
   }
 }
