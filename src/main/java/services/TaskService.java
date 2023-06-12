@@ -298,6 +298,12 @@ public class TaskService {
     }
   }
 
+  public List<Task> getCompletedTasks() {
+    return crudService.findAllTasks().stream()
+        .filter(Task::isCompleted)
+        .collect(Collectors.toList());
+  }
+
   private Optional<Task> askForATask(String message, boolean taskStatus) {
     List<Task> tasks =
         (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
@@ -324,12 +330,6 @@ public class TaskService {
   private List<Task> getAllPendingTasks() {
     return crudService.findAllTasks().stream()
         .filter(t -> !t.isCompleted())
-        .collect(Collectors.toList());
-  }
-
-  private List<Task> getCompletedTasks() {
-    return crudService.findAllTasks().stream()
-        .filter(Task::isCompleted)
         .collect(Collectors.toList());
   }
 

@@ -1,6 +1,6 @@
 package views;
 
-import static views.ViewExternalMethods.*;
+import static views.ExternalViewMethods.*;
 
 import java.util.Formatter;
 import java.util.List;
@@ -193,7 +193,7 @@ public class View {
                 repeatTaskConfig.getRepeatType(),
                 repeatTaskConfig.getRepeatInterval(),
                 repeatTaskConfig.getRepeatEndsAt(),
-                getClassName(repeatTaskConfig.getRepeatOn()));
+                getNameClass(repeatTaskConfig.getRepeatOn()));
             result = ftmHead + "\n" + ftmBody;
           }
         }
