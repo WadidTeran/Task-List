@@ -91,7 +91,7 @@ public class PDFDocument {
       document.add(dateRange);
       document.add(
           ChartGenerator.generateBarChart(
-              titlesChart, DatasetGenerator.generateRelevanceDataset(tasks)));
+              titlesChart, ChartGenerator.generateRelevanceDataset(tasks)));
       for (int i = 0; i < Relevance.values().length; i++) {
         PDFTable table = new PDFTable(headersRelevance, widthsRelevance);
         document.add(

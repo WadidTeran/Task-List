@@ -3,6 +3,8 @@ package utils;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
+import models.Relevance;
+import models.Task;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -13,6 +15,9 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.io.IOException;
+import java.util.List;
+
+import static utils.ExternalUtilityMethods.countTaskByRelevance;
 
 public class ChartGenerator {
 
@@ -39,5 +44,14 @@ public class ChartGenerator {
     chartImage.scaleToFit(450, 450);
 
     return chartImage;
+  }
+
+  public static DefaultCategoryDataset generateRelevanceDataset(List<Task> tasks) {
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    int[] numberRelevance = countTaskByRelevance(tasks);
+    for (int i = 0; i < numberRelevance.length; i++) {
+      dataset.addValue(numberRelevance[i], Relevance.values()[i], "");
+    }
+    return dataset;
   }
 }
