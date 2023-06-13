@@ -20,8 +20,6 @@ N
 src/main/java/models/User.java,f\7\f7010c4f46d3b9dd8d59899249df5ba3ee23f96b
 \
 ,src/main/java/models/HourRepeatOnConfig.java,9\7\97771e1706bf92245c9cd080bd69260138782cf8
-b
-2src/main/java/repositories/CategoryRepository.java,6\3\63e23392676237203e8af3b9277d1a44c0356c24
 ^
 .src/main/java/repositories/TaskRepository.java,b\0\b072cac8ddedfa63ab02dd4b22927bd5ad60c768
 f

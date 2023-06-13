@@ -119,6 +119,8 @@ public class TaskService {
       View.message(LONG_TASK_NAME_WARNING);
     } else if (name.isBlank() || name.isEmpty()) {
       View.message("Not a valid name!");
+    } else if (checkTaskName(name)) {
+      View.message("A task with this name already exists!");
     } else {
       taskBuilder.setName(name);
     }
@@ -291,7 +293,10 @@ public class TaskService {
     do {
       minuteStr =
           View.inputOptions("Minute selector", "Choose a specific minute", minuteOptionsArrayObj);
-      if (minuteStr == null) return;
+      if (minuteStr == null) {
+        if (minutes.isEmpty()) return;
+        else break;
+      }
       minute = Integer.parseInt(minuteStr);
       minutes.add(minute);
 
@@ -312,10 +317,12 @@ public class TaskService {
     do {
       try {
         hourStr = View.input("Add one specific hour (00:00 - 23:59)");
-        if (hourStr == null) return;
-        else if (hourStr.isBlank() || hourStr.isEmpty()) {
+        if (hourStr == null) {
+          if (hours.isEmpty()) return;
+          else break;
+        } else if (hourStr.isBlank() || hourStr.isEmpty()) {
           View.message(EMPTY_MESSAGE_WARNING);
-          return;
+          continue;
         }
 
         hour = LocalTime.parse(hourStr.trim());
@@ -343,7 +350,10 @@ public class TaskService {
       dayOfWeekStr =
           View.inputOptions(
               "Day of week selector", "Choose a specific day of the week", daysOfWeekArray);
-      if (dayOfWeekStr == null) return;
+      if (dayOfWeekStr == null) {
+        if (daysOfWeek.isEmpty()) return;
+        else break;
+      }
 
       dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
       daysOfWeek.add(dayOfWeek);
@@ -366,7 +376,10 @@ public class TaskService {
       dayOfMonthStr =
           View.inputOptions(
               "Day of month selector", "Choose a day of the month", daysOfMonthOptionsArrayStr);
-      if (dayOfMonthStr == null) return;
+      if (dayOfMonthStr == null) {
+        if (daysOfMonth.isEmpty()) return;
+        else break;
+      }
 
       dayOfMonth = Integer.parseInt(dayOfMonthStr);
       daysOfMonth.add(dayOfMonth);
@@ -380,7 +393,6 @@ public class TaskService {
 
   public void processRepeatOnYearly() {
     boolean keep = true;
-
     YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
     Set<MonthDay> daysOfYear = new TreeSet<>();
     MonthDay monthDay;
@@ -390,8 +402,10 @@ public class TaskService {
     do {
       try {
         monthDayStr = View.input("Add one specific date of the year (MM-dd)");
-        if (monthDayStr == null) return;
-        else if (monthDayStr.isBlank() || monthDayStr.isEmpty()) {
+        if (monthDayStr == null) {
+          if (daysOfYear.isEmpty()) return;
+          else break;
+        } else if (monthDayStr.isBlank() || monthDayStr.isEmpty()) {
           View.message(EMPTY_MESSAGE_WARNING);
           return;
         }
@@ -761,5 +775,9 @@ public class TaskService {
     } catch (DateTimeParseException e) {
       View.message("Invalid date format");
     }
+  }
+
+  public boolean checkTaskName(String taskName) {
+    return crudService.findAllTasks().stream().anyMatch(t -> t.getName().equals(taskName));
   }
 }
