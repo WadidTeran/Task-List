@@ -13,4 +13,9 @@ public class WeeklyRepeatOnConfig implements RepeatOnConfig {
   public void accept(IRepeatOnConfigVisitor visitor) {
     visitor.visit(this);
   }
+
+  @Override
+  public String toString() {
+    return daysOfWeek.toString();
+  }
 }

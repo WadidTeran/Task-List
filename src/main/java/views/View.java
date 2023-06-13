@@ -56,19 +56,22 @@ public class View {
 
     System.out.println("Name: " + task.getName());
     System.out.println(String.valueOf('-').repeat(115));
-    System.out.println("Completed Date: " + task.getCompletedDate());
-    System.out.println(String.valueOf('-').repeat(115));
     System.out.println("Due Date: " + task.getDueDate());
     System.out.println(String.valueOf('-').repeat(115));
     System.out.println("Specified Time: " + task.getSpecifiedTime());
     System.out.println(String.valueOf('-').repeat(115));
-    displayMultiline("Description: ", task.getDescription());
-    System.out.println(String.valueOf('-').repeat(115));
+    if (task.getDescription() != null
+        && !task.getDescription().isEmpty()
+        && !task.getDescription().isBlank()) {
+      displayMultiline("Description: ", task.getDescription());
+      System.out.println(String.valueOf('-').repeat(115));
+    }
     System.out.println("Relevance: " + task.getRelevance());
     System.out.println(String.valueOf('-').repeat(115));
-    System.out.println(
-        task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A");
-    System.out.println(String.valueOf('-').repeat(115));
+    if (task.getCategory() != null) {
+      System.out.println("Category: " + cutString(task.getCategory().getName()));
+      System.out.println(String.valueOf('-').repeat(115));
+    }
     System.out.println("Repetitive Config: \n" + displayRepeatingConfig(task.getRepeatingConfig()));
     System.out.println(String.valueOf('-').repeat(115));
   }
@@ -111,7 +114,7 @@ public class View {
   public static void displayCompletedTasks(List<Task> tasks) {
     String formatSpaces = "%25s %20s %20s %30s %15s %30s%n";
     putTitle("COMPLETED TASKS");
-    System.out.printf(formatSpaces, NAME, "COMPLETED DATE", SPECTIME, DESCRIP, RELEVANCE, CATEGORY);
+    System.out.printf(formatSpaces, NAME, "COMPLETED DATE", DUEDATE, DESCRIP, RELEVANCE, CATEGORY);
     System.out.println(String.valueOf('-').repeat(170));
     // iterates over the list
     for (Task task : tasks) {
@@ -119,7 +122,7 @@ public class View {
           formatSpaces,
           cutString(task.getName()),
           task.getCompletedDate(),
-          task.getSpecifiedTime(),
+          task.getDueDate(),
           cutString(task.getDescription()),
           task.getRelevance(),
           (task.getCategory() != null ? cutString(task.getCategory().getName()) : "N/A"));
@@ -180,10 +183,12 @@ public class View {
           + repeatTaskConfig.getRepeatInterval()
           + "\n"
           + "    ENDS AT: "
-          + repeatTaskConfig.getRepeatEndsAt()
+          + ((repeatTaskConfig.getRepeatEndsAt() != null)
+              ? repeatTaskConfig.getRepeatEndsAt()
+              : "Endlessly")
           + "\n"
           + "    REPEAT CONFIG: "
-          + getNameClass(repeatTaskConfig.getRepeatOn());
+          + repeatTaskConfig.getRepeatOn();
     } else {
       return "N/A";
     }

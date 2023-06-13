@@ -12,4 +12,9 @@ public class HourRepeatOnConfig implements RepeatOnConfig {
   public void accept(IRepeatOnConfigVisitor visitor) {
     visitor.visit(this);
   }
+
+  @Override
+  public String toString() {
+    return minutes.toString();
+  }
 }

@@ -4,22 +4,10 @@
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-]
--src/main/java/models/DailyRepeatOnConfig.java,c\f\cf73201f00699216c71e3cd291326d1b700b1d4a
-_
-/src/main/java/models/MonthlyRepeatOnConfig.java,0\c\0c862f45ca63e32b0f4bc7a1fdcc17ead494f688
-^
-.src/main/java/models/WeeklyRepeatOnConfig.java,0\7\07fd03c58a84ac55618dff7f1872559b26b8be84
-^
-.src/main/java/models/YearlyRepeatOnConfig.java,c\6\c61813768572e0e17c992551f8359eb5514c1847
 R
 "src/main/java/models/Category.java,7\2\728651237990c9bdabf45c80b9e2c9daa74d2bbe
 N
 src/main/java/models/User.java,f\7\f7010c4f46d3b9dd8d59899249df5ba3ee23f96b
-\
-,src/main/java/models/HourRepeatOnConfig.java,9\7\97771e1706bf92245c9cd080bd69260138782cf8
-^
-.src/main/java/repositories/TaskRepository.java,b\0\b072cac8ddedfa63ab02dd4b22927bd5ad60c768
 f
 6src/main/java/repositories/DataBaseRepositoryImpl.java,f\c\fca3d0b5edda9f31255cd3bd5ae8dfb4e22abf2a
 ^

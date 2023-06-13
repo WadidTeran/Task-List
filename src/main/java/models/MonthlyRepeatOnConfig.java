@@ -12,4 +12,9 @@ public class MonthlyRepeatOnConfig implements RepeatOnConfig {
   public void accept(IRepeatOnConfigVisitor visitor) {
     visitor.visit(this);
   }
+
+  @Override
+  public String toString() {
+    return daysOfMonth.toString();
+  }
 }

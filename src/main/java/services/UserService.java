@@ -78,8 +78,8 @@ public class UserService {
 
     if (checkPassword(password)) {
       if (View.confirm("Are you sure you want to delete your account?")) {
-        signOut();
         crudService.deleteUser(UserLogin.getLoggedUser());
+        signOut();
         View.message("You have deleted your account succesfully...");
         return true;
       }

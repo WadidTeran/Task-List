@@ -27,7 +27,6 @@ public class TaskService {
   public static final String MAX_DESCRIPTION_LENGTH_WARNING =
       "Task description can't be longer than " + MAX_DESCRIPTION_LENGTH + " characters!";
   private static final String EMPTY_MESSAGE_WARNING = "No empty entries allowed. Please, try again";
-  private static final String TASK_NOT_FOUND = "The task id doesn't exist.";
   private static final String NOT_A_NUMBER = "That is not a number.";
   private static final boolean TASK_STATUS_COMPLETED = true;
   private static final boolean TASK_STATUS_PENDING = false;
@@ -94,8 +93,6 @@ public class TaskService {
           Task taskToModify = optTask.get();
           taskBuilder = new TaskBuilder(taskToModify);
           return true;
-        } else {
-          View.message("The task's id doesn't exist!");
         }
       } catch (NumberFormatException e) {
         View.message("Not a valid task id.");
@@ -455,21 +452,18 @@ public class TaskService {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as completed", TASK_STATUS_PENDING);
-        if (optionalTask.isPresent()) {
-          Task task = optionalTask.get();
-
-          if (View.confirm(
-              "Are you sure you want to set as completed \"" + task.getName() + "\"?")) {
-            task.setCompleted(true);
-            task.setCompletedDate(LocalDate.now());
-            crudService.saveTask(task);
-            if (task.isRepetitive()) {
-              manageRepetitiveTask(task);
-            }
-          }
-        } else {
-          View.message(TASK_NOT_FOUND);
-        }
+        optionalTask.ifPresent(
+            task -> {
+              if (View.confirm(
+                  "Are you sure you want to set as completed \"" + task.getName() + "\"?")) {
+                task.setCompleted(true);
+                task.setCompletedDate(LocalDate.now());
+                crudService.saveTask(task);
+                if (task.isRepetitive()) {
+                  manageRepetitiveTask(task);
+                }
+              }
+            });
       } catch (NumberFormatException e) {
         View.message(NOT_A_NUMBER);
       }
@@ -483,17 +477,15 @@ public class TaskService {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
-        if (optionalTask.isPresent()) {
-          Task task = optionalTask.get();
-
-          if (View.confirm("Are you sure you want to set as pending \"" + task.getName() + "\"?")) {
-            task.setCompleted(false);
-            task.setCompletedDate(null);
-            crudService.saveTask(task);
-          }
-        } else {
-          View.message(TASK_NOT_FOUND);
-        }
+        optionalTask.ifPresent(
+            task -> {
+              if (View.confirm(
+                  "Are you sure you want to set as pending \"" + task.getName() + "\"?")) {
+                task.setCompleted(false);
+                task.setCompletedDate(null);
+                crudService.saveTask(task);
+              }
+            });
       } catch (NumberFormatException e) {
         View.message(NOT_A_NUMBER);
       }
@@ -506,15 +498,11 @@ public class TaskService {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optionalTask = askForATask("Choose a task to delete", TASK_STATUS_PENDING);
-        if (optionalTask.isPresent()) {
-          Task task = optionalTask.get();
-
-          if (View.confirm("Are you sure you want to delete \"" + task.getName() + "\"?")) {
-            crudService.deleteTask(task);
-          }
-        } else {
-          View.message(TASK_NOT_FOUND);
-        }
+        optionalTask.ifPresent(
+            task -> {
+              if (View.confirm("Are you sure you want to delete \"" + task.getName() + "\"?"))
+                crudService.deleteTask(task);
+            });
       } catch (NumberFormatException e) {
         View.message(NOT_A_NUMBER);
       }
@@ -658,11 +646,7 @@ public class TaskService {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optTask = askForATask("Choose a task to search", TASK_STATUS_PENDING);
-        if (optTask.isPresent()) {
-          View.displayOneTask(optTask.get());
-        } else {
-          View.message("The task's id doesn't exist!");
-        }
+        optTask.ifPresent(View::displayOneTask);
       } catch (NumberFormatException e) {
         View.message("Not a valid task id.");
       }
