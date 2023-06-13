@@ -2,10 +2,7 @@ package services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import models.Category;
-import models.Task;
 import utils.UserLogin;
 import views.View;
 
@@ -18,6 +15,8 @@ public class CategoryService {
       "Category names cannot be longer than " + MAX_CATEGORY_NAME_LENGTH + " characters!";
   private static final String MAXIMUM_CATEGORIES_WARNING =
       "You cannot create more than " + MAXIMUM_CATEGORIES + " categories!";
+  private static final String EMPTY_MESSAGE_WARNING =
+      "No invalid entries allowed. Please, try again";
   private final ICRUDService crudService;
 
   public CategoryService(ICRUDService crudService) {
@@ -29,7 +28,12 @@ public class CategoryService {
       View.message(MAXIMUM_CATEGORIES_WARNING);
     } else {
       String newCategory = View.input("Insert the new category's name: ");
-      if (newCategory != null) {
+      if (newCategory == null) return;
+
+      if (newCategory.isBlank() || newCategory.isEmpty()) {
+        View.message(EMPTY_MESSAGE_WARNING);
+      } else {
+        newCategory = newCategory.trim();
         if (newCategory.length() > MAX_CATEGORY_NAME_LENGTH) {
           View.message(LONG_CATEGORY_NAME_WARNING);
         } else if (newCategory.isBlank() || newCategory.isEmpty()) {
@@ -59,7 +63,12 @@ public class CategoryService {
           View.message("The category " + category + " doesn't exist.");
         } else {
           String newCategory = View.input("Insert a new name for the category: ");
-          if (newCategory != null) {
+          if (newCategory == null) return;
+
+          if (newCategory.isBlank() || newCategory.isEmpty()) {
+            View.message(EMPTY_MESSAGE_WARNING);
+          } else {
+            newCategory = newCategory.trim();
             if (newCategory.length() > MAX_CATEGORY_NAME_LENGTH) {
               View.message(LONG_CATEGORY_NAME_WARNING);
             } else if (checkCategoryName(newCategory)) {

@@ -7,6 +7,8 @@ import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,6 +26,7 @@ public class TaskService {
       "Task names cannot be longer than " + MAX_TASK_NAME_LENGTH + " characters!";
   public static final String MAX_DESCRIPTION_LENGTH_WARNING =
       "Task description can't be longer than " + MAX_DESCRIPTION_LENGTH + " characters!";
+  private static final String EMPTY_MESSAGE_WARNING = "No empty entries allowed. Please, try again";
   private static final String TASK_NOT_FOUND = "The task id doesn't exist.";
   private static final String NOT_A_NUMBER = "That is not a number.";
   private static final boolean TASK_STATUS_COMPLETED = true;
@@ -105,11 +108,19 @@ public class TaskService {
 
   public void processName() {
     String name = View.input("Name");
+    if (name == null) return;
+    else if (name.isBlank() || name.isEmpty()) {
+      View.message(EMPTY_MESSAGE_WARNING);
+      return;
+    }
+    name = name.trim();
 
-    if (name.length() > TaskService.MAX_TASK_NAME_LENGTH) {
-      View.message(TaskService.LONG_TASK_NAME_WARNING);
+    if (name.length() > MAX_TASK_NAME_LENGTH) {
+      View.message(LONG_TASK_NAME_WARNING);
     } else if (name.isBlank() || name.isEmpty()) {
       View.message("Not a valid name!");
+    } else if (checkTaskName(name)) {
+      View.message("A task with this name already exists!");
     } else {
       taskBuilder.setName(name);
     }
@@ -117,6 +128,12 @@ public class TaskService {
 
   public void processDueDate() {
     String dueDateStr = View.input("Due date (yyyy-MM-dd)");
+    if (dueDateStr == null) return;
+    else if (dueDateStr.isBlank() || dueDateStr.isEmpty()) {
+      View.message(EMPTY_MESSAGE_WARNING);
+      return;
+    }
+    dueDateStr = dueDateStr.trim();
 
     try {
       LocalDate dueDate = LocalDate.parse(dueDateStr);
@@ -129,6 +146,12 @@ public class TaskService {
   public void processSpecifiedTime() {
     if (taskBuilder.build().getDueDate() != null) {
       String specifiedTimeStr = View.input("Specified time in 24h time system (hh:mm)");
+      if (specifiedTimeStr == null) return;
+      else if (specifiedTimeStr.isBlank() || specifiedTimeStr.isEmpty()) {
+        View.message(EMPTY_MESSAGE_WARNING);
+        return;
+      }
+      specifiedTimeStr = specifiedTimeStr.trim();
 
       try {
         LocalTime specifiedTime = LocalTime.parse(specifiedTimeStr);
@@ -143,9 +166,15 @@ public class TaskService {
 
   public void processDescription() {
     String description = View.input("Description");
+    if (description == null) return;
+    else if (description.isBlank() || description.isEmpty()) {
+      View.message(EMPTY_MESSAGE_WARNING);
+      return;
+    }
+    description = description.trim();
 
     if (description.length() > 300) {
-      View.message(TaskService.MAX_DESCRIPTION_LENGTH_WARNING);
+      View.message(MAX_DESCRIPTION_LENGTH_WARNING);
     } else if (description.isBlank() || description.isEmpty()) {
       View.message("Not a valid description!");
     } else {
@@ -196,6 +225,12 @@ public class TaskService {
 
   public void processRepeatEndsAt() {
     String repeatEndsAtStr = View.input("Repeat ends at (yyyy-mm-dd)");
+    if (repeatEndsAtStr == null) return;
+    else if (repeatEndsAtStr.isBlank() || repeatEndsAtStr.isEmpty()) {
+      View.message(EMPTY_MESSAGE_WARNING);
+      return;
+    }
+    repeatEndsAtStr = repeatEndsAtStr.trim();
 
     try {
       LocalDate repeatEndsAt = LocalDate.parse(repeatEndsAtStr);
@@ -209,11 +244,20 @@ public class TaskService {
     if (repeatTaskConfigBuilder.build().getRepeatType() == null) {
       View.message("First set a repeat type!");
     } else {
+      String intervalStr;
       int interval;
+
       try {
-        interval =
-            Integer.parseInt(
-                View.input("Repeat each ? " + repeatTaskConfigBuilder.build().getRepeatType()));
+        intervalStr =
+            View.input("Repeat each ? " + repeatTaskConfigBuilder.build().getRepeatType());
+        if (intervalStr == null) return;
+        else if (intervalStr.isBlank() || intervalStr.isEmpty()) {
+          View.message(EMPTY_MESSAGE_WARNING);
+          return;
+        }
+        intervalStr = intervalStr.trim();
+
+        interval = Integer.parseInt(intervalStr);
 
         if (interval > 0) repeatTaskConfigBuilder.setRepeatInterval(interval);
         else View.message("Invalid repeat interval");
@@ -243,24 +287,20 @@ public class TaskService {
     boolean keep = true;
     HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
     Set<Integer> minutes = new TreeSet<>();
+    String minuteStr;
     int minute;
 
     do {
-      try {
-        minute =
-            Integer.parseInt(
-                View.inputOptions(
-                    "Minute selector", "Choose a specific minute", minuteOptionsArrayObj));
-        minutes.add(minute);
-
-        if (!View.confirm("Do you want to add another minute?")) keep = false;
-      } catch (NumberFormatException nfe) {
-        if (minutes.isEmpty()) {
-          View.message("You have to specify at least one minute!");
-        } else {
-          keep = false;
-        }
+      minuteStr =
+          View.inputOptions("Minute selector", "Choose a specific minute", minuteOptionsArrayObj);
+      if (minuteStr == null) {
+        if (minutes.isEmpty()) return;
+        else break;
       }
+      minute = Integer.parseInt(minuteStr);
+      minutes.add(minute);
+
+      if (!View.confirm("Do you want to add another minute?")) keep = false;
     } while (keep);
 
     hourRepeatOnConfig.setMinutes(minutes);
@@ -269,7 +309,6 @@ public class TaskService {
 
   public void processRepeatOnDaily() {
     boolean keep = true;
-
     DailyRepeatOnConfig dailyRepeatOnConfig = new DailyRepeatOnConfig();
     Set<LocalTime> hours = new TreeSet<>();
     LocalTime hour;
@@ -278,8 +317,15 @@ public class TaskService {
     do {
       try {
         hourStr = View.input("Add one specific hour (00:00 - 23:59)");
-        hour = LocalTime.parse(hourStr.trim());
+        if (hourStr == null) {
+          if (hours.isEmpty()) return;
+          else break;
+        } else if (hourStr.isBlank() || hourStr.isEmpty()) {
+          View.message(EMPTY_MESSAGE_WARNING);
+          continue;
+        }
 
+        hour = LocalTime.parse(hourStr.trim());
         hours.add(hour);
 
         if (hours.size() == 24 || !View.confirm("Do you want to add another hour? (24 max)"))
@@ -304,16 +350,15 @@ public class TaskService {
       dayOfWeekStr =
           View.inputOptions(
               "Day of week selector", "Choose a specific day of the week", daysOfWeekArray);
-
       if (dayOfWeekStr == null) {
-        View.message("You have to choose a specific day of the week!");
-      } else {
-        dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
-        daysOfWeek.add(dayOfWeek);
-
-        if (!View.confirm("Do you want to add another day of the week?")) keep = false;
+        if (daysOfWeek.isEmpty()) return;
+        else break;
       }
 
+      dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
+      daysOfWeek.add(dayOfWeek);
+
+      if (!View.confirm("Do you want to add another day of the week?")) keep = false;
     } while (keep);
 
     weeklyRepeatOnConfig.setDaysOfWeek(daysOfWeek);
@@ -322,26 +367,24 @@ public class TaskService {
 
   public void processRepeatOnMonthly() {
     boolean keep = true;
-
     MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
     Set<Integer> daysOfMonth = new TreeSet<>();
+    String dayOfMonthStr;
     int dayOfMonth;
 
     do {
-      try {
-        dayOfMonth =
-            Integer.parseInt(
-                View.inputOptions(
-                    "Day of month selector",
-                    "Choose a day of the month",
-                    daysOfMonthOptionsArrayStr));
-
-        daysOfMonth.add(dayOfMonth);
-
-        if (!View.confirm("Do you want to add another day of the month?")) keep = false;
-      } catch (NumberFormatException nfe) {
-        View.message("Invalid day of the month! Try again.");
+      dayOfMonthStr =
+          View.inputOptions(
+              "Day of month selector", "Choose a day of the month", daysOfMonthOptionsArrayStr);
+      if (dayOfMonthStr == null) {
+        if (daysOfMonth.isEmpty()) return;
+        else break;
       }
+
+      dayOfMonth = Integer.parseInt(dayOfMonthStr);
+      daysOfMonth.add(dayOfMonth);
+
+      if (!View.confirm("Do you want to add another day of the month?")) keep = false;
     } while (keep);
 
     monthlyRepeatOnConfig.setDaysOfMonth(daysOfMonth);
@@ -350,7 +393,6 @@ public class TaskService {
 
   public void processRepeatOnYearly() {
     boolean keep = true;
-
     YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
     Set<MonthDay> daysOfYear = new TreeSet<>();
     MonthDay monthDay;
@@ -360,8 +402,15 @@ public class TaskService {
     do {
       try {
         monthDayStr = View.input("Add one specific date of the year (MM-dd)");
-        monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
+        if (monthDayStr == null) {
+          if (daysOfYear.isEmpty()) return;
+          else break;
+        } else if (monthDayStr.isBlank() || monthDayStr.isEmpty()) {
+          View.message(EMPTY_MESSAGE_WARNING);
+          return;
+        }
 
+        monthDay = MonthDay.parse(monthDayStr.trim(), formatter);
         daysOfYear.add(monthDay);
 
         if (daysOfYear.size() == 12
@@ -632,16 +681,14 @@ public class TaskService {
     List<Task> tasks =
         (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
 
-    Object[] taskArray = tasks.stream().map(t -> t.getTaskId() + " - " + t.getName()).toArray();
+    Object[] taskArray = tasks.stream().map(Task::getName).toArray();
 
     String task = View.inputOptions("Task selector", message, taskArray);
 
     if (task == null) {
       return Optional.empty();
     } else {
-      String idSection = task.split("-")[0].trim();
-      Long id = Long.parseLong(idSection);
-      return crudService.getTaskById(id);
+      return getAllPendingTasks().stream().filter(t -> t.getName().equals(task)).findFirst();
     }
   }
 
@@ -700,19 +747,37 @@ public class TaskService {
 
   public void sendProductivityEmail() {
     String startDateStr = View.input("Start date (yyyy-MM-dd)");
+    if (startDateStr == null) return;
+    else if (startDateStr.isBlank() || startDateStr.isEmpty()) {
+      View.message(EMPTY_MESSAGE_WARNING);
+      return;
+    }
     String endDateStr = View.input("End date (yyyy-MM-dd)");
+    if (endDateStr == null) return;
+    else if (endDateStr.isBlank() || endDateStr.isEmpty()) {
+      View.message(EMPTY_MESSAGE_WARNING);
+      return;
+    }
 
     try {
       LocalDate startDate = LocalDate.parse(startDateStr);
       LocalDate endDate = LocalDate.parse(endDateStr);
-      if (startDate.isBefore(endDate)) {
+      if (!startDate.isAfter(endDate)) {
         RangeDates rangeDates = new RangeDates(startDate, endDate);
-        ProductivityEmailService.sendProductivityEmail(this, rangeDates);
+        try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
+          Runnable emailSendingProcess =
+              () -> ProductivityEmailService.sendProductivityEmail(this, rangeDates);
+          executor.execute(emailSendingProcess);
+        }
       } else {
         View.message("¡Start date must be before end date!");
       }
     } catch (DateTimeParseException e) {
       View.message("Invalid date format");
     }
+  }
+
+  public boolean checkTaskName(String taskName) {
+    return crudService.findAllTasks().stream().anyMatch(t -> t.getName().equals(taskName));
   }
 }
