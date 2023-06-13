@@ -12,8 +12,7 @@ import repositories.UserRepository;
 import services.UserService;
 import services.CategoryService;
 import services.TaskService;
-import services.ICRUDService;
-import services.CRUDServiceImpl;
+import services.CRUDService;
 
 import javax.swing.UIManager;
 
@@ -21,8 +20,8 @@ public class Application {
   private static final IRepository<User> userRepository = new UserRepository();
   private static final IRepository<Task> taskRepository = new TaskRepository();
   private static final IRepository<Category> categoryRepository = new CategoryRepository();
-  private static final ICRUDService crudService =
-      new CRUDServiceImpl(userRepository, taskRepository, categoryRepository);
+  private static final CRUDService crudService =
+      new CRUDService(userRepository, taskRepository, categoryRepository);
   private static final UserService userService = new UserService(crudService);
   private static final CategoryService categoryService = new CategoryService(crudService);
   private static final TaskService taskService = new TaskService(crudService, categoryService);

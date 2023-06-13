@@ -17,9 +17,9 @@ public class CategoryService {
       "You cannot create more than " + MAXIMUM_CATEGORIES + " categories!";
   private static final String EMPTY_MESSAGE_WARNING =
       "No invalid entries allowed. Please, try again";
-  private final ICRUDService crudService;
+  private final CRUDService crudService;
 
-  public CategoryService(ICRUDService crudService) {
+  public CategoryService(CRUDService crudService) {
     this.crudService = crudService;
   }
 

@@ -6,9 +6,9 @@ import views.View;
 
 public class UserService {
   private static final String EMPTY_MESSAGE_WARNING = "No empty entries allowed. Please, try again";
-  private final ICRUDService crudService;
+  private final CRUDService crudService;
 
-  public UserService(ICRUDService crudService) {
+  public UserService(CRUDService crudService) {
     this.crudService = crudService;
   }
 

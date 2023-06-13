@@ -8,8 +8,6 @@
 -src/main/java/models/DailyRepeatOnConfig.java,c\f\cf73201f00699216c71e3cd291326d1b700b1d4a
 _
 /src/main/java/models/MonthlyRepeatOnConfig.java,0\c\0c862f45ca63e32b0f4bc7a1fdcc17ead494f688
-X
-(src/main/java/models/RepeatOnConfig.java,5\8\58b478ae4dfb50026158a9085e48caedab053004
 ^
 .src/main/java/models/WeeklyRepeatOnConfig.java,0\7\07fd03c58a84ac55618dff7f1872559b26b8be84
 ^
@@ -24,8 +22,6 @@ N
 .src/main/java/repositories/TaskRepository.java,b\0\b072cac8ddedfa63ab02dd4b22927bd5ad60c768
 f
 6src/main/java/repositories/DataBaseRepositoryImpl.java,f\c\fca3d0b5edda9f31255cd3bd5ae8dfb4e22abf2a
-[
-+src/main/java/repositories/IRepository.java,5\f\5f80fefe96e8d702fb83b654cf614a3b27c05204
 ^
 .src/main/java/repositories/UserRepository.java,a\b\ab0c1571a03b3cbc85267459f3b01287ab8a97a8
 S

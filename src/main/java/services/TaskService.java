@@ -31,7 +31,7 @@ public class TaskService {
   private static final String NOT_A_NUMBER = "That is not a number.";
   private static final boolean TASK_STATUS_COMPLETED = true;
   private static final boolean TASK_STATUS_PENDING = false;
-  private final ICRUDService crudService;
+  private final CRUDService crudService;
   private final CategoryService categoryService;
   private final Map<String, RepeatType> repeatTypeMap;
   private final Object[] repeatTypeArray;
@@ -44,7 +44,7 @@ public class TaskService {
   private TaskBuilder taskBuilder;
   private RepeatTaskConfigBuilder repeatTaskConfigBuilder;
 
-  public TaskService(ICRUDService crudService, CategoryService categoryService) {
+  public TaskService(CRUDService crudService, CategoryService categoryService) {
     this.crudService = crudService;
     this.categoryService = categoryService;
 
