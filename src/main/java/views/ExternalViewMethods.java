@@ -8,18 +8,31 @@ public class ExternalViewMethods {
   }
 
   public static void putTitle(String title) {
-    lines();
+    System.out.println(String.valueOf('-').repeat(170));
     System.out.printf("%95s", title + "\n");
-    lines();
+    System.out.println(String.valueOf('-').repeat(170));
   }
 
-  public static void lines() {
-    System.out.println(
-        "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-  }
+  public static void displayMultiline(String title, String text) {
+    System.out.print(title);
+    int startIndex = 0;
+    int endIndex = 100;
+    int textLength = text.length();
 
-  public static void shortLines() {
-    System.out.println("----------------------------------------------");
+    while (startIndex < textLength) {
+      if (endIndex >= textLength) {
+        endIndex = textLength;
+      } else {
+        while (endIndex > startIndex && !Character.isWhitespace(text.charAt(endIndex))) {
+          endIndex--;
+        }
+      }
+
+      String line = text.substring(startIndex, endIndex).trim();
+      System.out.println(line);
+      startIndex = endIndex;
+      endIndex += 100;
+    }
   }
 
   public static String getNameClass(Object obj) {
