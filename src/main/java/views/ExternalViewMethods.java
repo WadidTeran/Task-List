@@ -34,14 +34,4 @@ public class ExternalViewMethods {
       endIndex += 100;
     }
   }
-
-  public static String getNameClass(Object obj) {
-    if (obj != null) {
-      String className =
-          obj.getClass().getName().substring(obj.getClass().getName().lastIndexOf('.') + 1);
-      return className.substring(0, className.indexOf('R'));
-    } else {
-      return "N/A";
-    }
-  }
 }

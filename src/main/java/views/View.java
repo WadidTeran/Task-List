@@ -30,7 +30,7 @@ public class View {
   }
 
   public static String inputOptions(String title, String message, Object[] optionsArray) {
-    return (String)
+    Object obj =
         JOptionPane.showInputDialog(
             null,
             message.toUpperCase(),
@@ -39,6 +39,7 @@ public class View {
             null,
             optionsArray,
             optionsArray[0]);
+    return (obj == null ? null : obj.toString());
   }
 
   public static boolean confirm(String message) {
