@@ -267,8 +267,6 @@ public class TaskService {
   public void processRepeatOn() {
     if (repeatTaskConfigBuilder.build().getRepeatType() == null) {
       View.message("First set a repeat type!");
-    } else if (repeatTaskConfigBuilder.build().getRepeatInterval() == null) {
-      View.message("First set a repeat interval!");
     } else {
       switch (repeatTaskConfigBuilder.build().getRepeatType()) {
         case HOUR -> processRepeatOnHour();

@@ -15,6 +15,7 @@ public class RepeatTaskConfigBuilder {
 
   public RepeatTaskConfigBuilder setRepeatType(RepeatType repeatType) {
     repeatTaskConfig.setRepeatType(repeatType);
+    repeatTaskConfig.setRepeatOn(null);
     return this;
   }
 
