@@ -475,15 +475,15 @@ public class TaskService {
       try {
         Optional<Task> optionalTask =
             askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
-        optionalTask.ifPresent(
-            task -> {
-              if (View.confirm(
-                  "Are you sure you want to set as pending \"" + task.getName() + "\"?")) {
-                task.setCompleted(false);
-                task.setCompletedDate(null);
-                crudService.saveTask(task);
-              }
-            });
+        if (optionalTask.isPresent()) {
+          Task taskToSet = optionalTask.get();
+          if (View.confirm(
+              "Are you sure you want to set as pending \"" + taskToSet.getName() + "\"?")) {
+            taskToSet.setCompleted(false);
+            taskToSet.setCompletedDate(null);
+            crudService.saveTask(taskToSet);
+          }
+        }
       } catch (NumberFormatException e) {
         View.message(NOT_A_NUMBER);
       }
@@ -670,7 +670,7 @@ public class TaskService {
     if (task == null) {
       return Optional.empty();
     } else {
-      return getAllPendingTasks().stream().filter(t -> t.getName().equals(task)).findFirst();
+      return tasks.stream().filter(t -> t.getName().equals(task)).findFirst();
     }
   }
 

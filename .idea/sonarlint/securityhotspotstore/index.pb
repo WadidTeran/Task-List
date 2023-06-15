@@ -4,10 +4,6 @@
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-R
-"src/main/java/models/Category.java,7\2\728651237990c9bdabf45c80b9e2c9daa74d2bbe
-N
-src/main/java/models/User.java,f\7\f7010c4f46d3b9dd8d59899249df5ba3ee23f96b
 f
 6src/main/java/repositories/DataBaseRepositoryImpl.java,f\c\fca3d0b5edda9f31255cd3bd5ae8dfb4e22abf2a
 ^
@@ -18,8 +14,6 @@ e
 5src/main/java/menus/ModificationRepeatConfigMenu.java,0\1\016b4dafe5a85e517117f454114853b923873294
 [
 +src/main/java/utils/DataBaseConnection.java,9\4\945fb03eb2beadeec82b8024111df558235f7a20
-b
-2src/main/java/services/IRepeatOnConfigVisitor.java,f\4\f4b2c211a749bdaa767066984e3a22f07f809bc3
 U
 %src/main/java/menus/CategoryMenu.java,1\4\147847f467f7b5d4a82d1d9a14e87a9c162c454a
 R
@@ -38,12 +32,8 @@ Z
 *src/main/java/models/RepeatTaskConfig.java,7\6\7644d474b517c60fd4194ba8e14d4dae06234781
 Q
 !src/main/java/menus/MainMenu.java,b\d\bdc506a011cafd69a355e4bb3b69c841edfc8ce5
-[
-+src/main/java/repositories/IRepository.java,5\f\5f80fefe96e8d702fb83b654cf614a3b27c05204
 b
 2src/main/java/repositories/CategoryRepository.java,6\3\63e23392676237203e8af3b9277d1a44c0356c24
-X
-(src/main/java/models/RepeatOnConfig.java,5\8\58b478ae4dfb50026158a9085e48caedab053004
 ]
 -src/main/java/menus/SingletonMenuFactory.java,4\8\4879fb7112ec195390066c96459601f58a9ba18a
 U
@@ -54,12 +44,8 @@ d
 4src/main/java/services/ProductivityEmailService.java,e\b\eb23e504fc108b674ef2e5f2d4b02c0235fcda7e
 \
 ,src/main/java/menus/AccountSettingsMenu.java,8\2\828f05f616399c7c4d90c9b1cd287020e7251556
-N
-src/main/java/models/Task.java,e\f\efb9cb60a3bf64c836d1493979f534a0a10db9b3
 U
 %src/main/java/models/TaskBuilder.java,5\7\575a8be5500fc85681c784df500834547c9b6239
-W
-'src/main/java/services/CRUDService.java,5\a\5a9827b738722b250e24f113d7d6554249edf946
 ^
 .src/main/java/repositories/TaskRepository.java,b\0\b072cac8ddedfa63ab02dd4b22927bd5ad60c768
 Q
@@ -84,3 +70,15 @@ _
 .src/main/java/models/YearlyRepeatOnConfig.java,c\6\c61813768572e0e17c992551f8359eb5514c1847
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+M
+src/main/java/views/View.java,3\4\34a52fe6af9d0139ae62cf2ae22d559f1119ac0c
+h
+8src/main/java/services/NextDueDateCalculatorService.java,d\0\d02c4e7c1742843ee2c163d7fde2243ed434fc40
+a
+1src/main/java/models/RepeatTaskConfigBuilder.java,6\2\6202b2de36947a5f495b5e5ea61110e742ed935c
+R
+"src/main/java/utils/UserLogin.java,f\d\fd06244efbbfea2974d549b61bb26626f8e27f85
+]
+-src/main/java/utils/CredentialsValidator.java,5\d\5d42c4e330b6d6a1c7d22ecc0e3d048ae95008e9
+W
+'src/main/java/services/UserService.java,f\8\f88b0fc904fcbbe4a39e1cd49ea74cc88d783b2c

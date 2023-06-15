@@ -60,6 +60,7 @@ public class Application {
     task1.setCompleted(false);
     task1.setCategory(category3);
     task1.setRelevance(Relevance.LOW);
+
     task1.setDueDate(LocalDate.now().plusDays(1));
     task1.setSpecifiedTime(LocalTime.of(16, 30));
     RepeatTaskConfig repeatingConfig = new RepeatTaskConfig();
