@@ -124,7 +124,7 @@ public class NextDueDateCalculatorService implements IRepeatOnConfigVisitor {
 
     MonthDay oldMonthDay = MonthDay.of(oldDueDate.getMonth(), oldDueDate.getDayOfMonth());
 
-    if (oldMonthDay == daysOfYear.stream().max(Comparator.naturalOrder()).orElseThrow()) {
+    if (oldMonthDay.equals(daysOfYear.stream().max(Comparator.naturalOrder()).orElseThrow())) {
       MonthDay firstMonthDay = daysOfYear.stream().min(Comparator.naturalOrder()).orElseThrow();
       nextDueDate = oldDueDate.plusYears(repeatInterval).withMonth(firstMonthDay.getMonthValue());
 
@@ -140,7 +140,7 @@ public class NextDueDateCalculatorService implements IRepeatOnConfigVisitor {
       }
     } else {
       MonthDay nextMonthDay =
-          daysOfYear.stream().filter(x -> x.compareTo(oldMonthDay) > 0).findFirst().orElseThrow();
+          daysOfYear.stream().filter(x -> x.isAfter(oldMonthDay)).findFirst().orElseThrow();
       nextDueDate = oldDueDate.withMonth(nextMonthDay.getMonthValue());
 
       int nextDayOfMonth = nextMonthDay.getDayOfMonth();

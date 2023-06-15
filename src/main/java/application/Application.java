@@ -15,6 +15,7 @@ import services.CRUDService;
 import javax.swing.UIManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.MonthDay;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -50,7 +51,7 @@ public class Application {
     Category category1 = new Category("Workout", user);
     Category category2 = new Category("University", user);
     Category category3 = new Category("Day-to-day", user);
-    Category category4 = new Category("Medical", user);
+    Category category4 = new Category("Birthdays", user);
 
     Task task1 = new Task();
     task1.setUser(user);
@@ -72,6 +73,25 @@ public class Application {
     repeatingConfig.setRepeatOn(dailyRepeatOnConfig);
     task1.setRepeatingConfig(repeatingConfig);
 
+    Task task2 = new Task();
+    task2.setUser(user);
+    task2.setName("Family birthdays");
+    task2.setCompleted(false);
+    task2.setDescription("");
+    task2.setCategory(category4);
+    task2.setRelevance(Relevance.HIGH);
+    task2.setDueDate(LocalDate.of(2023, 10, 6));
+    RepeatTaskConfig repeatingConfig2 = new RepeatTaskConfig();
+    repeatingConfig2.setRepeatType(RepeatType.YEARLY);
+    repeatingConfig2.setRepeatInterval(1);
+    YearlyRepeatOnConfig yearlyRepeatOnConfig = new YearlyRepeatOnConfig();
+    Set<MonthDay> daysOfYear = new TreeSet<>();
+    daysOfYear.add(MonthDay.of(10, 6));
+    daysOfYear.add(MonthDay.of(6, 15));
+    yearlyRepeatOnConfig.setDaysOfYear(daysOfYear);
+    repeatingConfig2.setRepeatOn(yearlyRepeatOnConfig);
+    task2.setRepeatingConfig(repeatingConfig2);
+
     crudService.saveUser(user);
 
     crudService.saveCategory(category1);
@@ -80,5 +100,6 @@ public class Application {
     crudService.saveCategory(category4);
 
     crudService.saveTask(task1);
+    crudService.saveTask(task2);
   }
 }
