@@ -1,6 +1,7 @@
 package services;
 
 import models.User;
+import utils.CredentialsValidator;
 import utils.UserLogin;
 import views.View;
 
@@ -20,6 +21,11 @@ public class UserService {
       return false;
     }
     email = email.toLowerCase().trim();
+    if (!checkUserEmail(email)) {
+      View.message("This user doesn't exist.");
+      return false;
+    }
+
     String password = View.input("Password");
     if (password == null) return false;
     else if (password.isBlank() || password.isEmpty()) {
@@ -28,18 +34,15 @@ public class UserService {
     }
     password = password.trim();
 
-    if (!checkUserEmail(email)) {
-      View.message("This user doesn't exist.");
-    } else if (!validateUserPassword(email, password)) {
+    if (!validateUserPassword(email, password)) {
       View.message("Invalid password.");
+      return false;
     } else {
       User user = getUserByEmail(email);
-      View.message("Welcome!");
-
       UserLogin.logInUser(user);
+      View.message("Welcome!");
       return true;
     }
-    return false;
   }
 
   public void signUp() {
@@ -50,6 +53,14 @@ public class UserService {
       return;
     }
     email = email.toLowerCase().trim();
+    if (checkUserEmail(email)) {
+      View.message("An user with this email already exists!");
+      return;
+    } else if (!CredentialsValidator.isValidEmail(email)) {
+      View.message("Not a valid email address!");
+      return;
+    }
+
     String password = View.input("Password");
     if (password == null) return;
     else if (password.isBlank() || password.isEmpty()) {
@@ -57,14 +68,14 @@ public class UserService {
       return;
     }
     password = password.trim();
-
-    if (!checkUserEmail(email)) {
-      User user = new User(email, password);
-      crudService.saveUser(user);
-      View.message("User registered successfully!");
-    } else {
-      View.message("An user with this email already exists!");
+    if (!CredentialsValidator.isValidPassword(password)) {
+      View.message(CredentialsValidator.PASSWORD_MESSAGE);
+      return;
     }
+
+    User user = new User(email, password);
+    crudService.saveUser(user);
+    View.message("User registered successfully!");
   }
 
   public boolean deleteUser() {
@@ -113,6 +124,8 @@ public class UserService {
 
       if (checkUserEmail(newEmail)) {
         View.message("An user with this email already exists!");
+      } else if (!CredentialsValidator.isValidEmail(newEmail)) {
+        View.message("Not a valid email address!");
       } else if (View.confirm(
           "Are you sure you want to change your email from "
               + UserLogin.getLoggedUser().getEmail()
@@ -146,6 +159,11 @@ public class UserService {
         return;
       }
       newPassword = newPassword.trim();
+
+      if (!CredentialsValidator.isValidPassword(newPassword)) {
+        View.message(CredentialsValidator.PASSWORD_MESSAGE);
+        return;
+      }
 
       String newPasswordConfirm = View.input("Confirm the new password.");
       if (newPasswordConfirm == null) return;

@@ -54,8 +54,6 @@ d
 4src/main/java/services/ProductivityEmailService.java,e\b\eb23e504fc108b674ef2e5f2d4b02c0235fcda7e
 \
 ,src/main/java/menus/AccountSettingsMenu.java,8\2\828f05f616399c7c4d90c9b1cd287020e7251556
-R
-"src/main/java/utils/UserLogin.java,f\d\fd06244efbbfea2974d549b61bb26626f8e27f85
 N
 src/main/java/models/Task.java,e\f\efb9cb60a3bf64c836d1493979f534a0a10db9b3
 U
@@ -70,8 +68,6 @@ Y
 )src/main/java/menus/PendingTasksMenu.java,b\6\b67138e57b3a8927c7435e31d484af8c791eea77
 [
 +src/main/java/menus/CompletedTasksMenu.java,7\b\7b2bd2bbcd7cdbf5111626b16e507522202915c2
-W
-'src/main/java/services/UserService.java,f\8\f88b0fc904fcbbe4a39e1cd49ea74cc88d783b2c
 \
 ,src/main/java/views/ExternalViewMethods.java,2\0\20f883adb94bb8a0cf45210535576cd8bcf0dfa2
 [
