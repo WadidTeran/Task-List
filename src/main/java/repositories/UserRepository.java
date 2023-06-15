@@ -1,7 +1,6 @@
 package repositories;
 
 import java.util.List;
-import java.util.Optional;
 import models.User;
 import utils.DataBaseConnection;
 
@@ -14,11 +13,6 @@ public class UserRepository extends DataBaseRepositoryImpl implements IRepositor
   @Override
   public List<User> findAll() {
     return this.connection.getUsers();
-  }
-
-  @Override
-  public Optional<User> getById(Long id) {
-    return findAll().stream().filter(u -> u.getUserId().equals(id)).findFirst();
   }
 
   @Override

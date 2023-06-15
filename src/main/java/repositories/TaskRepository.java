@@ -1,7 +1,6 @@
 package repositories;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import models.Task;
 import utils.DataBaseConnection;
@@ -18,13 +17,6 @@ public class TaskRepository extends DataBaseRepositoryImpl implements IRepositor
     return this.connection.getTasks().stream()
         .filter(t -> t.getUser().equals(UserLogin.getLoggedUser()))
         .collect(Collectors.toList());
-  }
-
-  @Override
-  public Optional<Task> getById(Long id) {
-    return findAll().stream()
-        .filter(t -> t.getTaskId().equals(id) && t.getUser().equals(UserLogin.getLoggedUser()))
-        .findFirst();
   }
 
   @Override

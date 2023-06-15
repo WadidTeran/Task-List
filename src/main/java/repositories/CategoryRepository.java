@@ -1,7 +1,6 @@
 package repositories;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import models.Category;
@@ -19,13 +18,6 @@ public class CategoryRepository extends DataBaseRepositoryImpl implements IRepos
     return this.connection.getCategories().stream()
         .filter(c -> c.getUser().equals(UserLogin.getLoggedUser()))
         .collect(Collectors.toList());
-  }
-
-  @Override
-  public Optional<Category> getById(Long id) {
-    return findAll().stream()
-        .filter(c -> c.getCategoryId().equals(id) && c.getUser().equals(UserLogin.getLoggedUser()))
-        .findFirst();
   }
 
   @Override

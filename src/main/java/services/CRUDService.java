@@ -1,7 +1,6 @@
 package services;
 
 import java.util.List;
-import java.util.Optional;
 import models.Category;
 import models.Task;
 import models.User;
@@ -55,17 +54,5 @@ public class CRUDService {
 
   public void deleteCategory(Category category) {
     categoryRepository.delete(category);
-  }
-
-  public Optional<User> getUserById(Long id) {
-    return userRepository.getById(id);
-  }
-
-  public Optional<Task> getTaskById(Long id) {
-    return taskRepository.getById(id);
-  }
-
-  public Optional<Category> getCategoryById(Long id) {
-    return categoryRepository.getById(id);
   }
 }
