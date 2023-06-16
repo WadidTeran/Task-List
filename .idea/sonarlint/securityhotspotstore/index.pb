@@ -66,8 +66,6 @@ a
 1src/main/java/models/RepeatTaskConfigBuilder.java,6\2\6202b2de36947a5f495b5e5ea61110e742ed935c
 R
 "src/main/java/utils/UserLogin.java,f\d\fd06244efbbfea2974d549b61bb26626f8e27f85
-]
--src/main/java/utils/CredentialsValidator.java,5\d\5d42c4e330b6d6a1c7d22ecc0e3d048ae95008e9
 W
 'src/main/java/services/UserService.java,f\8\f88b0fc904fcbbe4a39e1cd49ea74cc88d783b2c
 Z

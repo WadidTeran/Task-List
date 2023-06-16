@@ -1,7 +1,7 @@
 {
 	"_type": "Project",
 	"_id": "AAAAAAFF+h6SjaM2Hec=",
-	"name": "Untitled",
+	"name": "Task List",
 	"ownedElements": [
 		{
 			"_type": "UMLModel",
@@ -9904,7 +9904,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Data Model1",
+			"name": "ER Diagram",
 			"ownedElements": [
 				{
 					"_type": "ERDDiagram",
@@ -35559,7 +35559,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGInVtB9eIzAtA="
 									},
-									"name": "RepeatTaskConfig repeatTaskConfig"
+									"name": "RepeatTaskConfig repeatTaskConfig",
+									"type": ""
 								}
 							]
 						},
