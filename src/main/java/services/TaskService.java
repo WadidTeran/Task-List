@@ -9,11 +9,9 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import models.*;
+import utils.AskForMethodsDataContainer;
 import utils.RangeDates;
 import views.View;
 
@@ -32,53 +30,12 @@ public class TaskService {
   private static final boolean TASK_STATUS_PENDING = false;
   private final CRUDService crudService;
   private final CategoryService categoryService;
-  private final Map<String, RepeatType> repeatTypeMap;
-  private final Object[] repeatTypeArray;
-  private final Map<String, Relevance> relevanceMap;
-  private final Object[] relevanceArray;
-  private final Map<String, DayOfWeek> daysOfWeekMap;
-  private final Object[] daysOfWeekArray;
-  private final Object[] minuteOptionsArrayObj;
-  private final Object[] daysOfMonthOptionsArrayStr;
   private TaskBuilder taskBuilder;
   private RepeatTaskConfigBuilder repeatTaskConfigBuilder;
 
   public TaskService(CRUDService crudService, CategoryService categoryService) {
     this.crudService = crudService;
     this.categoryService = categoryService;
-
-    repeatTypeMap = new LinkedHashMap<>();
-    repeatTypeMap.put("HOUR", RepeatType.HOUR);
-    repeatTypeMap.put("DAILY", RepeatType.DAILY);
-    repeatTypeMap.put("WEEKLY", RepeatType.WEEKLY);
-    repeatTypeMap.put("MONTHLY", RepeatType.MONTHLY);
-    repeatTypeMap.put("YEARLY", RepeatType.YEARLY);
-    repeatTypeArray = repeatTypeMap.keySet().toArray();
-
-    relevanceMap = new LinkedHashMap<>();
-    relevanceMap.put("NONE", Relevance.NONE);
-    relevanceMap.put("LOW", Relevance.LOW);
-    relevanceMap.put("MEDIUM", Relevance.MEDIUM);
-    relevanceMap.put("HIGH", Relevance.HIGH);
-    relevanceArray = relevanceMap.keySet().toArray();
-
-    daysOfWeekMap = new LinkedHashMap<>();
-    daysOfWeekMap.put("MONDAY", DayOfWeek.MONDAY);
-    daysOfWeekMap.put("TUESDAY", DayOfWeek.TUESDAY);
-    daysOfWeekMap.put("WEDNESDAY", DayOfWeek.WEDNESDAY);
-    daysOfWeekMap.put("THURSDAY", DayOfWeek.THURSDAY);
-    daysOfWeekMap.put("FRIDAY", DayOfWeek.FRIDAY);
-    daysOfWeekMap.put("SATURDAY", DayOfWeek.SATURDAY);
-    daysOfWeekMap.put("SUNDAY", DayOfWeek.SUNDAY);
-    daysOfWeekArray = daysOfWeekMap.keySet().toArray();
-
-    AtomicInteger ai = new AtomicInteger(0);
-    int[] minutesOptionsArray = IntStream.generate(ai::getAndIncrement).limit(60).toArray();
-    minuteOptionsArrayObj = Arrays.stream(minutesOptionsArray).boxed().toArray();
-
-    ai = new AtomicInteger(1);
-    int[] daysOfMonthOptionsArray = IntStream.generate(ai::getAndIncrement).limit(31).toArray();
-    daysOfMonthOptionsArrayStr = Arrays.stream(daysOfMonthOptionsArray).boxed().toArray();
   }
 
   public void createTask() {
@@ -287,7 +244,10 @@ public class TaskService {
 
     do {
       minuteStr =
-          View.inputOptions("Minute selector", "Choose a specific minute", minuteOptionsArrayObj);
+          View.inputOptions(
+              "Minute selector",
+              "Choose a specific minute",
+              AskForMethodsDataContainer.getMinuteOptionsArrayObj());
       if (minuteStr == null) {
         if (minutes.isEmpty()) return;
         else break;
@@ -344,13 +304,15 @@ public class TaskService {
     do {
       dayOfWeekStr =
           View.inputOptions(
-              "Day of week selector", "Choose a specific day of the week", daysOfWeekArray);
+              "Day of week selector",
+              "Choose a specific day of the week",
+              AskForMethodsDataContainer.getDaysOfWeekArray());
       if (dayOfWeekStr == null) {
         if (daysOfWeek.isEmpty()) return;
         else break;
       }
 
-      dayOfWeek = daysOfWeekMap.get(dayOfWeekStr);
+      dayOfWeek = AskForMethodsDataContainer.getDaysOfWeekMap().get(dayOfWeekStr);
       daysOfWeek.add(dayOfWeek);
 
       if (!View.confirm("Do you want to add another day of the week?")) keep = false;
@@ -370,7 +332,9 @@ public class TaskService {
     do {
       dayOfMonthStr =
           View.inputOptions(
-              "Day of month selector", "Choose a day of the month", daysOfMonthOptionsArrayStr);
+              "Day of month selector",
+              "Choose a day of the month",
+              AskForMethodsDataContainer.getDaysOfMonthOptionsArrayStr());
       if (dayOfMonthStr == null) {
         if (daysOfMonth.isEmpty()) return;
         else break;
@@ -707,23 +671,29 @@ public class TaskService {
 
   private Optional<Relevance> askForARelevance() {
     String relevance =
-        View.inputOptions("Relevance selector", "Choose the relevance", relevanceArray);
+        View.inputOptions(
+            "Relevance selector",
+            "Choose the relevance",
+            AskForMethodsDataContainer.getRelevanceArray());
 
     if (relevance == null) {
       return Optional.empty();
     } else {
-      return Optional.of(relevanceMap.get(relevance));
+      return Optional.of(AskForMethodsDataContainer.getRelevanceMap().get(relevance));
     }
   }
 
   private Optional<RepeatType> askForARepeatType() {
     String repeatType =
-        View.inputOptions("Repeat Type selector", "Choose the repeat type", repeatTypeArray);
+        View.inputOptions(
+            "Repeat Type selector",
+            "Choose the repeat type",
+            AskForMethodsDataContainer.getRepeatTypeArray());
 
     if (repeatType == null) {
       return Optional.empty();
     } else {
-      return Optional.of(repeatTypeMap.get(repeatType));
+      return Optional.of(AskForMethodsDataContainer.getRepeatTypeMap().get(repeatType));
     }
   }
 
