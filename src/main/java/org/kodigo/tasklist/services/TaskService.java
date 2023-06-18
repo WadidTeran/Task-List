@@ -9,7 +9,6 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.kodigo.tasklist.models.*;
-import org.kodigo.tasklist.utils.AskForMethodsDataContainer;
 import org.kodigo.tasklist.utils.Warnings;
 import org.kodigo.tasklist.views.View;
 
@@ -20,16 +19,17 @@ public class TaskService {
       "Task names cannot be longer than " + MAX_TASK_NAME_LENGTH + " characters!";
   public static final String MAX_DESCRIPTION_LENGTH_WARNING =
       "Task description can't be longer than " + MAX_DESCRIPTION_LENGTH + " characters!";
-  private static final boolean TASK_STATUS_COMPLETED = true;
-  private static final boolean TASK_STATUS_PENDING = false;
+  public static final boolean TASK_STATUS_COMPLETED = true;
+  public static final boolean TASK_STATUS_PENDING = false;
   private final CRUDService crudService;
-  private final CategoryService categoryService;
+  private final AskForService askForService;
   private TaskBuilder taskBuilder;
   private RepeatTaskConfigBuilder repeatTaskConfigBuilder;
 
-  public TaskService(CRUDService crudService, CategoryService categoryService) {
+  public TaskService(CRUDService crudService, AskForService askForService) {
     this.crudService = crudService;
-    this.categoryService = categoryService;
+    this.askForService = askForService;
+    askForService.setTaskService(this);
   }
 
   public void createTask() {
@@ -39,7 +39,8 @@ public class TaskService {
   public boolean modifyTask() {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
-        Optional<Task> optTask = askForATask("Choose a task to modify", TASK_STATUS_PENDING);
+        Optional<Task> optTask =
+            askForService.askForATask("Choose a task to modify", TASK_STATUS_PENDING);
         if (optTask.isPresent()) {
           Task taskToModify = optTask.get();
           taskBuilder = new TaskBuilder(taskToModify);
@@ -131,12 +132,12 @@ public class TaskService {
   }
 
   public void processRelevance() {
-    Optional<Relevance> relevanceOptional = askForARelevance();
+    Optional<Relevance> relevanceOptional = askForService.askForARelevance();
     relevanceOptional.ifPresent(relevance -> taskBuilder.setRelevance(relevance));
   }
 
   public void processCategory() {
-    Optional<Category> categoryOptional = categoryService.askForACategory();
+    Optional<Category> categoryOptional = askForService.askForACategory();
     categoryOptional.ifPresent(category -> taskBuilder.setCategory(category));
   }
 
@@ -159,7 +160,7 @@ public class TaskService {
   }
 
   public void processRepeatType() {
-    Optional<RepeatType> repeatTypeOptional = askForARepeatType();
+    Optional<RepeatType> repeatTypeOptional = askForService.askForARepeatType();
     if (repeatTypeOptional.isPresent()) {
       RepeatType repeatType = repeatTypeOptional.get();
       if (repeatType.equals(RepeatType.HOUR) && taskBuilder.build().getSpecifiedTime() == null) {
@@ -233,20 +234,14 @@ public class TaskService {
     boolean keep = true;
     HourRepeatOnConfig hourRepeatOnConfig = new HourRepeatOnConfig();
     Set<Integer> minutes = new TreeSet<>();
-    String minuteStr;
-    int minute;
+    Integer minute;
 
     do {
-      minuteStr =
-          View.inputOptions(
-              "Minute selector",
-              "Choose a specific minute",
-              AskForMethodsDataContainer.getMinuteOptionsArrayObj());
-      if (minuteStr == null) {
+      minute = askForService.askForAMinute();
+      if (minute == null) {
         if (minutes.isEmpty()) return;
         else break;
       }
-      minute = Integer.parseInt(minuteStr);
       minutes.add(minute);
 
       if (!View.confirm("Do you want to add another minute?")) keep = false;
@@ -293,20 +288,13 @@ public class TaskService {
     WeeklyRepeatOnConfig weeklyRepeatOnConfig = new WeeklyRepeatOnConfig();
     Set<DayOfWeek> daysOfWeek = new TreeSet<>();
     DayOfWeek dayOfWeek;
-    String dayOfWeekStr;
 
     do {
-      dayOfWeekStr =
-          View.inputOptions(
-              "Day of week selector",
-              "Choose a specific day of the week",
-              AskForMethodsDataContainer.getDaysOfWeekArray());
-      if (dayOfWeekStr == null) {
+      dayOfWeek = askForService.askForADayOfWeek();
+      if (dayOfWeek == null) {
         if (daysOfWeek.isEmpty()) return;
         else break;
       }
-
-      dayOfWeek = AskForMethodsDataContainer.getDaysOfWeekMap().get(dayOfWeekStr);
       daysOfWeek.add(dayOfWeek);
 
       if (!View.confirm("Do you want to add another day of the week?")) keep = false;
@@ -320,21 +308,14 @@ public class TaskService {
     boolean keep = true;
     MonthlyRepeatOnConfig monthlyRepeatOnConfig = new MonthlyRepeatOnConfig();
     Set<Integer> daysOfMonth = new TreeSet<>();
-    String dayOfMonthStr;
-    int dayOfMonth;
+    Integer dayOfMonth;
 
     do {
-      dayOfMonthStr =
-          View.inputOptions(
-              "Day of month selector",
-              "Choose a day of the month",
-              AskForMethodsDataContainer.getDaysOfMonthOptionsArrayStr());
-      if (dayOfMonthStr == null) {
+      dayOfMonth = askForService.askForADayOfMonth();
+      if (dayOfMonth == null) {
         if (daysOfMonth.isEmpty()) return;
         else break;
       }
-
-      dayOfMonth = Integer.parseInt(dayOfMonthStr);
       daysOfMonth.add(dayOfMonth);
 
       if (!View.confirm("Do you want to add another day of the month?")) keep = false;
@@ -407,7 +388,7 @@ public class TaskService {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
         Optional<Task> optionalTask =
-            askForATask("Choose a task to set as completed", TASK_STATUS_PENDING);
+            askForService.askForATask("Choose a task to set as completed", TASK_STATUS_PENDING);
         optionalTask.ifPresent(
             task -> {
               if (View.confirm(
@@ -432,7 +413,7 @@ public class TaskService {
     if (checkExistenceOfTasks(TASK_STATUS_COMPLETED)) {
       try {
         Optional<Task> optionalTask =
-            askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
+            askForService.askForATask("Choose a task to set as pending", TASK_STATUS_COMPLETED);
         if (optionalTask.isPresent()) {
           Task taskToSet = optionalTask.get();
           if (View.confirm(
@@ -453,7 +434,8 @@ public class TaskService {
   public void deleteTask() {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
-        Optional<Task> optionalTask = askForATask("Choose a task to delete", TASK_STATUS_PENDING);
+        Optional<Task> optionalTask =
+            askForService.askForATask("Choose a task to delete", TASK_STATUS_PENDING);
         optionalTask.ifPresent(
             task -> {
               if (View.confirm("Are you sure you want to delete \"" + task.getName() + "\"?"))
@@ -534,7 +516,7 @@ public class TaskService {
     if (!checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       View.message(Warnings.NO_PENDING_TASKS);
     } else {
-      Optional<Relevance> relevanceOptional = askForARelevance();
+      Optional<Relevance> relevanceOptional = askForService.askForARelevance();
       if (relevanceOptional.isPresent()) {
         Relevance relevance = relevanceOptional.get();
         List<Task> relevanceTasks =
@@ -556,7 +538,7 @@ public class TaskService {
     } else if (crudService.findAllCategories().isEmpty()) {
       View.message(Warnings.NO_EXISTING_CATEGORIES);
     } else {
-      Optional<Category> categoryOptional = categoryService.askForACategory();
+      Optional<Category> categoryOptional = askForService.askForACategory();
       if (categoryOptional.isPresent()) {
         Category categoryObj = categoryOptional.get();
         List<Task> categoryTasks =
@@ -601,7 +583,8 @@ public class TaskService {
   public void searchOneTask() {
     if (checkExistenceOfTasks(TASK_STATUS_PENDING)) {
       try {
-        Optional<Task> optTask = askForATask("Choose a task to search", TASK_STATUS_PENDING);
+        Optional<Task> optTask =
+            askForService.askForATask("Choose a task to search", TASK_STATUS_PENDING);
         optTask.ifPresent(View::displayOneTask);
       } catch (NumberFormatException e) {
         View.message(Warnings.NOT_VALID_TASK_ID);
@@ -617,28 +600,7 @@ public class TaskService {
         .collect(Collectors.toList());
   }
 
-  private Optional<Task> askForATask(String message, boolean taskStatus) {
-    List<Task> tasks =
-        (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
-
-    Object[] taskArray = tasks.stream().map(Task::getName).toArray();
-
-    String task = View.inputOptions("Task selector", message, taskArray);
-
-    if (task == null) {
-      return Optional.empty();
-    } else {
-      return tasks.stream().filter(t -> t.getName().equals(task)).findFirst();
-    }
-  }
-
-  private boolean checkExistenceOfTasks(boolean taskStatus) {
-    List<Task> tasks =
-        (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
-    return !tasks.isEmpty();
-  }
-
-  private List<Task> getAllPendingTasks() {
+  public List<Task> getAllPendingTasks() {
     return crudService.findAllTasks().stream()
         .filter(t -> !t.isCompleted())
         .collect(Collectors.toList());
@@ -663,32 +625,10 @@ public class TaskService {
     }
   }
 
-  private Optional<Relevance> askForARelevance() {
-    String relevance =
-        View.inputOptions(
-            "Relevance selector",
-            "Choose the relevance",
-            AskForMethodsDataContainer.getRelevanceArray());
-
-    if (relevance == null) {
-      return Optional.empty();
-    } else {
-      return Optional.of(AskForMethodsDataContainer.getRelevanceMap().get(relevance));
-    }
-  }
-
-  private Optional<RepeatType> askForARepeatType() {
-    String repeatType =
-        View.inputOptions(
-            "Repeat Type selector",
-            "Choose the repeat type",
-            AskForMethodsDataContainer.getRepeatTypeArray());
-
-    if (repeatType == null) {
-      return Optional.empty();
-    } else {
-      return Optional.of(AskForMethodsDataContainer.getRepeatTypeMap().get(repeatType));
-    }
+  private boolean checkExistenceOfTasks(boolean taskStatus) {
+    List<Task> tasks =
+        (taskStatus == TASK_STATUS_COMPLETED) ? getCompletedTasks() : getAllPendingTasks();
+    return !tasks.isEmpty();
   }
 
   private boolean checkTaskName(String taskName) {

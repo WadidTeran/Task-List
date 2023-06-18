@@ -4,10 +4,7 @@ import org.kodigo.tasklist.menus.AbstractMenu;
 import org.kodigo.tasklist.menus.LoginMenu;
 import org.kodigo.tasklist.models.*;
 import org.kodigo.tasklist.repositories.CategoryRepository;
-import org.kodigo.tasklist.services.CRUDService;
-import org.kodigo.tasklist.services.CategoryService;
-import org.kodigo.tasklist.services.TaskService;
-import org.kodigo.tasklist.services.UserService;
+import org.kodigo.tasklist.services.*;
 import org.kodigo.tasklist.repositories.IRepository;
 import org.kodigo.tasklist.repositories.TaskRepository;
 import org.kodigo.tasklist.repositories.UserRepository;
@@ -27,7 +24,9 @@ public class Application {
       new CRUDService(userRepository, taskRepository, categoryRepository);
   private static final UserService userService = new UserService(crudService);
   private static final CategoryService categoryService = new CategoryService(crudService);
-  private static final TaskService taskService = new TaskService(crudService, categoryService);
+  private static final AskForService askForService =
+      new AskForService(crudService, categoryService);
+  private static final TaskService taskService = new TaskService(crudService, askForService);
 
   private Application() {}
 

@@ -1,7 +1,6 @@
 package org.kodigo.tasklist.services;
 
 import java.util.List;
-import java.util.Optional;
 import org.kodigo.tasklist.models.Category;
 import org.kodigo.tasklist.utils.UserLogin;
 import org.kodigo.tasklist.utils.Warnings;
@@ -126,20 +125,5 @@ public class CategoryService {
         .filter(c -> c.getName().equals(categoryName))
         .findFirst()
         .orElseThrow();
-  }
-
-  public Optional<Category> askForACategory() {
-    Object[] categoriesArray =
-        crudService.findAllCategories().stream().map(Category::getName).toArray();
-
-    String category =
-        View.inputOptions("Category selector", "Choose the category", categoriesArray);
-
-    if (category == null) {
-      return Optional.empty();
-    } else {
-      Category categoryObj = getCategoryByName(category);
-      return Optional.of(categoryObj);
-    }
   }
 }
